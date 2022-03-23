@@ -14,4 +14,14 @@
     <string name="show_planner">Show Planner</string>
     <string name="show_groups">Show Groups</string>
     <string name="show_invitations">Show Invitations</string>
+
+    <string name="title_activity_sign_in">SignIn</string>
+    <string name="welcome"><text>
+        Welcome to OurPlanner!
+        Sign up or register to continue.</text></string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="forgot_password">FORGOT PASSWORD?</string>
+    <string name="register">REGISTER</string>
 </resources>
