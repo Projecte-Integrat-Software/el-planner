@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
                 String username = txtUsername.getText().toString();
                 String password = txtPassword.getText().toString();
                 Toast.makeText(getApplicationContext(), "Usuari: " + username + "\nContrasenya: " + password + "\n", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
             }
         });
 

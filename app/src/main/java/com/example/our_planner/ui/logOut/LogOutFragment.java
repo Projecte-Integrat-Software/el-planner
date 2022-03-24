@@ -1,4 +1,4 @@
-package com.example.our_planner.ui.planner;
+package com.example.our_planner.ui.logOut;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.our_planner.databinding.FragmentPlannerBinding;
+import com.example.our_planner.databinding.FragmentLogOutBinding;
 
-public class PlannerFragment extends Fragment {
+public class LogOutFragment extends Fragment {
 
-    private FragmentPlannerBinding binding;
+    private FragmentLogOutBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        PlannerViewModel plannerViewModel =
-                new ViewModelProvider(this).get(PlannerViewModel.class);
+        LogOutViewModel logOutViewModel =
+                new ViewModelProvider(this).get(LogOutViewModel.class);
 
-        binding = FragmentPlannerBinding.inflate(inflater, container, false);
+        binding = FragmentLogOutBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textPlanner;
-        plannerViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textLogOut;
+        logOutViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

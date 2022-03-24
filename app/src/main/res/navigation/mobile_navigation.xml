@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navPlanner">
+    app:startDestination="@+id/navCalendar">
 
     <fragment
-        android:id="@+id/navPlanner"
-        android:name="com.example.our_planner.ui.planner.PlannerFragment"
-        android:label="Planner"
-        tools:layout="@layout/fragment_planner" />
+        android:id="@+id/navCalendar"
+        android:name="com.example.our_planner.ui.calendar.CalendarFragment"
+        android:label="Calendar"
+        tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/navGroups"
@@ -22,4 +22,16 @@
         android:name="com.example.our_planner.ui.invitations.InvitationsFragment"
         android:label="Invitations"
         tools:layout="@layout/fragment_invitations" />
+
+    <fragment
+        android:id="@+id/navSettings"
+        android:name="com.example.our_planner.ui.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navLogOut"
+        android:name="com.example.our_planner.ui.logOut.LogOutFragment"
+        android:label="Log Out"
+        tools:layout="@layout/fragment_log_out" />
 </navigation>

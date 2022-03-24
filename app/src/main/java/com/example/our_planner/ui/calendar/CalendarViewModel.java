@@ -1,16 +1,16 @@
-package com.example.our_planner.ui.planner;
+package com.example.our_planner.ui.calendar;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class PlannerViewModel extends ViewModel {
+public class CalendarViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public PlannerViewModel() {
+    public CalendarViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is planner fragment");
+        mText.setValue("This is calendar fragment");
     }
 
     public LiveData<String> getText() {
