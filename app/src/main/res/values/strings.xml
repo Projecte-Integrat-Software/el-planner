@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">our-planner</string>
-    <string name="title_activity_navigation_drawer">NavigationDrawer</string>
+    <string name="title_activity_navigation_drawer">Navigation Drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -15,10 +15,9 @@
     <string name="show_groups">Show Groups</string>
     <string name="show_invitations">Show Invitations</string>
 
-    <string name="title_activity_sign_in">SignIn</string>
-    <string name="welcome"><text>
-        Welcome to OurPlanner!
-        Sign up or register to continue.</text></string>
+    <string name="title_activity_sign_in">Sign In</string>
+    <string name="welcome">Welcome to OurPlanner!</string>
+    <string name="sign_in_register">Sign up or register to continue.</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="sign_in">SIGN IN</string>

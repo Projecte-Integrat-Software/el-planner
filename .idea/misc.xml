@@ -17,13 +17,8 @@
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/nav_header_navigation_drawer.xml" value="0.1" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/activity_navigation_drawer_drawer.xml" value="0.1796875" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/navigation_drawer.xml" value="0.1796875" />
-        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_login.xml" value="0.25" />
-        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_main.xml" value="0.1661600810536981" />
-        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_navigation_drawer.xml" value="0.33" />
-        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/app_bar_navigation_drawer.xml" value="0.1661600810536981" />
-        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/content_navigation_drawer.xml" value="0.1661600810536981" />
-        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/fragment_groups.xml" value="0.1661600810536981" />
-        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/fragment_invitations.xml" value="0.1661600810536981" />
+        <entry key="..\:/Users/Pc/StudioProjects/our-planner/app/src/main/res/layout/activity_login.xml" value="0.264" />
+        <entry key="..\:/Users/Pc/StudioProjects/our-planner/app/src/main/res/layout/fragment_planner.xml" value="0.2" />
       </map>
     </option>
   </component>
