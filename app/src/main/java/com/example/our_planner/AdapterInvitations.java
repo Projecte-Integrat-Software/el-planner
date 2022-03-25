@@ -1,9 +1,10 @@
 package com.example.our_planner;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +33,11 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
     @Override
     public void onBindViewHolder(@NonNull ViewHolderInvitations holder, int position) {
         holder.setData(invitations.get(position));
+        /*holder.acceptInvitationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });*/
     }
 
     @Override
@@ -39,13 +45,13 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         return invitations.size();
     }
 
-    public class ViewHolderInvitations extends RecyclerView.ViewHolder {
+    public static class ViewHolderInvitations extends RecyclerView.ViewHolder {
 
         ImageView imageInvitation;
         TextView titleInvitation;
         TextView authorInvitation;
-        Button acceptInvitationBtn;
-        Button denyInvitationBtn;
+        ImageButton acceptInvitationBtn;
+        ImageButton declineInvitationBtn;
 
         public ViewHolderInvitations(@NonNull View itemView) {
             super(itemView);
@@ -53,7 +59,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
             titleInvitation = itemView.findViewById(R.id.titleInvitation);
             authorInvitation = itemView.findViewById(R.id.authorInvitation);
             acceptInvitationBtn = itemView.findViewById(R.id.acceptInvitationBtn);
-            denyInvitationBtn = itemView.findViewById(R.id.denyInvitationBtn);
+            declineInvitationBtn = itemView.findViewById(R.id.declineInvitationBtn);
         }
 
         public void setData(Invitation invitation) {
