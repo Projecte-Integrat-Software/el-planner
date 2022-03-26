@@ -4,34 +4,42 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.our_planner.databinding.FragmentGroupsBinding;
+import com.example.our_planner.R;
+import com.example.our_planner.model.Group;
+
+import java.util.ArrayList;
 
 public class GroupsFragment extends Fragment {
 
-    private FragmentGroupsBinding binding;
+    private RecyclerView recyclerViewGroups;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        GroupsViewModel groupsViewModel =
-                new ViewModelProvider(this).get(GroupsViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //GroupsViewModel groupsViewModel = new ViewModelProvider(this).get(GroupsViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_groups, container, false);
 
-        binding = FragmentGroupsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        recyclerViewGroups = view.findViewById(R.id.recyclerViewGroups);
+        recyclerViewGroups.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        final TextView textView = binding.textGroups;
-        groupsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        //Dummy list to run the test of the recycler view without the database
+        ArrayList<Group> groups = new ArrayList<>();
+        groups.add(new Group("Geometry"));
+        groups.add(new Group("Calculus"));
+        groups.add(new Group("Pis"));
+
+        AdapterGroups adapterGroups = new AdapterGroups(groups);
+        recyclerViewGroups.setAdapter(adapterGroups);
+
+        return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 }

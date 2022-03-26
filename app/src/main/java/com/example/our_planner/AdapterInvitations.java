@@ -33,7 +33,8 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
     @Override
     public void onBindViewHolder(@NonNull ViewHolderInvitations holder, int position) {
         holder.setData(invitations.get(position));
-        /*holder.acceptInvitationBtn.setOnClickListener(new View.OnClickListener() {
+        /* TODO: Buttons functionality
+        holder.acceptInvitationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             }

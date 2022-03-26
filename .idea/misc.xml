@@ -3,32 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/drawable-xxxhdpi/round_btn.xml" value="0.145" />
-        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/drawable-xxxhdpi/round_btn_green.xml" value="0.145" />
-        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/drawable-xxxhdpi/round_btn_red.xml" value="0.145" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/drawable/ic_launcher_background.xml" value="0.168" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.168" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/drawable/side_nav_bar.xml" value="0.168" />
-        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout-v23/item_list_invitations.xml" value="0.1598731884057971" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/activity_main.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/activity_navigation_drawer.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/app_bar_navigation_drawer.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/content_navigation_drawer.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_gallery.xml" value="0.14130434782608695" />
-        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_groups.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_groups.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_invitations.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_planner.xml" value="0.14130434782608695" />
-        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/item_list_invitations.xml" value="0.25" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/nav_header_navigation_drawer.xml" value="0.1" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/activity_navigation_drawer_drawer.xml" value="0.1796875" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/navigation_drawer.xml" value="0.1796875" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.203" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/drawable/ic_launcher_background.xml" value="0.203" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_main.xml" value="0.1661600810536981" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_navigation_drawer.xml" value="0.33" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/app_bar_navigation_drawer.xml" value="0.1661600810536981" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/content_navigation_drawer.xml" value="0.1661600810536981" />
-        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/fragment_groups.xml" value="0.1661600810536981" />
-        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/fragment_invitations.xml" value="0.1661600810536981" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/fragment_groups.xml" value="0.33" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/fragment_invitations.xml" value="0.25" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/item_list_groups.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/item_list_invitations.xml" value="0.22" />
       </map>
     </option>
   </component>

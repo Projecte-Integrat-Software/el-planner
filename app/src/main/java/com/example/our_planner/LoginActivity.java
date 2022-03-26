@@ -10,11 +10,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText txtUsername;
-    EditText txtPassword;
-    Button btnSign;
-    Button btnPassword;
-    Button btnRegister;
+    private EditText txtUsername;
+    private EditText txtPassword;
+    private Button btnSign;
+    private Button btnPassword;
+    private Button btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
