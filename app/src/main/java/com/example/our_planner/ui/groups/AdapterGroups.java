@@ -35,19 +35,13 @@ public class AdapterGroups extends RecyclerView.Adapter<ViewHolderGroups> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolderGroups holder, int position) {
         holder.setData(groups.get(position));
-        holder.getEditGroupBtn().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Open edit group activity (only if admin!)
-                Toast.makeText(holder.itemView.getContext(), "Editing group", Toast.LENGTH_LONG).show();
-            }
+        holder.getEditGroupBtn().setOnClickListener(view -> {
+            //TODO: Open edit group activity (only if admin!)
+            Toast.makeText(view.getContext(), "Editing group", Toast.LENGTH_LONG).show();
         });
-        holder.getLeaveGroupBtn().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Open confirmation to leave group
-                Toast.makeText(holder.itemView.getContext(), "Leaving group", Toast.LENGTH_LONG).show();
-            }
+        holder.getLeaveGroupBtn().setOnClickListener(view -> {
+            //TODO: Open confirmation to leave group
+            Toast.makeText(view.getContext(), "Leaving group", Toast.LENGTH_LONG).show();
         });
     }
 

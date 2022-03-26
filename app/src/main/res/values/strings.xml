@@ -26,4 +26,7 @@
     <string name="invitations">Invitations</string>
 
     <string name="edit">EDIT</string>
+    <string name="edit_group_description">Edit group</string>
+    <string name="leave_group_description">Leave group</string>
+    <string name="add_group_description">Add new group</string>
 </resources>
