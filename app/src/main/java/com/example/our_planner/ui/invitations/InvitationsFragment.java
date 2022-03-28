@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.our_planner.AdapterInvitations;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Invitation;
 
