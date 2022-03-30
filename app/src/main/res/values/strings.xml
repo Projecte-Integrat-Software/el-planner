@@ -26,6 +26,12 @@
     <string name="receive_recovery_email">Receive Recovery Email</string>
     <string name="go_back">Go Back</string>
 
+    <string-array name="calendarOptions">
+        <item>Mes</item>
+        <item>Setmana</item>
+        <item>Any</item>
+    </string-array>
+
     <string name="invitations">Invitations</string>
 
     <string name="edit">EDIT</string>
