@@ -32,6 +32,7 @@
     <string name="go_back">Go Back</string>
     <string name="cancel">Cancel</string>
 
+    <string name="calendar">Calendar</string>
     <string-array name="calendarOptions">
         <item>Mes</item>
         <item>Setmana</item>
@@ -40,6 +41,7 @@
 
     <string name="invitations">Invitations</string>
 
+    <string name="groups">Groups</string>
     <string name="edit">EDIT</string>
     <string name="edit_group_description">Edit group</string>
     <string name="leave_group_description">Leave group</string>

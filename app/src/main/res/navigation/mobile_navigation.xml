@@ -8,25 +8,25 @@
     <fragment
         android:id="@+id/navCalendar"
         android:name="com.example.our_planner.ui.calendar.CalendarFragment"
-        android:label="Calendar"
+        android:label="@string/calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/navGroups"
         android:name="com.example.our_planner.ui.groups.GroupsFragment"
-        android:label="Groups"
+        android:label="@string/groups"
         tools:layout="@layout/fragment_groups" />
 
     <fragment
         android:id="@+id/navInvitations"
         android:name="com.example.our_planner.ui.invitations.InvitationsFragment"
-        android:label="Invitations"
+        android:label="@string/invitations"
         tools:layout="@layout/fragment_invitations" />
 
     <fragment
         android:id="@+id/navSettings"
         android:name="com.example.our_planner.ui.settings.SettingsFragment"
-        android:label="Settings"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
