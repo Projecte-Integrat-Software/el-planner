@@ -7,7 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true"
@@ -23,19 +23,25 @@
                 android:id="@+id/nameGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/editGroupBtn"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
             <Button
                 android:id="@+id/editGroupBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginEnd="12dp"
-                android:text="@string/edit"
                 android:contentDescription="@string/edit_group_description"
+                android:text="@string/edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/leaveGroupBtn"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,19 +50,19 @@
                 android:id="@+id/leaveGroupBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
                 android:background="@drawable/round_btn_red"
+                android:contentDescription="@string/leave_group_description"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 android:padding="10dp"
                 android:src="@drawable/ic_decline"
-                android:contentDescription="@string/leave_group_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.982"
+                app:layout_constraintHorizontal_bias="0.985"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_bias="0.545"
                 tools:ignore="SpeakableTextPresentCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
