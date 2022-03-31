@@ -11,7 +11,12 @@
         android:theme="@style/Theme.Ourplanner">
         <activity
             android:name=".ForgotPasswordActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_forgot_password"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:label="@string/title_activity_register"/>
         <activity
             android:name=".NavigationDrawer"
             android:exported="false"
