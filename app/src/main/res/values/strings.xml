@@ -17,14 +17,26 @@
     <string name="sign_in_register">Sign up or register to continue.</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="sign_in">SIGN IN</string>
     <string name="forgot_password">FORGOT PASSWORD?</string>
     <string name="register">REGISTER</string>
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
+    <string name="email">Email</string>
+
+    <string name="create_account">Create your Our Planner account:</string>
+    <string name="fill_fields">All fields must be filled</string>
 
     <string name="receive_recovery_email">Receive Recovery Email</string>
     <string name="go_back">Go Back</string>
+    <string name="cancel">Cancel</string>
+
+    <string-array name="calendarOptions">
+        <item>Mes</item>
+        <item>Setmana</item>
+        <item>Any</item>
+    </string-array>
 
     <string name="invitations">Invitations</string>
 
