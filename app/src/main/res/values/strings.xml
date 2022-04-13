@@ -53,6 +53,7 @@
     <string name="add_group_description">Add new group</string>
 
     <string name="create_group">Create Group</string>
+    <string name="edit_group">Edit Group</string>
     <string name="create">CREATE</string>
     <string name="title">Title:</string>
     <string name="group_title">Group title</string>

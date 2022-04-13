@@ -35,6 +35,10 @@
             android:name=".ui.groups.CreateGroupActivity"
             android:exported="false"
             android:label="@string/create_group" />
+        <activity
+            android:name=".ui.groups.EditGroupActivity"
+            android:exported="false"
+            android:label="@string/edit_group" />
     </application>
 
 </manifest>

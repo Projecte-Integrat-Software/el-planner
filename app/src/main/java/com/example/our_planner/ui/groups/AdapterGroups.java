@@ -1,5 +1,7 @@
 package com.example.our_planner.ui.groups;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +37,9 @@ public class AdapterGroups extends RecyclerView.Adapter<AdapterGroups.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolderGroups holder, int position) {
         holder.setData(groups.get(position));
         holder.editGroupBtn.setOnClickListener(view -> {
-            //TODO: Open edit group activity (only if admin!)
-            Toast.makeText(view.getContext(), "Editing group", Toast.LENGTH_LONG).show();
+            //TODO: Open edit group activity and pass the group id to fill it with its data
+            Context c = view.getContext();
+            c.startActivity(new Intent(c, EditGroupActivity.class));
         });
         holder.leaveGroupBtn.setOnClickListener(view -> {
             //TODO: Open confirmation to leave group
