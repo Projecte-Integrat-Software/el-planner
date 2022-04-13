@@ -3,9 +3,9 @@ package com.example.our_planner.model;
 import android.widget.ImageView;
 
 public class Invitation {
-    String title;
-    String author;
-    ImageView image;
+    private String title;
+    private String author;
+    private ImageView image;
 
     public Invitation(String title, String author, ImageView image) {
         this.title = title;

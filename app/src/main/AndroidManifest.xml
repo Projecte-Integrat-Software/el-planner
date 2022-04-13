@@ -31,6 +31,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.groups.CreateGroupActivity"
+            android:exported="false"
+            android:label="@string/create_group" />
     </application>
 
 </manifest>

@@ -18,27 +18,21 @@
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/activity_navigation_drawer_drawer.xml" value="0.1796875" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/navigation_drawer.xml" value="0.1796875" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.203" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/drawable/circle.xml" value="0.34" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/drawable/ic_launcher_background.xml" value="0.203" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_create_group.xml" value="0.33" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_main.xml" value="0.1661600810536981" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_navigation_drawer.xml" value="0.33" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/activity_register.xml" value="0.28958333333333336" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/app_bar_navigation_drawer.xml" value="0.1661600810536981" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/content_navigation_drawer.xml" value="0.1661600810536981" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/create_group.xml" value="0.34375" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/fragment_groups.xml" value="0.33" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/fragment_invitations.xml" value="0.25" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/item_list_groups.xml" value="0.2708333333333333" />
         <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/item_list_invitations.xml" value="0.22" />
-        <entry key="..\:/Users/Pc/StudioProjects/our-planner/app/src/main/res/layout/fragment_calendar.xml" value="0.11347517730496454" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_forgot_password.xml" value="0.4624094202898551" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_login.xml" value="0.4624094202898551" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_navigation_drawer.xml" value="0.4624094202898551" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/app_bar_navigation_drawer.xml" value="0.4624094202898551" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/content_navigation_drawer.xml" value="0.4624094202898551" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_calendar.xml" value="0.375" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_groups.xml" value="0.31145833333333334" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_invitations.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_invitations.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/menu/activity_navigation_drawer.xml" value="0.5505208333333333" />
+        <entry key="..\:/Users/Pc/Documents/OurPlanner/app/src/main/res/layout/item_list_participants.xml" value="0.22780797101449277" />
       </map>
     </option>
   </component>

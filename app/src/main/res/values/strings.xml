@@ -47,5 +47,17 @@
     <string name="edit">EDIT</string>
     <string name="edit_group_description">Edit group</string>
     <string name="leave_group_description">Leave group</string>
+    <string name="expel_participant_description">Expel participant from group</string>
+    <string name="admin_description">Change participant permission</string>
+    <string name="add_participant">Add participants</string>
     <string name="add_group_description">Add new group</string>
+
+    <string name="create_group">Create Group</string>
+    <string name="create">CREATE</string>
+    <string name="title">Title:</string>
+    <string name="group_title">Group title</string>
+    <string name="details">Details:</string>
+    <string name="group_details">Group details</string>
+    <string name="colour">Colour:</string>
+    <string name="participants">Participants:</string>
 </resources>
