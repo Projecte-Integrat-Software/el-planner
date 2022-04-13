@@ -1,15 +1,14 @@
 package com.example.our_planner;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class  RegisterActivity extends AppCompatActivity{
+import androidx.appcompat.app.AppCompatActivity;
+
+public class RegisterActivity extends AppCompatActivity implements DataBaseAdapter.InterfaceDB {
 
     private Button btnCancel;
     private Button btnRegister;
@@ -17,8 +16,6 @@ public class  RegisterActivity extends AppCompatActivity{
     private EditText txtPassword;
     private EditText txtEmail;
     private EditText txtUsername;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,27 +26,37 @@ public class  RegisterActivity extends AppCompatActivity{
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
         txtRepeatPassword = findViewById(R.id.txtRepeatPassword);
-
         btnRegister = findViewById(R.id.btnRegister);
         btnCancel = findViewById(R.id.btnCancel);
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username = txtUsername.getText().toString();
-                String password = txtPassword.getText().toString();
-                String email = txtEmail.getText().toString();
-                Toast.makeText(getApplicationContext(), "Username: " + username + "\nEmail" + email + "\nPassword" + password + "\n", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(RegisterActivity.this, NavigationDrawer.class));
-
+        btnRegister.setOnClickListener(view -> {
+            String username = txtUsername.getText().toString();
+            String password = txtPassword.getText().toString();
+            String email = txtEmail.getText().toString();
+            if (username.isEmpty()) {
+                Toast.makeText(RegisterActivity.this, "Username field is empty!", Toast.LENGTH_SHORT).show();
+            } else if (email.isEmpty()) {
+                Toast.makeText(RegisterActivity.this, "Email field is empty!", Toast.LENGTH_SHORT).show();
+            } else if (password.isEmpty()) {
+                Toast.makeText(RegisterActivity.this, "Password field is empty!", Toast.LENGTH_SHORT).show();
+            } else if (txtRepeatPassword.getText().toString().equals(password)) {
+                DataBaseAdapter.register(RegisterActivity.this, email, password, username);
+            } else {
+                Toast.makeText(RegisterActivity.this, "Passwords are not the same!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-            }
-        });
+        btnCancel.setOnClickListener(view -> startActivity(new Intent(RegisterActivity.this, LoginActivity.class)));
+    }
+
+    @Override
+    public void onComplete() {
+        Toast.makeText(this, "Signed up successfully", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(RegisterActivity.this, NavigationDrawer.class));
+    }
+
+    @Override
+    public void onError(Exception e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
