@@ -37,7 +37,6 @@ public class InvitationsFragment extends Fragment {
         invitations.add(new Invitation("Calculus","Albert Clop", imageView));
         invitations.add(new Invitation("Pis","Carlos Martin", imageView));
 
-
         AdapterInvitations adapterInvitations = new AdapterInvitations(invitations);
         recyclerViewInvitations.setAdapter(adapterInvitations);
 

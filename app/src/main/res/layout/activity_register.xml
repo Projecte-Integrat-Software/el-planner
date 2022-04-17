@@ -15,33 +15,30 @@
         android:id="@+id/txtUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="228dp"
         android:hint="@string/username"
         android:inputType="text"
         android:minHeight="48dp"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtRegister" />
 
     <EditText
         android:id="@+id/txtEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="304dp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtUsername" />
 
     <EditText
         android:id="@+id/txtPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:hint="@string/password"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
@@ -50,13 +47,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.187"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
     <EditText
         android:id="@+id/txtRepeatPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="172dp"
         android:hint="@string/confirm_password"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
@@ -64,46 +60,48 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
 
     <Button
         android:id="@+id/btnCancel"
         android:layout_width="194dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="20dp"
         android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/btnRegister"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/txtCreate"
         android:layout_width="296dp"
         android:layout_height="78dp"
         android:layout_centerInParent="true"
-        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="@string/create_account"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.044" />
 
     <TextView
         android:id="@+id/txtRegister"
         android:layout_width="273dp"
         android:layout_height="40dp"
         android:layout_centerInParent="true"
-        android:layout_marginTop="144dp"
         android:gravity="center"
         android:text="@string/fill_fields"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCreate" />
 
     <Button
         android:id="@+id/btnRegister"
@@ -116,6 +114,6 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtRepeatPassword"
-        app:layout_constraintVertical_bias="0.898" />
+        app:layout_constraintVertical_bias="0.211" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
