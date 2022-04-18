@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
-import com.example.our_planner.model.ChatMessage;
+import com.example.our_planner.model.Comment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
     RecyclerView recyclerViewComments;
     EditText message;
     FloatingActionButton sendBtn;
-    ArrayList<ChatMessage> messages;
+    ArrayList<Comment> comments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +30,11 @@ public class ShowCommentsActivity extends AppCompatActivity {
         message = findViewById(R.id.message);
         sendBtn = findViewById(R.id.sendBtn);
 
-        messages = new ArrayList<>();
-        messages.add(new ChatMessage("Hi!","Miquel Sala"));
-        messages.add(new ChatMessage("Hey!","Pol Gabaldon"));
+        comments = new ArrayList<>();
+        comments.add(new Comment("Hi!","Miquel Sala"));
+        comments.add(new Comment("Hey!","Pol Gabaldon"));
 
-        AdapterComments adapterComments = new AdapterComments(messages);
+        AdapterComments adapterComments = new AdapterComments(comments);
         recyclerViewComments.setAdapter(adapterComments);
     }
 }

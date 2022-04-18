@@ -9,33 +9,33 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
-import com.example.our_planner.model.ChatMessage;
+import com.example.our_planner.model.Comment;
 
 import java.util.ArrayList;
 
 public class AdapterComments extends RecyclerView.Adapter<AdapterComments.ViewHolderComments>{
 
-    ArrayList<ChatMessage> chatMessages;
+    ArrayList<Comment> comments;
 
-    public AdapterComments(ArrayList<ChatMessage> chatMessages) {
-        this.chatMessages = chatMessages;
+    public AdapterComments(ArrayList<Comment> comments) {
+        this.comments = comments;
     }
 
     @NonNull
     @Override
     public ViewHolderComments onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_messages,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_comments,parent,false);
         return new ViewHolderComments(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderComments holder, int position) {
-        holder.setData(chatMessages.get(position));
+        holder.setData(comments.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return chatMessages.size();
+        return comments.size();
     }
 
     public static class ViewHolderComments extends RecyclerView.ViewHolder {
@@ -47,13 +47,13 @@ public class AdapterComments extends RecyclerView.Adapter<AdapterComments.ViewHo
             super(itemView);
             user = itemView.findViewById(R.id.user);
             date = itemView.findViewById(R.id.date);
-            message = itemView.findViewById(R.id.text);
+            message = itemView.findViewById(R.id.commentMessage);
         }
 
-        public void setData(ChatMessage chatMessage) {
-            user.setText(chatMessage.getUser());
-            date.setText(chatMessage.getDate());
-            message.setText(chatMessage.getMessage());
+        public void setData(Comment comment) {
+            user.setText(comment.getUser());
+            date.setText(comment.getDate());
+            message.setText(comment.getMessage());
         }
     }
 }
