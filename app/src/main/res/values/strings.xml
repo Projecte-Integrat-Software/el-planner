@@ -78,4 +78,6 @@
     <string name="theme">Theme:</string>
     <string name="change_profile_picture">Change profile picture</string>
     <string name="message">Message</string>
+    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
+    <string name="yes">Yes</string>
 </resources>
