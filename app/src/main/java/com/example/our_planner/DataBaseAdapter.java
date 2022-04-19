@@ -41,4 +41,13 @@ public class DataBaseAdapter {
 
         void onError(Exception e);
     }
+
+    public static boolean alreadyLoggedIn() {
+        return mAuth.getCurrentUser() != null;
+    }
+
+    public static void logOut() {
+        mAuth.signOut();
+    }
+
 }

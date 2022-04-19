@@ -29,7 +29,6 @@ import com.example.our_planner.ui.groups.GroupsFragment;
 import com.example.our_planner.ui.invitations.InvitationsFragment;
 import com.example.our_planner.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class NavigationDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -112,7 +111,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 yesBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        FirebaseAuth.getInstance().signOut();
+                        DataBaseAdapter.logOut();
                         pw.dismiss();
                         startActivity(new Intent(NavigationDrawer.this, LoginActivity.class));
                     }

@@ -8,8 +8,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 public class LoginActivity extends AppCompatActivity implements DataBaseAdapter.InterfaceDB {
     private EditText txtEmail;
     private EditText txtPassword;
@@ -23,7 +21,7 @@ public class LoginActivity extends AppCompatActivity implements DataBaseAdapter.
         setContentView(R.layout.activity_login);
 
         //If user already logged in, we omit the activity
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (DataBaseAdapter.alreadyLoggedIn()) {
             startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
         }
 
