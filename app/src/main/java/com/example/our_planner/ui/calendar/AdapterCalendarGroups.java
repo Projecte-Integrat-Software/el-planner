@@ -21,6 +21,7 @@ public class AdapterCalendarGroups extends RecyclerView.Adapter<AdapterCalendarG
         this.groups = groups;
     }
 
+    @NonNull
     @Override
     public ViewHolderCalendarGroups onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_calendar_groups,parent,false);
@@ -47,7 +48,7 @@ public class AdapterCalendarGroups extends RecyclerView.Adapter<AdapterCalendarG
         }
 
         public void asignarCalendarGroups(Group group) {
-            this.group.setText(group.getName());
+            this.group.setText(group.getTitle());
         }
     }
 }

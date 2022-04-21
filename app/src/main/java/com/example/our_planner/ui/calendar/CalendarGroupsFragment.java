@@ -27,13 +27,13 @@ public class CalendarGroupsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar_groups, container, false);
 
-        recyclerViewCalendarGroups = (RecyclerView) view.findViewById(R.id.recyclerViewCalendarGroups);
+        recyclerViewCalendarGroups = view.findViewById(R.id.recyclerViewCalendarGroups);
         recyclerViewCalendarGroups.setLayoutManager(new GridLayoutManager(getContext(),COLUMNS));
 
         // ArrayList for testing purposes
-        groups.add(new Group("PIS"));
-        groups.add(new Group("Geometry"));
-        groups.add(new Group("PAE"));
+        groups.add(new Group("PIS", "Theory", 0));
+        groups.add(new Group("Geometry", "Problems", 0xfe0037));
+        groups.add(new Group("PAE", "Labs", 0x33cc33));
 
         AdapterCalendarGroups adapterCalendarGroups = new AdapterCalendarGroups(groups);
         recyclerViewCalendarGroups.setAdapter(adapterCalendarGroups);

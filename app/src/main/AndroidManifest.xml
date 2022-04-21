@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.our_planner">
 
     <application
@@ -19,9 +20,9 @@
             android:label="@string/title_activity_register"/>
         <activity
             android:name=".NavigationDrawer"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_navigation_drawer"
-            android:theme="@style/Theme.Ourplanner.NoActionBar" />
+            android:theme="@style/Theme.Ourplanner.NoActionBar"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true"
@@ -29,8 +30,20 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            </intent-filter></activity>
+        <activity
+            android:name=".ui.groups.CreateGroupActivity"
+            android:exported="false"
+            android:label="@string/create_group" />
+        <activity
+            android:name=".ui.groups.EditGroupActivity"
+            android:exported="false"
+            android:label="@string/edit_group" />
+        <activity
+            android:name=".ui.calendar.comments.ShowCommentsActivity"
+            android:exported="true"
+            android:label="Show Comments"/>
+
     </application>
 
 </manifest>

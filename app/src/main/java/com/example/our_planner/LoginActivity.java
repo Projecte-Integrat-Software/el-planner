@@ -1,16 +1,15 @@
 package com.example.our_planner;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity {
-    private EditText txtUsername;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class LoginActivity extends AppCompatActivity implements DataBaseAdapter.InterfaceDB {
+    private EditText txtEmail;
     private EditText txtPassword;
     private Button btnSign;
     private Button btnPassword;
@@ -21,38 +20,40 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        txtUsername = findViewById(R.id.txtUsername);
+        //If user already logged in, we omit the activity
+        if (DataBaseAdapter.alreadyLoggedIn()) {
+            startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
+        }
+
+        txtEmail = findViewById(R.id.txtEmail);
         txtPassword = findViewById(R.id.txtPassword);
-
-        //TODO: Connect with ViewModel to check input, and DataBase to know if user exists, if so, login
         btnSign = findViewById(R.id.btnSign);
-        btnSign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username = txtUsername.getText().toString();
-                String password = txtPassword.getText().toString();
-                Toast.makeText(getApplicationContext(), "Usuari: " + username + "\nContrasenya: " + password + "\n", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
+        btnSign.setOnClickListener(view -> {
+            String email = txtEmail.getText().toString();
+            String password = txtPassword.getText().toString();
+            if (email.isEmpty()) {
+                Toast.makeText(LoginActivity.this, "Email field is empty!", Toast.LENGTH_SHORT).show();
+            } else if (password.isEmpty()) {
+                Toast.makeText(LoginActivity.this, "Password field is empty!", Toast.LENGTH_SHORT).show();
+            } else {
+                DataBaseAdapter.login(LoginActivity.this, email, password);
             }
         });
 
-        //TODO: Intent to connect with forget password
         btnPassword = findViewById(R.id.btnPassword);
-        btnPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this,
-                        ForgotPasswordActivity.class));
-            }
-        });
-
-        //TODO: Intent to connect with register
+        btnPassword.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class)));
         btnRegister = findViewById(R.id.btnRegister);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
-            }
-        });
+        btnRegister.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+    }
+
+    @Override
+    public void onComplete() {
+        Toast.makeText(this, "Authentication successful", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
+    }
+
+    @Override
+    public void onError(Exception e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

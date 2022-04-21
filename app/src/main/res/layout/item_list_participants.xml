@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/titleGroup"
+                android:id="@+id/txtParticipant"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -28,31 +28,33 @@
                 android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/editGroupBtn"
+                app:layout_constraintEnd_toStartOf="@+id/cbAdmin"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <Button
-                android:id="@+id/editGroupBtn"
+            <CheckBox
+                android:id="@+id/cbAdmin"
+                android:button="@android:drawable/btn_star"
+                android:padding="@dimen/activity_horizontal_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:layout_gravity="center"
                 android:layout_marginEnd="12dp"
-                android:contentDescription="@string/edit_group_description"
-                android:text="@string/edit"
+                android:contentDescription="@string/admin_description"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/leaveGroupBtn"
+                app:layout_constraintEnd_toStartOf="@+id/expelParticipantBtn"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/leaveGroupBtn"
+                android:id="@+id/expelParticipantBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/round_btn_red"
-                android:contentDescription="@string/leave_group_description"
+                android:contentDescription="@string/expel_participant_description"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 android:padding="10dp"
