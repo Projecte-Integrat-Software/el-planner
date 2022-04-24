@@ -1,5 +1,9 @@
 package com.example.our_planner;
 
+import com.example.our_planner.model.Comment;
+import com.example.our_planner.ui.calendar.comments.AdapterComments;
+
+import com.example.our_planner.model.Group;
 import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
@@ -15,6 +19,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.ArrayList;
 
@@ -22,38 +30,44 @@ public abstract class DataBaseAdapter {
 
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static FirebaseUser user = mAuth.getCurrentUser();
+    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public static FirebaseUser getUser() {
-        return user;
-    }
-
-    public static void login(InterfaceDB i, String email, String password) {
+    public static void login(DBInterface i, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
-                i.onComplete();
+                i.setToast("Logged as " + user.getDisplayName());
             } else {
-                i.onError(task.getException());
+                i.setToast(task.getException().getMessage());
             }
         });
     }
 
-    public static void register(InterfaceDB i, String email, String password, String username) {
+    public static void register(DBInterface i, String email, String password, String username) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
                 user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build());
-                i.onComplete();
+                i.setToast("Registered successfully");
             } else {
-                i.onError(task.getException());
+                i.setToast(task.getException().getMessage());
             }
         });
     }
 
-    public interface InterfaceDB {
-        void onComplete();
+    public static void createGroup(GroupInterface i, String title, String details, int colour) {
+        Map<String, Object> g = new HashMap<>();
+        g.put("title", title);
+        g.put("details", details);
+        g.put("colour", colour);
+        db.collection("groups").add(g).addOnSuccessListener(documentReference -> {
+            i.setToast("Group created successfully");
+            i.setGroup(new Group(documentReference.getId(), title, details, colour));
+        }).addOnFailureListener(e -> i.setToast(e.getMessage()));
+    }
 
-        void onError(Exception e);
+    public interface DBInterface {
+        void setToast(String s);
     }
 
     public static boolean alreadyLoggedIn() {
@@ -100,5 +114,8 @@ public abstract class DataBaseAdapter {
 
             }
         });
+    }
+    public interface GroupInterface extends DBInterface {
+        void setGroup(Group g);
     }
 }

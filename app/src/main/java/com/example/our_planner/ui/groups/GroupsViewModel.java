@@ -1,19 +1,28 @@
 package com.example.our_planner.ui.groups;
 
-import androidx.lifecycle.LiveData;
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class GroupsViewModel extends ViewModel {
+import com.example.our_planner.model.Group;
 
-    private final MutableLiveData<String> mText;
+import java.util.ArrayList;
 
-    public GroupsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is groups fragment");
+public class GroupsViewModel extends AndroidViewModel {
+
+    private final MutableLiveData<ArrayList<Group>> mGroups;
+
+    public GroupsViewModel(Application application) {
+        super(application);
+        mGroups = new MutableLiveData<>(new ArrayList<>());
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public MutableLiveData<ArrayList<Group>> getGroups() {
+        return mGroups;
+    }
+
+    public void addGroup(Group g) {
+        mGroups.getValue().add(g);
     }
 }

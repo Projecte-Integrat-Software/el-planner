@@ -7,15 +7,15 @@
         <item
             android:id="@+id/navCalendar"
             android:icon="@drawable/ic_menu_calendar"
-            android:title="@string/show_calendar" />
+            android:title="@string/calendar" />
         <item
             android:id="@+id/navGroups"
             android:icon="@drawable/ic_menu_groups"
-            android:title="@string/show_groups" />
+            android:title="@string/groups" />
         <item
             android:id="@+id/navInvitations"
             android:icon="@drawable/ic_menu_invitations"
-            android:title="@string/show_invitations" />
+            android:title="@string/invitations" />
         <item
             android:id="@+id/navSettings"
             android:icon="@drawable/ic_menu_settings"

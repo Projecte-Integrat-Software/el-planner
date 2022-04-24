@@ -1,4 +1,4 @@
-package com.example.our_planner;
+package com.example.our_planner.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-public class RegisterActivity extends AppCompatActivity implements DataBaseAdapter.InterfaceDB {
+import com.example.our_planner.NavigationDrawer;
+import com.example.our_planner.R;
+
+public class RegisterActivity extends AppCompatActivity {
 
     private Button btnCancel;
     private Button btnRegister;
@@ -17,10 +22,13 @@ public class RegisterActivity extends AppCompatActivity implements DataBaseAdapt
     private EditText txtEmail;
     private EditText txtUsername;
 
+    private RegisterActivityViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        viewModel = new ViewModelProvider(this).get(RegisterActivityViewModel.class);
 
         txtEmail = findViewById(R.id.txtEmail);
         txtUsername = findViewById(R.id.txtUsername);
@@ -40,23 +48,21 @@ public class RegisterActivity extends AppCompatActivity implements DataBaseAdapt
             } else if (password.isEmpty()) {
                 Toast.makeText(RegisterActivity.this, "Password field is empty!", Toast.LENGTH_SHORT).show();
             } else if (txtRepeatPassword.getText().toString().equals(password)) {
-                DataBaseAdapter.register(RegisterActivity.this, email, password, username);
+                viewModel.register(email, password, username);
             } else {
                 Toast.makeText(RegisterActivity.this, "Passwords are not the same!", Toast.LENGTH_SHORT).show();
             }
         });
 
         btnCancel.setOnClickListener(view -> startActivity(new Intent(RegisterActivity.this, LoginActivity.class)));
-    }
 
-    @Override
-    public void onComplete() {
-        Toast.makeText(this, "Signed up successfully", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(RegisterActivity.this, NavigationDrawer.class));
-    }
+        final Observer<String> observerToast = t -> {
+            Toast.makeText(RegisterActivity.this, t, Toast.LENGTH_SHORT).show();
+            if (t.equals("Registered successfully")) {
+                startActivity(new Intent(RegisterActivity.this, NavigationDrawer.class));
+            }
+        };
 
-    @Override
-    public void onError(Exception e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        viewModel.getToast().observe(this, observerToast);
     }
 }
