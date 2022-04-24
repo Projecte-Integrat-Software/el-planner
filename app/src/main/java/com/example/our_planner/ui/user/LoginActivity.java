@@ -1,4 +1,4 @@
-package com.example.our_planner;
+package com.example.our_planner.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,21 +7,29 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-public class LoginActivity extends AppCompatActivity implements DataBaseAdapter.InterfaceDB {
+import com.example.our_planner.NavigationDrawer;
+import com.example.our_planner.R;
+
+public class LoginActivity extends AppCompatActivity {
     private EditText txtEmail;
     private EditText txtPassword;
     private Button btnSign;
     private Button btnPassword;
     private Button btnRegister;
 
+    private LoginActivityViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        viewModel = new ViewModelProvider(this).get(LoginActivityViewModel.class);
 
         //If user already logged in, we omit the activity
-        if (DataBaseAdapter.alreadyLoggedIn()) {
+        if (viewModel.isUserLogged()) {
             startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
         }
 
@@ -36,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements DataBaseAdapter.
             } else if (password.isEmpty()) {
                 Toast.makeText(LoginActivity.this, "Password field is empty!", Toast.LENGTH_SHORT).show();
             } else {
-                DataBaseAdapter.login(LoginActivity.this, email, password);
+                viewModel.login(email, password);
             }
         });
 
@@ -44,16 +52,14 @@ public class LoginActivity extends AppCompatActivity implements DataBaseAdapter.
         btnPassword.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class)));
         btnRegister = findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
-    }
 
-    @Override
-    public void onComplete() {
-        Toast.makeText(this, "Authentication successful", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
-    }
+        final Observer<String> observerToast = t -> {
+            Toast.makeText(LoginActivity.this, t, Toast.LENGTH_SHORT).show();
+            if (t.startsWith("Logged as")) {
+                startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
+            }
+        };
 
-    @Override
-    public void onError(Exception e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        viewModel.getToast().observe(this, observerToast);
     }
 }

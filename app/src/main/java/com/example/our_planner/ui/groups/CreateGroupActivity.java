@@ -1,5 +1,6 @@
 package com.example.our_planner.ui.groups;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,9 +8,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
 import com.example.our_planner.model.User;
@@ -26,11 +30,13 @@ public class CreateGroupActivity extends AppCompatActivity {
     private View colourView;
     private int currentColour;
     private RecyclerView recyclerViewParticipants;
+    private CreateGroupActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
+        viewModel = new ViewModelProvider(this).get(CreateGroupActivityViewModel.class);
 
         txtTitle = findViewById(R.id.txtGroupTitle);
         txtDetails = findViewById(R.id.txtGroupDetails);
@@ -55,14 +61,24 @@ public class CreateGroupActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Inviting participants", Toast.LENGTH_SHORT).show();
         });
 
-        //TODO: Check everything and create the group
         Button btnCreate = findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(view -> {
             String title = txtTitle.getText().toString();
             String details = txtDetails.getText().toString();
-            Toast.makeText(getApplicationContext(), "Group created!\nTitle: " + title + "\nDetails: " + details + "\nColour: " + currentColour, Toast.LENGTH_LONG).show();
-            finish();
+            viewModel.createGroup(title, details, currentColour);
         });
+
+        final Observer<String> observerToast = t -> Toast.makeText(getApplicationContext(), t, Toast.LENGTH_SHORT).show();
+
+        final Observer<Group> observerGroup = g -> {
+            Intent i = new Intent(CreateGroupActivity.this, NavigationDrawer.class);
+            i.putExtra("group", g);
+            i.putExtra("fragment", "Groups");
+            startActivity(i);
+        };
+
+        viewModel.getToast().observe(this, observerToast);
+        viewModel.getGroup().observe(this, observerGroup);
     }
 
     public void chooseColour() {
