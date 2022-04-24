@@ -1,15 +1,12 @@
 package com.example.our_planner;
 
-import com.example.our_planner.model.Comment;
-import com.example.our_planner.ui.calendar.comments.AdapterComments;
-
-import com.example.our_planner.model.Group;
 import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.our_planner.model.Comment;
+import com.example.our_planner.model.Group;
 import com.example.our_planner.ui.calendar.comments.AdapterComments;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,16 +18,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import java.util.ArrayList;
 
 public abstract class DataBaseAdapter {
 
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static FirebaseUser user = mAuth.getCurrentUser();
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    public static FirebaseUser getUser() {
+        return user;
+    }
 
     public static void login(DBInterface i, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
