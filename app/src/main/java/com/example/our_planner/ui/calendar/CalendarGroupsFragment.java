@@ -4,11 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
@@ -27,7 +28,7 @@ public class CalendarGroupsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_calendar_groups, container, false);
 
         recyclerViewCalendarGroups = view.findViewById(R.id.recyclerViewCalendarGroups);
-        recyclerViewCalendarGroups.setLayoutManager(new GridLayoutManager(getContext(), COLUMNS));
+        recyclerViewCalendarGroups.setLayoutManager(new GridLayoutManager(getContext(),COLUMNS));
 
         // ArrayList for testing purposes
         groups.add(new Group("", "PIS", "Theory", 0));
@@ -36,6 +37,7 @@ public class CalendarGroupsFragment extends Fragment {
 
         AdapterCalendarGroups adapterCalendarGroups = new AdapterCalendarGroups(groups);
         recyclerViewCalendarGroups.setAdapter(adapterCalendarGroups);
+
 
         return view;
     }

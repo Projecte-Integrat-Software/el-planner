@@ -80,4 +80,18 @@
     <string name="message">Message</string>
     <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
     <string name="yes">Yes</string>
+
+    <!--String resources for calendar month view-->
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
+    <string name="monthYearExample">February 2022</string>
+    <string name="mondayAbbreviation">DL</string>
+    <string name="tuesdayAbbreviation">DT</string>
+    <string name="wednesdayAbbreviation">DC</string>
+    <string name="thursdayAbbreviation">DJ</string>
+    <string name="fridayAbbreviation">DV</string>
+    <string name="saturdayAbbreviation">DS</string>
+    <string name="sundayAbbreviation">DG</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
