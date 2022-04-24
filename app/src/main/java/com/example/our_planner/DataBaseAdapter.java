@@ -4,10 +4,10 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.our_planner.model.Comment;
 import com.example.our_planner.model.Group;
-import com.example.our_planner.ui.calendar.comments.AdapterComments;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -27,6 +27,7 @@ public abstract class DataBaseAdapter {
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static FirebaseUser user = mAuth.getCurrentUser();
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
 
     public static FirebaseUser getUser() {
         return user;
@@ -66,6 +67,10 @@ public abstract class DataBaseAdapter {
         }).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
 
+    public static String getUserName() {
+        return user.getDisplayName();
+    }
+
     public interface DBInterface {
         void setToast(String s);
     }
@@ -79,19 +84,19 @@ public abstract class DataBaseAdapter {
     }
 
     public static void postComment(String message){
-        FirebaseDatabase.getInstance().getReference().child("comments").push()
-                .setValue(new Comment(message));
+        rtdb.getReference().child("comments").push().setValue(new Comment(message));
     }
 
-    public static void getCommentsDatabase(ArrayList<Comment> comments, AdapterComments adapterComments){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("comments");
+    public static void loadComments(MutableLiveData<ArrayList<Comment>> comments){
+        DatabaseReference ref = rtdb.getReference().child("comments");
         ref.addChildEventListener(new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Comment comment = snapshot.getValue(Comment.class);
-                comments.add(comment);
-                adapterComments.notifyDataSetChanged();
+                ArrayList<Comment> commentsIn = comments.getValue();
+                commentsIn.add(comment);
+                comments.setValue(commentsIn);
             }
 
             @Override

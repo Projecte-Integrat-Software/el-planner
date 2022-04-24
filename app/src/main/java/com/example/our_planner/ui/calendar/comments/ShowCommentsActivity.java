@@ -1,10 +1,14 @@
 package com.example.our_planner.ui.calendar.comments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +24,6 @@ public class ShowCommentsActivity extends AppCompatActivity {
     RecyclerView recyclerViewComments;
     EditText message;
     FloatingActionButton sendBtn;
-    ArrayList<Comment> comments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,23 +35,31 @@ public class ShowCommentsActivity extends AppCompatActivity {
         message = findViewById(R.id.message);
         sendBtn = findViewById(R.id.sendBtn);
 
-        comments = new ArrayList<>();
 
-        AdapterComments adapterComments = new AdapterComments(comments);
+        ShowCommentsViewModel viewModel = new ViewModelProvider(this).get(ShowCommentsViewModel.class);
+        MutableLiveData<ArrayList<Comment>> comments = viewModel.getComments();
+        AdapterComments adapterComments = new AdapterComments(comments.getValue());
         recyclerViewComments.setAdapter(adapterComments);
-        // Show messages in database or that will be published
-        DataBaseAdapter.getCommentsDatabase(comments, adapterComments);
+
+        comments.observe(this, new Observer<ArrayList<Comment>>(){
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(ArrayList<Comment> comments) {
+                adapterComments.notifyDataSetChanged();
+            }
+        });
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String messageToPost = message.getText().toString();
-                if (messageToPost != ""){
+                if (!messageToPost.equals("")){
                     DataBaseAdapter.postComment(messageToPost);
                     message.setText("");
                 }
             }
         });
-
     }
+
+
 }

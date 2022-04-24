@@ -18,7 +18,7 @@ public class Comment {
     @SuppressLint("SimpleDateFormat")
     public Comment(String message) {
         this.message = message;
-        this.user = DataBaseAdapter.getUser().getDisplayName();
+        this.user = DataBaseAdapter.getUserName();
         this.date = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(Calendar.getInstance().getTime());
     }
 
