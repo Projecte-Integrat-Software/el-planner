@@ -16,8 +16,4 @@ public class ShowCommentsViewModel extends ViewModel {
         DataBaseAdapter.loadComments(comments);
         return comments;
     }
-
-    public static void addComment(Comment comment) {
-        comments.getValue().add(comment);
-    }
 }
