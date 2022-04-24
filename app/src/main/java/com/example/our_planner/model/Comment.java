@@ -2,6 +2,8 @@ package com.example.our_planner.model;
 
 import android.annotation.SuppressLint;
 
+import com.example.our_planner.DataBaseAdapter;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -11,10 +13,12 @@ public class Comment {
     private String user;
     private String date;
 
+    public Comment(){}
+
     @SuppressLint("SimpleDateFormat")
-    public Comment(String message, String user) {
+    public Comment(String message) {
         this.message = message;
-        this.user = user;
+        this.user = DataBaseAdapter.getUser().getDisplayName();
         this.date = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(Calendar.getInstance().getTime());
     }
 
@@ -28,5 +32,26 @@ public class Comment {
 
     public String getDate() {
         return date;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "message='" + message + '\'' +
+                ", user='" + user + '\'' +
+                ", date='" + date + '\'' +
+                '}';
     }
 }

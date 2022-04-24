@@ -1,10 +1,24 @@
 package com.example.our_planner;
 
+import android.annotation.SuppressLint;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.example.our_planner.model.Comment;
+import com.example.our_planner.ui.calendar.comments.AdapterComments;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class DataBaseAdapter {
+import java.util.ArrayList;
+
+public abstract class DataBaseAdapter {
 
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static FirebaseUser user = mAuth.getCurrentUser();
@@ -50,4 +64,41 @@ public class DataBaseAdapter {
         mAuth.signOut();
     }
 
+    public static void postComment(String message){
+        FirebaseDatabase.getInstance().getReference().child("comments").push()
+                .setValue(new Comment(message));
+    }
+
+    public static void getCommentsDatabase(ArrayList<Comment> comments, AdapterComments adapterComments){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("comments");
+        ref.addChildEventListener(new ChildEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Comment comment = snapshot.getValue(Comment.class);
+                comments.add(comment);
+                adapterComments.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }

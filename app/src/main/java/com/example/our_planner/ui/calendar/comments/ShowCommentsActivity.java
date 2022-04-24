@@ -1,12 +1,14 @@
 package com.example.our_planner.ui.calendar.comments;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Comment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,10 +33,22 @@ public class ShowCommentsActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtn);
 
         comments = new ArrayList<>();
-        comments.add(new Comment("Hi!","Miquel Sala"));
-        comments.add(new Comment("Hey!","Pol Gabaldon"));
 
         AdapterComments adapterComments = new AdapterComments(comments);
         recyclerViewComments.setAdapter(adapterComments);
+        // Show messages in database or that will be published
+        DataBaseAdapter.getCommentsDatabase(comments, adapterComments);
+
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String messageToPost = message.getText().toString();
+                if (messageToPost != ""){
+                    DataBaseAdapter.postComment(messageToPost);
+                    message.setText("");
+                }
+            }
+        });
+
     }
 }
