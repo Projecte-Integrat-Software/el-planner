@@ -1,6 +1,6 @@
 package com.example.our_planner.ui.groups;
 
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.R;
-import com.example.our_planner.model.Group;
 import com.example.our_planner.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -40,12 +38,11 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         txtTitle = findViewById(R.id.txtGroupTitle);
         txtDetails = findViewById(R.id.txtGroupDetails);
-
         colourView = findViewById(R.id.selected_colour);
         colourView.setOnClickListener(view -> chooseColour());
 
         //Default colour: black
-        currentColour = 0;
+        currentColour = Color.BLACK;
 
         recyclerViewParticipants = findViewById(R.id.recyclerViewParticipants);
         recyclerViewParticipants.setLayoutManager(new LinearLayoutManager(this));
@@ -69,20 +66,12 @@ public class CreateGroupActivity extends AppCompatActivity {
                 Toast.makeText(this, "Title field is empty!", Toast.LENGTH_SHORT).show();
             } else {
                 viewModel.createGroup(title, details, currentColour);
+                finish();
             }
         });
 
         final Observer<String> observerToast = t -> Toast.makeText(CreateGroupActivity.this, t, Toast.LENGTH_SHORT).show();
-
-        final Observer<Group> observerGroup = g -> {
-            Intent i = new Intent(CreateGroupActivity.this, NavigationDrawer.class);
-            i.putExtra("group", g);
-            i.putExtra("fragment", "Groups");
-            startActivity(i);
-        };
-
         viewModel.getToast().observe(this, observerToast);
-        viewModel.getGroup().observe(this, observerGroup);
     }
 
     public void chooseColour() {

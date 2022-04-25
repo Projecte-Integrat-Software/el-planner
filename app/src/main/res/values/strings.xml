@@ -60,6 +60,7 @@
     <string name="edit">EDIT</string>
     <string name="edit_group_description">Edit group</string>
     <string name="leave_group_description">Leave group</string>
+    <string name="confirmation_leaving">Are you sure you want to leave the group? This action is unchangeable.</string>
     <string name="expel_participant_description">Expel participant from group</string>
     <string name="admin_description">Change participant permission</string>
     <string name="add_participant">Add participants</string>

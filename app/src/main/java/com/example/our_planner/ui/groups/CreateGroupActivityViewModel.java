@@ -6,17 +6,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.our_planner.DataBaseAdapter;
-import com.example.our_planner.model.Group;
 
-public class CreateGroupActivityViewModel extends AndroidViewModel implements DataBaseAdapter.GroupInterface {
+public class CreateGroupActivityViewModel extends AndroidViewModel implements DataBaseAdapter.DBInterface {
 
     private final MutableLiveData<String> mToast;
-    private final MutableLiveData<Group> mGroup;
 
     public CreateGroupActivityViewModel(Application application) {
         super(application);
         mToast = new MutableLiveData<>();
-        mGroup = new MutableLiveData<>();
     }
 
     public void createGroup(String title, String details, int colour) {
@@ -30,14 +27,5 @@ public class CreateGroupActivityViewModel extends AndroidViewModel implements Da
     @Override
     public void setToast(String s) {
         mToast.setValue(s);
-    }
-
-    public MutableLiveData<Group> getGroup() {
-        return mGroup;
-    }
-
-    @Override
-    public void setGroup(Group g) {
-        mGroup.setValue(g);
     }
 }

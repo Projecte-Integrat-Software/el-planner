@@ -16,7 +16,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ public abstract class DataBaseAdapter {
     private static FirebaseUser user = mAuth.getCurrentUser();
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
+    private static GroupInterface groupInterface;
 
     public static FirebaseUser getUser() {
         return user;
@@ -54,26 +57,50 @@ public abstract class DataBaseAdapter {
         });
     }
 
-    public static void createGroup(GroupInterface i, String title, String details, int colour) {
+    public static void subscribeGroupObserver(GroupInterface i) {
+        groupInterface = i;
+        loadGroups();
+    }
+
+    public static void loadGroups() {
+        db.collection("groups").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Group> groups = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    groups.add(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), Integer.parseInt((String) g.get("colour"))));
+                }
+                groupInterface.update(groups);
+            } else {
+                groupInterface.setToast(task.getException().getMessage());
+            }
+        });
+    }
+
+    public static void createGroup(DBInterface i, String title, String details, int colour) {
         Map<String, Object> g = new HashMap<>();
         g.put("title", title);
         g.put("details", details);
-        g.put("colour", colour);
+        g.put("colour", String.valueOf(colour));
         db.collection("groups").add(g).addOnSuccessListener(documentReference -> {
             i.setToast("Group created successfully");
-            i.setGroup(new Group(documentReference.getId(), title, details, colour));
+            loadGroups();
         }).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
 
-    public static void editGroup(GroupInterface i, String id, String title, String details, int colour) {
+    public static void editGroup(DBInterface i, String id, String title, String details, int colour) {
         Map<String, Object> g = new HashMap<>();
         g.put("title", title);
         g.put("details", details);
-        g.put("colour", colour);
+        g.put("colour", String.valueOf(colour));
         db.collection("groups").document(id).set(g).addOnSuccessListener(documentReference -> {
             i.setToast("Group edited successfully");
-            i.setGroup(new Group(id, title, details, colour));
+            loadGroups();
         }).addOnFailureListener(e -> i.setToast(e.getMessage()));
+    }
+
+    public static void leaveGroup(Group g) {
+        db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> loadGroups());
     }
 
     public static String getUserName() {
@@ -128,7 +155,7 @@ public abstract class DataBaseAdapter {
         });
     }
     public interface GroupInterface extends DBInterface {
-        void setGroup(Group g);
+        void update(ArrayList<Group> groups);
     }
 
     public interface CommentInterface {

@@ -57,6 +57,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
 
+        /*
         //Start specific fragment if wanted
         String s = getIntent().getStringExtra("fragment");
         if (s != null) {
@@ -87,6 +88,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
             getSupportActionBar().setTitle(s);
             drawerLayout.closeDrawer(GravityCompat.START);
         }
+        */
     }
 
     @Override

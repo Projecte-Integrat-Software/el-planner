@@ -2,17 +2,19 @@ package com.example.our_planner.ui.groups;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
 
@@ -21,15 +23,17 @@ import java.util.ArrayList;
 public class AdapterGroups extends RecyclerView.Adapter<AdapterGroups.ViewHolderGroups> {
 
     private final ArrayList<Group> groups;
+    private final Context context;
 
-    public AdapterGroups(ArrayList<Group> groups) {
+    public AdapterGroups(Context context, ArrayList<Group> groups) {
+        this.context = context;
         this.groups = groups;
     }
 
     @NonNull
     @Override
     public ViewHolderGroups onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_groups,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_groups, parent, false);
         return new ViewHolderGroups(view);
     }
 
@@ -44,8 +48,21 @@ public class AdapterGroups extends RecyclerView.Adapter<AdapterGroups.ViewHolder
             c.startActivity(i);
         });
         holder.leaveGroupBtn.setOnClickListener(view -> {
-            //TODO: Open confirmation to leave group
-            Toast.makeText(view.getContext(), "Leaving group", Toast.LENGTH_LONG).show();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_leave_group, null, false), 900, 400, true);
+            pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+            Button cancelBtn = pw.getContentView().findViewById(R.id.cancelBtn);
+            cancelBtn.setOnClickListener(view1 -> pw.dismiss());
+
+            Button yesBtn = pw.getContentView().findViewById(R.id.yesBtn);
+            yesBtn.setOnClickListener(view1 -> {
+                DataBaseAdapter.leaveGroup(g);
+                pw.dismiss();
+                groups.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, getItemCount());
+            });
         });
     }
 

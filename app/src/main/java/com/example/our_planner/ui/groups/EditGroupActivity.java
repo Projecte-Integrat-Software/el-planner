@@ -1,6 +1,5 @@
 package com.example.our_planner.ui.groups;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
 import com.example.our_planner.model.User;
@@ -72,20 +70,12 @@ public class EditGroupActivity extends AppCompatActivity {
                 Toast.makeText(this, "No information has changed", Toast.LENGTH_SHORT).show();
             } else {
                 viewModel.editGroup(group.getId(), title, details, currentColour);
+                finish();
             }
         });
 
         final Observer<String> observerToast = t -> Toast.makeText(EditGroupActivity.this, t, Toast.LENGTH_SHORT).show();
-
-        final Observer<Group> observerGroup = g -> {
-            Intent i = new Intent(EditGroupActivity.this, NavigationDrawer.class);
-            i.putExtra("group", g);
-            i.putExtra("fragment", "Groups");
-            startActivity(i);
-        };
-
         viewModel.getToast().observe(this, observerToast);
-        viewModel.getGroup().observe(this, observerGroup);
     }
 
     public void chooseColour() {
