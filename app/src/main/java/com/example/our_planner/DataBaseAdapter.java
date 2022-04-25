@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.our_planner.model.Comment;
 import com.example.our_planner.model.Group;
@@ -18,7 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,16 +85,14 @@ public abstract class DataBaseAdapter {
         rtdb.getReference().child("comments").push().setValue(new Comment(message));
     }
 
-    public static void loadComments(MutableLiveData<ArrayList<Comment>> comments){
+    public static void loadComments(CommentInterface i){
         DatabaseReference ref = rtdb.getReference().child("comments");
         ref.addChildEventListener(new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Comment comment = snapshot.getValue(Comment.class);
-                ArrayList<Comment> commentsIn = comments.getValue();
-                commentsIn.add(comment);
-                comments.setValue(commentsIn);
+                i.addComment(comment);
             }
 
             @Override
@@ -122,5 +118,9 @@ public abstract class DataBaseAdapter {
     }
     public interface GroupInterface extends DBInterface {
         void setGroup(Group g);
+    }
+
+    public interface CommentInterface {
+        void addComment(Comment comment);
     }
 }

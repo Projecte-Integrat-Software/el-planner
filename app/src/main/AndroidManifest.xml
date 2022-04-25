@@ -39,7 +39,7 @@
             android:exported="false"
             android:label="@string/edit_group" />
         <activity
-            android:name=".ui.calendar.comments.ShowCommentsActivity"
+            android:name=".ui.calendar.comments.CommentsActivity"
             android:exported="true"
             android:label="Show Comments"/>
 

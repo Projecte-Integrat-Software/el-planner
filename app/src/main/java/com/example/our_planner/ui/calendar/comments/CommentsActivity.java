@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class ShowCommentsActivity extends AppCompatActivity {
+public class CommentsActivity extends AppCompatActivity {
 
     RecyclerView recyclerViewComments;
     EditText message;
@@ -28,7 +28,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_comments);
+        setContentView(R.layout.activity_comments);
 
         recyclerViewComments = findViewById(R.id.recyclerViewComments);
         recyclerViewComments.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -36,7 +36,7 @@ public class ShowCommentsActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtn);
 
 
-        ShowCommentsViewModel viewModel = new ViewModelProvider(this).get(ShowCommentsViewModel.class);
+        CommentsViewModel viewModel = new ViewModelProvider(this).get(CommentsViewModel.class);
         MutableLiveData<ArrayList<Comment>> comments = viewModel.getComments();
         AdapterComments adapterComments = new AdapterComments(comments.getValue());
         recyclerViewComments.setAdapter(adapterComments);
