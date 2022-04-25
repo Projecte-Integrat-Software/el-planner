@@ -3,7 +3,6 @@ package com.example.our_planner.ui.groups;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.our_planner.model.Group;
 
@@ -11,18 +10,22 @@ import java.util.ArrayList;
 
 public class GroupsViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<ArrayList<Group>> mGroups;
+    private final ArrayList<Group> groups;
 
     public GroupsViewModel(Application application) {
         super(application);
-        mGroups = new MutableLiveData<>(new ArrayList<>());
+        groups = new ArrayList<>();
     }
 
-    public MutableLiveData<ArrayList<Group>> getGroups() {
-        return mGroups;
+    public ArrayList<Group> getGroups() {
+        return groups;
     }
 
     public void addGroup(Group g) {
-        mGroups.getValue().add(g);
+        groups.add(g);
+    }
+
+    public void editGroup(Group g, int i) {
+        groups.set(i, g);
     }
 }

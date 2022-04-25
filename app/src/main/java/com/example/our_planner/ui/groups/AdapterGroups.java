@@ -35,11 +35,13 @@ public class AdapterGroups extends RecyclerView.Adapter<AdapterGroups.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderGroups holder, int position) {
-        holder.setData(groups.get(position));
+        Group g = groups.get(position);
+        holder.setData(g);
         holder.editGroupBtn.setOnClickListener(view -> {
-            //TODO: Open edit group activity and pass the group id to fill it with its data
             Context c = view.getContext();
-            c.startActivity(new Intent(c, EditGroupActivity.class));
+            Intent i = new Intent(c, EditGroupActivity.class);
+            i.putExtra("group", g);
+            c.startActivity(i);
         });
         holder.leaveGroupBtn.setOnClickListener(view -> {
             //TODO: Open confirmation to leave group

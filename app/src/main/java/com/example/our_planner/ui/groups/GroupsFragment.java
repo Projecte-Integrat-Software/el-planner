@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
 
 public class GroupsFragment extends Fragment {
 
@@ -34,23 +30,19 @@ public class GroupsFragment extends Fragment {
         FloatingActionButton addGroupBtn = view.findViewById(R.id.addGroupBtn);
         addGroupBtn.setOnClickListener(view1 -> startActivity(new Intent(getActivity(), CreateGroupActivity.class)));
 
+        //We add the group if added or edit it if edited
         Intent i = getActivity().getIntent();
-        if (i != null) {
-            Group g = (Group) i.getSerializableExtra("group");
-            if (g != null) {
+        Group g = (Group) i.getSerializableExtra("group");
+        if (g != null) {
+            int pos = i.getIntExtra("groupPosition", -1);
+            if (pos != -1) {
+                viewModel.editGroup(g, pos);
+            } else {
                 viewModel.addGroup(g);
             }
         }
 
-        MutableLiveData<ArrayList<Group>> groups = viewModel.getGroups();
-        recyclerViewGroups.setAdapter(new AdapterGroups(groups.getValue()));
-        final Observer<ArrayList<Group>> observer = g -> {
-            AdapterGroups newAdapter = new AdapterGroups(g);
-            recyclerViewGroups.swapAdapter(newAdapter, false);
-            newAdapter.notifyDataSetChanged();
-        };
-
-        groups.observe(getViewLifecycleOwner(), observer);
+        recyclerViewGroups.setAdapter(new AdapterGroups(viewModel.getGroups()));
 
         return view;
     }

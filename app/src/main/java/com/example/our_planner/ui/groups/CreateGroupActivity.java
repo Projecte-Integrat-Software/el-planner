@@ -65,10 +65,14 @@ public class CreateGroupActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(view -> {
             String title = txtTitle.getText().toString();
             String details = txtDetails.getText().toString();
-            viewModel.createGroup(title, details, currentColour);
+            if (title.isEmpty()) {
+                Toast.makeText(this, "Title field is empty!", Toast.LENGTH_SHORT).show();
+            } else {
+                viewModel.createGroup(title, details, currentColour);
+            }
         });
 
-        final Observer<String> observerToast = t -> Toast.makeText(getApplicationContext(), t, Toast.LENGTH_SHORT).show();
+        final Observer<String> observerToast = t -> Toast.makeText(CreateGroupActivity.this, t, Toast.LENGTH_SHORT).show();
 
         final Observer<Group> observerGroup = g -> {
             Intent i = new Intent(CreateGroupActivity.this, NavigationDrawer.class);

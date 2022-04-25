@@ -42,7 +42,6 @@
             android:name=".ui.calendar.comments.ShowCommentsActivity"
             android:exported="true"
             android:label="Show Comments"/>
-
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.example.our_planner.ui.groups;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,10 +8,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.R;
+import com.example.our_planner.model.Group;
 import com.example.our_planner.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -25,19 +30,23 @@ public class EditGroupActivity extends AppCompatActivity {
     private View colourView;
     private int currentColour;
     private RecyclerView recyclerViewParticipants;
+    private EditGroupActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_group);
+        viewModel = new ViewModelProvider(this).get(EditGroupActivityViewModel.class);
 
         txtTitle = findViewById(R.id.txtGroupTitle);
         txtDetails = findViewById(R.id.txtGroupDetails);
-
         colourView = findViewById(R.id.selected_colour);
         colourView.setOnClickListener(view -> chooseColour());
 
-        //TODO: Get the group from the database and complete the title, details, colour and participants from it
+        Group group = (Group) getIntent().getSerializableExtra("group");
+        txtTitle.setText(group.getTitle());
+        txtDetails.setText(group.getDetails());
+        setColour(group.getColour());
 
         recyclerViewParticipants = findViewById(R.id.recyclerViewParticipants);
         recyclerViewParticipants.setLayoutManager(new LinearLayoutManager(this));
@@ -53,14 +62,30 @@ public class EditGroupActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Inviting participants", Toast.LENGTH_SHORT).show();
         });
 
-        //TODO: Check everything and edit the group
         Button btnEdit = findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(view -> {
             String title = txtTitle.getText().toString();
             String details = txtDetails.getText().toString();
-            Toast.makeText(getApplicationContext(), "Group edited!\nTitle: " + title + "\nDetails: " + details + "\nColour: " + currentColour, Toast.LENGTH_LONG).show();
-            finish();
+            if (title.isEmpty()) {
+                Toast.makeText(this, "Title field is empty!", Toast.LENGTH_SHORT).show();
+            } else if (title.equals(group.getTitle()) && details.equals(group.getDetails()) && currentColour == group.getColour()) {
+                Toast.makeText(this, "No information has changed", Toast.LENGTH_SHORT).show();
+            } else {
+                viewModel.editGroup(group.getId(), title, details, currentColour);
+            }
         });
+
+        final Observer<String> observerToast = t -> Toast.makeText(EditGroupActivity.this, t, Toast.LENGTH_SHORT).show();
+
+        final Observer<Group> observerGroup = g -> {
+            Intent i = new Intent(EditGroupActivity.this, NavigationDrawer.class);
+            i.putExtra("group", g);
+            i.putExtra("fragment", "Groups");
+            startActivity(i);
+        };
+
+        viewModel.getToast().observe(this, observerToast);
+        viewModel.getGroup().observe(this, observerGroup);
     }
 
     public void chooseColour() {
@@ -76,10 +101,14 @@ public class EditGroupActivity extends AppCompatActivity {
                     @Override
                     public void onOk(AmbilWarnaDialog dialog, int colour) {
                         //We change the colour selected
-                        currentColour = colour;
-                        colourView.setBackgroundColor(currentColour);
+                        setColour(colour);
                     }
                 });
         colourPicker.show();
+    }
+
+    private void setColour(int colour) {
+        currentColour = colour;
+        colourView.setBackgroundColor(colour);
     }
 }

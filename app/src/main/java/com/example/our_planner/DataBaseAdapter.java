@@ -67,6 +67,17 @@ public abstract class DataBaseAdapter {
         }).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
 
+    public static void editGroup(GroupInterface i, String id, String title, String details, int colour) {
+        Map<String, Object> g = new HashMap<>();
+        g.put("title", title);
+        g.put("details", details);
+        g.put("colour", colour);
+        db.collection("groups").document(id).set(g).addOnSuccessListener(documentReference -> {
+            i.setToast("Group edited successfully");
+            i.setGroup(new Group(id, title, details, colour));
+        }).addOnFailureListener(e -> i.setToast(e.getMessage()));
+    }
+
     public static String getUserName() {
         return user.getDisplayName();
     }
