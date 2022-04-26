@@ -22,12 +22,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class DataBaseAdapter {
+public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
 
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static FirebaseUser user = mAuth.getCurrentUser();
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
+    //private static final FirebaseMessaging mes = FirebaseMessaging.getInstance();
     private static GroupInterface groupInterface;
 
     public static FirebaseUser getUser() {
@@ -50,6 +51,7 @@ public abstract class DataBaseAdapter {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
                 user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build());
+                //mes.subscribeToTopic(email);
                 i.setToast("Registered successfully");
             } else {
                 i.setToast(task.getException().getMessage());
@@ -100,9 +102,56 @@ public abstract class DataBaseAdapter {
     }
 
     public static void leaveGroup(Group g) {
-        db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> loadGroups());
+        db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> {
+            groupInterface.setToast("Group left");
+            loadGroups();
+        });
     }
 
+    /*
+        @Override
+        public void onMessageReceived(RemoteMessage remoteMessage) {
+            if (remoteMessage.getNotification() != null) {
+                showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            }
+        }
+
+        private void showNotification(String title, String message) {
+            // Assign channel ID
+            String channel_id = "notification_channel";
+
+            // Create a Builder object using NotificationCompat
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channel_id)
+                    .setSmallIcon(R.drawable.ic_menu_invitations).setAutoCancel(true).setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                    .setOnlyAlertOnce(true);
+            builder = builder.setContentTitle(title).setContentText(message).setSmallIcon(R.drawable.ic_menu_invitations);
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            // Check if the Android Version is greater than Oreo
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                notificationManager.createNotificationChannel(new NotificationChannel(channel_id, "web_app", NotificationManager.IMPORTANCE_HIGH));
+            }
+
+            notificationManager.notify(0, builder.build());
+        }
+
+        private boolean userExists(String email) {
+            final boolean[] b = new boolean[1];
+            mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> b[0] = !task.getResult().getSignInMethods().isEmpty());
+            return b[0];
+        }
+
+        public void inviteUser(DBInterface i, String email, String title) {
+            if (userExists(email)) {
+                Message m = new Message.Builder
+                        .setBody(getUserName() + " has invited you to the group " + title).build())
+                        .setTopic(email).build();
+                mes.send(m);
+            } else {
+                i.setToast("There is no user registered with this email!");
+            }
+        }
+    */
     public static String getUserName() {
         return user.getDisplayName();
     }

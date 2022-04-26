@@ -7,11 +7,11 @@
     android:background="@drawable/rounded_corners">
 
     <TextView
-        android:id="@+id/txtLeaveGroup"
+        android:id="@+id/txtAddParticipant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/leave_group_description"
+        android:text="@string/add_participant"
         android:textSize="32sp"
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,20 +20,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <EditText
+        android:id="@+id/txtInviteUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:lines="2"
-        android:text="@string/confirmation_leaving"
-        android:textSize="20sp"
-        android:textStyle="normal|bold"
+        android:ems="10"
+        android:hint="@string/email"
+        android:importantForAutofill="no"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtLeaveGroup"
+        app:layout_constraintTop_toBottomOf="@+id/txtAddParticipant"
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
@@ -44,18 +45,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/cancelBtn"
-            android:layout_width="wrap_content"
+            android:id="@+id/inviteUserBtn"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/cancel" />
-
-        <Button
-            android:id="@+id/yesBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/yes" />
+            android:text="@string/send_invitation" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
