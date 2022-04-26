@@ -93,6 +93,6 @@
     <string name="fridayAbbreviation">DV</string>
     <string name="saturdayAbbreviation">DS</string>
     <string name="sundayAbbreviation">DG</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="newEvent">New Event</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

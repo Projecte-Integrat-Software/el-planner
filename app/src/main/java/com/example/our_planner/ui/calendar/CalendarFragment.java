@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -34,12 +35,6 @@ public class CalendarFragment extends Fragment {
 
         commentEvent = view.findViewById(R.id.commentEvent);
 
-        commentEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), CommentsActivity.class));
-            }
-        });
 
         return view;
     }
@@ -57,7 +52,37 @@ public class CalendarFragment extends Fragment {
     }
 
     private void initListeners() {
-//        spinner.setOnItemClickListener();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String mode = spinner.getSelectedItem().toString();
+                Fragment childFragment;
+                FragmentTransaction transaction;
+                switch (mode) {
+                    case "Mes":
+                        childFragment = new MonthCalendarFragment();
+                        transaction = getChildFragmentManager().
+                                beginTransaction();
+                        transaction.replace(R.id.child_fragment_container, childFragment).commit();
+                        break;
+                    case "Setmana":
+                        childFragment = new WeekCalendarFragment();
+                        transaction = getChildFragmentManager().
+                                beginTransaction();
+                        transaction.replace(R.id.child_fragment_container, childFragment).commit();
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        commentEvent.setOnClickListener(view -> startActivity(new Intent(view.getContext(),
+                CommentsActivity.class)));
     }
 
     @Override
