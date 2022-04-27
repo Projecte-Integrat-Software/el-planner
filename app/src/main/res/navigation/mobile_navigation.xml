@@ -28,10 +28,4 @@
         android:name="com.example.our_planner.ui.settings.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
-
-    <fragment
-        android:id="@+id/navLogOut"
-        android:name="com.example.our_planner.ui.logOut.LogOutFragment"
-        android:label="Log Out"
-        tools:layout="@layout/fragment_log_out" />
 </navigation>

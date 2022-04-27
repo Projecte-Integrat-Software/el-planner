@@ -49,7 +49,7 @@ public class AdapterGroups extends RecyclerView.Adapter<AdapterGroups.ViewHolder
         });
         holder.leaveGroupBtn.setOnClickListener(view -> {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_leave_group, null, false), 900, 400, true);
+            PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_leave_group, null, false), 900, 500, true);
             pw.showAtLocation(view, Gravity.CENTER, 0, 0);
 
             Button cancelBtn = pw.getContentView().findViewById(R.id.cancelBtn);
