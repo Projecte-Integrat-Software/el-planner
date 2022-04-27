@@ -3,12 +3,14 @@ package com.example.our_planner.ui.calendar;
 import static com.example.our_planner.ui.calendar.CalendarUtils.daysInWeekArray;
 import static com.example.our_planner.ui.calendar.CalendarUtils.monthYearFromDate;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,9 +30,11 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     private View view;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
+    private ListView eventListView;
 
-    private Button previousMonthBtn;
-    private Button nextMonthBtn;
+    private Button previousWeekBtn;
+    private Button nextWeekBtn;
+    private Button newEventBtn;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -57,15 +61,18 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     {
         monthYearText = view.findViewById(R.id.monthYearTV);
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
+        eventListView = view.findViewById(R.id.eventListView);
 
-        previousMonthBtn = view.findViewById(R.id.previousMonthBtn);
-        nextMonthBtn = view.findViewById(R.id.nextMonthBtn);
+        previousWeekBtn = view.findViewById(R.id.previousWeekBtn);
+        nextWeekBtn = view.findViewById(R.id.nextWeekBtn);
+        newEventBtn = view.findViewById(R.id.newEventBtn);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initListeners() {
-        previousMonthBtn.setOnClickListener(this::previousWeekAction);
-        nextMonthBtn.setOnClickListener(this::nextWeekAction);
+        previousWeekBtn.setOnClickListener(this::previousWeekAction);
+        nextWeekBtn.setOnClickListener(this::nextWeekAction);
+        newEventBtn.setOnClickListener(this::newEventAction);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -79,6 +86,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(view.getContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+        setEventAdapter();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -95,10 +103,26 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         setWeekView();
     }
 
+    public void newEventAction(View view) {
+        startActivity(new Intent(this.getActivity(), EventEditActivity.class));
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onItemClick(int position, LocalDate date) {
         CalendarUtils.selectedDate = date;
         setWeekView();
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        setEventAdapter();
+    }
+
+    private void setEventAdapter() {
+        ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
+        EventAdapter eventAdapter = new EventAdapter(requireActivity().getApplicationContext(), dailyEvents);
+        eventListView.setAdapter(eventAdapter);
     }
 }

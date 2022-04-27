@@ -10,26 +10,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ourplanner">
         <activity
+            android:name=".ui.calendar.EventEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.user.ForgotPasswordActivity"
             android:exported="false"
-            android:label="@string/title_activity_forgot_password"/>
+            android:label="@string/title_activity_forgot_password" />
         <activity
             android:name=".ui.user.RegisterActivity"
             android:exported="false"
-            android:label="@string/title_activity_register"/>
+            android:label="@string/title_activity_register" />
         <activity
             android:name=".NavigationDrawer"
             android:exported="true"
             android:label="@string/title_activity_navigation_drawer"
-            android:theme="@style/Theme.Ourplanner.NoActionBar"/>
+            android:theme="@style/Theme.Ourplanner.NoActionBar" />
         <activity
             android:name=".ui.user.LoginActivity"
             android:exported="true"
             android:label="@string/title_activity_sign_in">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter></activity>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.groups.CreateGroupActivity"
             android:exported="false"
@@ -41,7 +46,7 @@
         <activity
             android:name=".ui.calendar.comments.CommentsActivity"
             android:exported="true"
-            android:label="Show Comments"/>
+            android:label="Show Comments" />
     </application>
 
 </manifest>

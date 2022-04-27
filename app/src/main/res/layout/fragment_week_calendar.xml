@@ -16,7 +16,7 @@
         android:layout_marginTop="20dp">
 
         <Button
-            android:id="@+id/previousMonthBtn"
+            android:id="@+id/previousWeekBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -37,7 +37,7 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/nextMonthBtn"
+            android:id="@+id/nextWeekBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -137,6 +137,7 @@
         android:textStyle="bold" />
 
     <ListView
+        android:id="@+id/eventListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5" />
