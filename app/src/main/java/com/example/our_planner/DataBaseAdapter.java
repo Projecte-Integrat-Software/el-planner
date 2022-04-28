@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 
 import com.example.our_planner.model.Comment;
 import com.example.our_planner.model.Group;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -170,6 +172,19 @@ public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
 
     public static void postComment(String message){
         rtdb.getReference().child("comments").push().setValue(new Comment(message));
+    }
+
+    public static void forgotPassword(DBInterface i, String email){
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    i.setToast("We have sent you instructions to reset your password!");
+                } else {
+                    i.setToast("Failed to send reset email!");
+                }
+            }
+        });
     }
 
     public static void loadComments(CommentInterface i){
