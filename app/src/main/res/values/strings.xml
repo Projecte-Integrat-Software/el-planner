@@ -61,9 +61,11 @@
     <string name="edit">EDIT</string>
     <string name="edit_group_description">Edit group</string>
     <string name="leave_group_description">Leave group</string>
+    <string name="confirmation_leaving">Are you sure you want to leave?\nThis action is unchangeable.</string>
     <string name="expel_participant_description">Expel participant from group</string>
     <string name="admin_description">Change participant permission</string>
-    <string name="add_participant">Add participants</string>
+    <string name="add_participant">Invite participant</string>
+    <string name="send_invitation">Send invitation</string>
     <string name="add_group_description">Add new group</string>
 
     <string name="start">Start</string>
@@ -86,4 +88,26 @@
     <string name="theme">Theme:</string>
     <string name="change_profile_picture">Change profile picture</string>
     <string name="message">Message</string>
+    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
+    <string name="yes">Yes</string>
+
+    <!--String resources for calendar month view-->
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
+    <string name="monthYearExample">February 2022</string>
+    <string name="mondayAbbreviation">DL</string>
+    <string name="tuesdayAbbreviation">DT</string>
+    <string name="wednesdayAbbreviation">DC</string>
+    <string name="thursdayAbbreviation">DJ</string>
+    <string name="fridayAbbreviation">DV</string>
+    <string name="saturdayAbbreviation">DS</string>
+    <string name="sundayAbbreviation">DG</string>
+    <string name="newEvent">New Event</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name">Name:</string>
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
+    <string name="save">SAVE</string>
+    <string name="eventNameHint">Event Name</string>
+    <string name="event">Event</string>
 </resources>

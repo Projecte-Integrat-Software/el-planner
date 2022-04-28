@@ -1,14 +1,22 @@
 package com.example.our_planner.model;
 
-public class Group {
+import java.io.Serializable;
+
+public class Group implements Serializable {
+    private final String id;
     private String title;
     private String details;
     private int colour;
 
-    public Group(String title, String details, int colour) {
-        this.title = title;
-        this.details = details;
-        this.colour = colour;
+    public Group(String id, String title, String details, int colour) {
+        this.id = id;
+        this.setTitle(title);
+        this.setDetails(details);
+        this.setColour(colour);
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTitle() {

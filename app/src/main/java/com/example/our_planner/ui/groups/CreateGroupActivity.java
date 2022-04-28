@@ -1,5 +1,6 @@
 package com.example.our_planner.ui.groups;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,11 +8,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
-import com.example.our_planner.model.Group;
 import com.example.our_planner.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,20 +28,21 @@ public class CreateGroupActivity extends AppCompatActivity {
     private View colourView;
     private int currentColour;
     private RecyclerView recyclerViewParticipants;
+    private CreateGroupActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
+        viewModel = new ViewModelProvider(this).get(CreateGroupActivityViewModel.class);
 
         txtTitle = findViewById(R.id.txtGroupTitle);
         txtDetails = findViewById(R.id.txtGroupDetails);
-
         colourView = findViewById(R.id.selected_colour);
         colourView.setOnClickListener(view -> chooseColour());
 
         //Default colour: black
-        currentColour = 0;
+        currentColour = Color.BLACK;
 
         recyclerViewParticipants = findViewById(R.id.recyclerViewParticipants);
         recyclerViewParticipants.setLayoutManager(new LinearLayoutManager(this));
@@ -55,14 +58,20 @@ public class CreateGroupActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Inviting participants", Toast.LENGTH_SHORT).show();
         });
 
-        //TODO: Check everything and create the group
         Button btnCreate = findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(view -> {
             String title = txtTitle.getText().toString();
             String details = txtDetails.getText().toString();
-            Toast.makeText(getApplicationContext(), "Group created!\nTitle: " + title + "\nDetails: " + details + "\nColour: " + currentColour, Toast.LENGTH_LONG).show();
-            finish();
+            if (title.isEmpty()) {
+                Toast.makeText(this, "Title field is empty!", Toast.LENGTH_SHORT).show();
+            } else {
+                viewModel.createGroup(title, details, currentColour);
+                finish();
+            }
         });
+
+        final Observer<String> observerToast = t -> Toast.makeText(CreateGroupActivity.this, t, Toast.LENGTH_SHORT).show();
+        viewModel.getToast().observe(this, observerToast);
     }
 
     public void chooseColour() {

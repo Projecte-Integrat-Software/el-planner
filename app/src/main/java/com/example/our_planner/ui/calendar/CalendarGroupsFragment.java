@@ -31,9 +31,9 @@ public class CalendarGroupsFragment extends Fragment {
         recyclerViewCalendarGroups.setLayoutManager(new GridLayoutManager(getContext(),COLUMNS));
 
         // ArrayList for testing purposes
-        groups.add(new Group("PIS", "Theory", 0));
-        groups.add(new Group("Geometry", "Problems", 0xfe0037));
-        groups.add(new Group("PAE", "Labs", 0x33cc33));
+        groups.add(new Group("", "PIS", "Theory", 0));
+        groups.add(new Group("", "Geometry", "Problems", 0xfe0037));
+        groups.add(new Group("", "PAE", "Labs", 0x33cc33));
 
         AdapterCalendarGroups adapterCalendarGroups = new AdapterCalendarGroups(groups);
         recyclerViewCalendarGroups.setAdapter(adapterCalendarGroups);
