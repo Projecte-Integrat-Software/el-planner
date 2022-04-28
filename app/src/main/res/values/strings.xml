@@ -55,6 +55,7 @@
     </string-array>
 
     <string name="invitations">Invitations</string>
+    <string name="all_day">All day</string>
 
     <string name="groups">Groups</string>
     <string name="edit">EDIT</string>
@@ -64,6 +65,13 @@
     <string name="admin_description">Change participant permission</string>
     <string name="add_participant">Add participants</string>
     <string name="add_group_description">Add new group</string>
+
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="location">Location</string>
+    <string name="back">Back</string>
+
+
 
     <string name="create_group">Create Group</string>
     <string name="edit_group">Edit Group</string>
