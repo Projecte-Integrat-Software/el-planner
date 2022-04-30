@@ -1,6 +1,9 @@
 package com.example.our_planner;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +37,9 @@ public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
     private static FirebaseUser user = mAuth.getCurrentUser();
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
+    private static final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private static byte[] byteArray = new byte[]{};
+
     //private static final FirebaseMessaging mes = FirebaseMessaging.getInstance();
     private static GroupInterface groupInterface;
 
@@ -158,6 +168,14 @@ public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
         return user.getDisplayName();
     }
 
+    public static String getEmail() {
+        return user.getEmail();
+    }
+
+    public static byte[] getByteArray() {
+        return byteArray;
+    }
+
     public interface DBInterface {
         void setToast(String s);
     }
@@ -218,6 +236,29 @@ public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
             }
         });
     }
+
+    public static Task<byte[]> updateProfilePicture(Drawable drawableDefault){
+        Task<byte[]> byteArrayTask = storage.getReference().child(user.getUid()).getBytes(1024*1024);
+        byteArrayTask.addOnSuccessListener(o -> {
+            byteArray = (byte[]) byteArrayTask.getResult();
+        });
+        byteArrayTask.addOnFailureListener(e -> {
+            Bitmap bitmap = Bitmap.createBitmap(drawableDefault.getIntrinsicWidth(), drawableDefault.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawableDefault.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawableDefault.draw(canvas);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byteArray = stream.toByteArray();
+        });
+        return byteArrayTask;
+    }
+
+    public static UploadTask setProfilePicture(byte[] byteArray){
+        StorageReference storageRef = storage.getReference().child(user.getUid());
+        return storageRef.putBytes(byteArray);
+    }
+
     public interface GroupInterface extends DBInterface {
         void update(ArrayList<Group> groups);
     }

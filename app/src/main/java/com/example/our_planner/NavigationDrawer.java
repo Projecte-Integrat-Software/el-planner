@@ -3,13 +3,16 @@ package com.example.our_planner;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +31,10 @@ import com.example.our_planner.ui.groups.GroupsFragment;
 import com.example.our_planner.ui.invitations.InvitationsFragment;
 import com.example.our_planner.ui.settings.SettingsFragment;
 import com.example.our_planner.ui.user.LoginActivity;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Objects;
 
 public class NavigationDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,7 +43,9 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     private NavigationView navigationView;
     private Toolbar toolbar;
     private NavController navController;
+    private ImageView profilePictureND;
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,8 +106,18 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         return true;
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public boolean onSupportNavigateUp() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        profilePictureND = navigationView.findViewById(R.id.profilePictureND);
+        TextView username = navigationView.findViewById(R.id.username);
+        TextView email = navigationView.findViewById(R.id.email);
+
+        updateProfilePicture();
+        username.setText(DataBaseAdapter.getUserName());
+        email.setText(DataBaseAdapter.getEmail());
+
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 
@@ -128,7 +146,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
             }
             case R.id.navLogOut: {
                 LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_log_out, null, false), 900, 400, true);
+                @SuppressLint("InflateParams") PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_log_out, null, false), 900, 400, true);
                 pw.showAtLocation(this.findViewById(R.id.fragment_container), Gravity.CENTER, 0, 0);
 
                 Button cancelBtn = pw.getContentView().findViewById(R.id.cancelBtn);
@@ -144,8 +162,16 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 return true;
             }
         }
-        getSupportActionBar().setTitle(item.getTitle());
+        Objects.requireNonNull(getSupportActionBar()).setTitle(item.getTitle());
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void updateProfilePicture() {
+        Task<byte[]> task = DataBaseAdapter.updateProfilePicture(getResources().getDrawable(R.drawable.ic_launcher_foreground));
+        task.addOnCompleteListener(task1 -> {
+            byte[] byteArray = DataBaseAdapter.getByteArray();
+            profilePictureND.setImageBitmap(BitmapFactory.decodeByteArray(byteArray,0,byteArray.length));
+        });
     }
 }
