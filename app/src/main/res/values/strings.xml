@@ -36,9 +36,8 @@
 
     <string name="calendar">Calendar</string>
     <string-array name="calendarOptions">
-        <item>Mes</item>
-        <item>Setmana</item>
-        <item>Any</item>
+        <item>Week</item>
+        <item>Month</item>
     </string-array>
 
     <string-array name="notificationsAlterOptions">
