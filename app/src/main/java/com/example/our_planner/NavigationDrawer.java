@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -65,6 +66,15 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView username = headerView.findViewById(R.id.username);
+        username.setText(DataBaseAdapter.getUserName());
+        TextView email = headerView.findViewById(R.id.email);
+        email.setText(DataBaseAdapter.getEmail());
+        profilePictureND = headerView.findViewById(R.id.profilePictureND);
+        updateProfilePicture();
+
         /*
         //Start specific fragment if wanted
         String s = getIntent().getStringExtra("fragment");
@@ -109,15 +119,6 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     @SuppressLint("ResourceType")
     @Override
     public boolean onSupportNavigateUp() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        profilePictureND = navigationView.findViewById(R.id.profilePictureND);
-        TextView username = navigationView.findViewById(R.id.username);
-        TextView email = navigationView.findViewById(R.id.email);
-
-        updateProfilePicture();
-        username.setText(DataBaseAdapter.getUserName());
-        email.setText(DataBaseAdapter.getEmail());
-
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 

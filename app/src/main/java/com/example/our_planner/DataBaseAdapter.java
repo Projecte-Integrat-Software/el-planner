@@ -12,8 +12,11 @@ import com.example.our_planner.model.Comment;
 import com.example.our_planner.model.Group;
 import com.example.our_planner.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.ChildEventListener;
@@ -31,6 +34,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class DataBaseAdapter {
 
@@ -40,6 +44,8 @@ public abstract class DataBaseAdapter {
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private static byte[] byteArray = new byte[]{};
+
+    //private static final FirebaseMessaging mes = FirebaseMessaging.getInstance();
     private static GroupInterface groupInterface;
 
     public static void login(DBInterface i, String email, String password) {
@@ -61,19 +67,6 @@ public abstract class DataBaseAdapter {
                 i.setToast("Registered successfully");
             } else {
                 i.setToast(task.getException().getMessage());
-            }
-        });
-    }
-
-    public static void forgotPassword(DBInterface i, String email) {
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    i.setToast("We have sent you instructions to reset your password!");
-                } else {
-                    i.setToast("Failed to send reset email!");
-                }
             }
         });
     }
@@ -214,6 +207,24 @@ public abstract class DataBaseAdapter {
         rtdb.getReference().child("comments").push().setValue(new Comment(message));
     }
 
+    public static void forgotPassword(DBInterface i, String email){
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    i.setToast("We have sent you instructions to reset your password!");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof FirebaseAuthInvalidCredentialsException) i.setToast("Email address is not valid");
+                if (e instanceof FirebaseAuthInvalidUserException) i.setToast("No user corresponding to this email address");
+                else i.setToast("Failed to send reset email!\n" + e.getClass().getSimpleName());
+            }
+        });
+    }
+
     public static void loadComments(CommentInterface i){
         DatabaseReference ref = rtdb.getReference().child("comments");
         ref.addChildEventListener(new ChildEventListener() {
@@ -247,7 +258,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static Task<byte[]> updateProfilePicture(Drawable drawableDefault) {
-        Task<byte[]> byteArrayTask = storage.getReference().child(user.getUid()).getBytes(1024 * 1024);
+        Task<byte[]> byteArrayTask = storage.getReference().child(Objects.requireNonNull(user.getEmail())).getBytes(1024 * 1024);
         byteArrayTask.addOnSuccessListener(o -> {
             byteArray = (byte[]) byteArrayTask.getResult();
         });
@@ -264,7 +275,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static UploadTask setProfilePicture(byte[] byteArray) {
-        StorageReference storageRef = storage.getReference().child(user.getUid());
+        StorageReference storageRef = storage.getReference().child(Objects.requireNonNull(user.getEmail()));
         return storageRef.putBytes(byteArray);
     }
 

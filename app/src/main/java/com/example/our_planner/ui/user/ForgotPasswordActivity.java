@@ -30,7 +30,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements DataBas
         // recovery email.
         receiveRecoveryEmailB.setOnClickListener(view -> {
             String email = emailET.getText().toString();
-            if (!email.equals("")) DataBaseAdapter.forgotPassword(this, email);
+            if (!email.equals("")) DataBaseAdapter.forgotPassword(this,email);
+            else setToast("Fill the required field");
         });
 
         goBackB.setOnClickListener(view -> startActivity(new Intent(
