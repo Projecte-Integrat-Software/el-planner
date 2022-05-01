@@ -33,6 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class DataBaseAdapter {
 
@@ -219,7 +220,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static Task<byte[]> updateProfilePicture(Drawable drawableDefault) {
-        Task<byte[]> byteArrayTask = storage.getReference().child(user.getUid()).getBytes(1024 * 1024);
+        Task<byte[]> byteArrayTask = storage.getReference().child(Objects.requireNonNull(user.getEmail())).getBytes(1024 * 1024);
         byteArrayTask.addOnSuccessListener(o -> {
             byteArray = (byte[]) byteArrayTask.getResult();
         });
@@ -236,7 +237,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static UploadTask setProfilePicture(byte[] byteArray) {
-        StorageReference storageRef = storage.getReference().child(user.getUid());
+        StorageReference storageRef = storage.getReference().child(Objects.requireNonNull(user.getEmail()));
         return storageRef.putBytes(byteArray);
     }
 
