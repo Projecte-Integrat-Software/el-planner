@@ -1,18 +1,23 @@
 package com.example.our_planner.model;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class Group implements Serializable {
     private final String id;
     private String title;
     private String details;
-    private int colour;
+    private final Map<String, Integer> colours;
+    private final Map<String, User> participants;
+    private final Map<String, Boolean> admins;
 
-    public Group(String id, String title, String details, int colour) {
+    public Group(String id, String title, String details, Map<String, Integer> colours, Map<String, User> participants, Map<String, Boolean> admins) {
         this.id = id;
-        this.setTitle(title);
-        this.setDetails(details);
-        this.setColour(colour);
+        this.title = title;
+        this.details = details;
+        this.colours = colours;
+        this.participants = participants;
+        this.admins = admins;
     }
 
     public String getId() {
@@ -23,23 +28,19 @@ public class Group implements Serializable {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDetails() {
         return details;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public Map<String, User> getParticipants() {
+        return participants;
     }
 
-    public int getColour() {
-        return colour;
+    public Map<String, Boolean> getAdmins() {
+        return admins;
     }
 
-    public void setColour(int colour) {
-        this.colour = colour;
+    public Map<String, Integer> getColours() {
+        return colours;
     }
 }

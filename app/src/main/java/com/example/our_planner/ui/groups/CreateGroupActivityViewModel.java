@@ -40,4 +40,8 @@ public class CreateGroupActivityViewModel extends AndroidViewModel implements Da
     public void saveInvitationEmails(ArrayList<String> invitationEmails) {
         this.invitationEmails = invitationEmails;
     }
+
+    public String getUserName() {
+        return DataBaseAdapter.getUserName();
+    }
 }

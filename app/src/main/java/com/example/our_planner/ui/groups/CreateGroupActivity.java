@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,10 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
-import com.example.our_planner.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -44,17 +44,15 @@ public class CreateGroupActivity extends AppCompatActivity {
         txtDetails = findViewById(R.id.txtGroupDetails);
         colourView = findViewById(R.id.selected_colour);
         colourView.setOnClickListener(view -> chooseColour());
+        TextView user = findViewById(R.id.txtUser);
+        user.setText(viewModel.getUserName() + " (You)");
 
         //Default colour: black
         currentColour = Color.BLACK;
 
         recyclerViewParticipants = findViewById(R.id.recyclerViewParticipants);
         recyclerViewParticipants.setLayoutManager(new LinearLayoutManager(this));
-        //Dummy list to run the test of the recycler view without the database
-        ArrayList<User> participants = new ArrayList<>();
-        participants.add(new User("Diego"));
-        AdapterParticipants adapterParticipants = new AdapterParticipants(participants);
-        recyclerViewParticipants.setAdapter(adapterParticipants);
+        recyclerViewParticipants.setAdapter(new AdapterParticipants(new HashMap<>(), new HashMap<>()));
 
         FloatingActionButton btnParticipant = findViewById(R.id.btnParticipant);
         btnParticipant.setOnClickListener(view -> {

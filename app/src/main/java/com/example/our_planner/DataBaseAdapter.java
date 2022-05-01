@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.example.our_planner.model.Comment;
 import com.example.our_planner.model.Group;
+import com.example.our_planner.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,10 +41,6 @@ public abstract class DataBaseAdapter {
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private static byte[] byteArray = new byte[]{};
     private static GroupInterface groupInterface;
-
-    public static FirebaseUser getUser() {
-        return user;
-    }
 
     public static void login(DBInterface i, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -92,7 +89,17 @@ public abstract class DataBaseAdapter {
                 ArrayList<Group> groups = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> g = document.getData();
-                    groups.add(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), Integer.parseInt((String) g.get("colour"))));
+                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
+                    if (participants.containsKey(getEmail())) {
+                        Map<String, String> colours = (HashMap<String, String>) g.get("colours");
+                        Map<String, Integer> coloursGroup = new HashMap<>();
+                        Map<String, User> participantsGroup = new HashMap<>();
+                        for (String k : colours.keySet()) {
+                            coloursGroup.put(k, Integer.parseInt(colours.get(k)));
+                            participantsGroup.put(k, new User(participants.get(k)));
+                        }
+                        groups.add(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, (Map<String, Boolean>) g.get("admins")));
+                    }
                 }
                 groupInterface.update(groups);
             } else {
@@ -101,33 +108,64 @@ public abstract class DataBaseAdapter {
         });
     }
 
-    public static void createGroup(DBInterface i, String title, String details, int colour) {
+    private static Map<String, Object> mapGroupDocument(String t, String d, Map<String, Integer> c, Map<String, User> p, Map<String, Boolean> a) {
         Map<String, Object> g = new HashMap<>();
-        g.put("title", title);
-        g.put("details", details);
-        g.put("colour", String.valueOf(colour));
-        db.collection("groups").add(g).addOnSuccessListener(documentReference -> {
+        g.put("title", t);
+        g.put("details", d);
+        Map<String, String> colours = new HashMap<>();
+        Map<String, String> participants = new HashMap<>();
+        for (String k : c.keySet()) {
+            colours.put(k, String.valueOf(c.get(k)));
+            participants.put(k, p.get(k).getUsername());
+        }
+        g.put("colours", colours);
+        g.put("participants", participants);
+        g.put("admins", a);
+        return g;
+    }
+
+    public static void createGroup(DBInterface i, String title, String details, int colour) {
+        //The creator of the group is an admin by default
+        String email = getEmail();
+        Map<String, Integer> colours = new HashMap<>();
+        colours.put(email, colour);
+        Map<String, User> participants = new HashMap<>();
+        participants.put(email, new User(getUserName()));
+        Map<String, Boolean> admins = new HashMap<>();
+        admins.put(email, true);
+        db.collection("groups").add(mapGroupDocument(title, details, colours, participants, admins)).addOnSuccessListener(documentReference -> {
             i.setToast("Group created successfully");
             loadGroups();
         }).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
 
-    public static void editGroup(DBInterface i, String id, String title, String details, int colour) {
-        Map<String, Object> g = new HashMap<>();
-        g.put("title", title);
-        g.put("details", details);
-        g.put("colour", String.valueOf(colour));
-        db.collection("groups").document(id).set(g).addOnSuccessListener(documentReference -> {
+    public static void editGroup(DBInterface i, String id, String title, String details, Map<String, Integer> colours, Map<String, User> participants, Map<String, Boolean> admins) {
+        db.collection("groups").document(id).set(mapGroupDocument(title, details, colours, participants, admins)).addOnSuccessListener(documentReference -> {
             i.setToast("Group edited successfully");
             loadGroups();
         }).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
 
     public static void leaveGroup(Group g) {
-        db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> {
-            groupInterface.setToast("Group left");
-            loadGroups();
-        });
+        String email = getEmail();
+        Map<String, User> p = g.getParticipants();
+        if (p.size() == 1) {
+            db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> {
+                groupInterface.setToast("Group left and deleted since there are no participants left");
+                loadGroups();
+            });
+        } else {
+            p.remove(email);
+            Map<String, Integer> c = g.getColours();
+            c.remove(email);
+            Map<String, Boolean> a = g.getAdmins();
+            a.remove(email);
+            Map<String, Object> group = mapGroupDocument(g.getTitle(), g.getDetails(), c, p, a);
+            db.collection("groups").document(g.getId()).set(group).addOnSuccessListener(documentReference -> {
+                groupInterface.setToast("Group edited successfully");
+                loadGroups();
+            }).addOnFailureListener(e -> groupInterface.setToast(e.getMessage()));
+        }
     }
 
     /*
