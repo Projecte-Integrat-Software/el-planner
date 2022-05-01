@@ -11,8 +11,11 @@ import androidx.annotation.Nullable;
 import com.example.our_planner.model.Comment;
 import com.example.our_planner.model.Group;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.ChildEventListener;
@@ -198,9 +201,14 @@ public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     i.setToast("We have sent you instructions to reset your password!");
-                } else {
-                    i.setToast("Failed to send reset email!");
                 }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof FirebaseAuthInvalidCredentialsException) i.setToast("Email address is not valid");
+                if (e instanceof FirebaseAuthInvalidUserException) i.setToast("No user corresponding to this email address");
+                else i.setToast("Failed to send reset email!\n" + e.getClass().getSimpleName());
             }
         });
     }
