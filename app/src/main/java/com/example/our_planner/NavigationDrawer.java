@@ -172,7 +172,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         Task<byte[]> task = DataBaseAdapter.updateProfilePicture(getResources().getDrawable(R.drawable.ic_launcher_foreground));
         task.addOnCompleteListener(task1 -> {
             byte[] byteArray = DataBaseAdapter.getByteArray();
-            profilePictureND.setImageBitmap(BitmapFactory.decodeByteArray(byteArray,0,byteArray.length));
+            profilePictureND.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
         });
     }
 }

@@ -7,13 +7,17 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.our_planner.DataBaseAdapter;
 
+import java.util.ArrayList;
+
 public class EditGroupActivityViewModel extends AndroidViewModel implements DataBaseAdapter.DBInterface {
 
     private final MutableLiveData<String> mToast;
+    private ArrayList<String> invitationEmails;
 
     public EditGroupActivityViewModel(Application application) {
         super(application);
         mToast = new MutableLiveData<>();
+        invitationEmails = new ArrayList<>();
     }
 
     public void editGroup(String id, String title, String details, int colour) {
@@ -29,4 +33,11 @@ public class EditGroupActivityViewModel extends AndroidViewModel implements Data
         mToast.setValue(s);
     }
 
+    public ArrayList<String> getInvitationEmails() {
+        return invitationEmails;
+    }
+
+    public void saveInvitationEmails(ArrayList<String> invitationEmails) {
+        this.invitationEmails = invitationEmails;
+    }
 }

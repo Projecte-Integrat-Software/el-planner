@@ -36,9 +36,9 @@ import java.io.IOException;
 public class SettingsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private Spinner notificationsAlertSpinner, themeSpinner;
-    private Button changeProfilePictureBtn;
     private final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     private final int PICK_PHOTO_CODE = 1046;
+    private Button changeProfilePictureBtn;
     private ImageView profilePicture;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,19 +49,19 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         ArrayAdapter<String> adapterNotificationsAlert = new ArrayAdapter<>(SettingsFragment.this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.notificationsAlterOptions));
         adapterNotificationsAlert.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         notificationsAlertSpinner.setAdapter(adapterNotificationsAlert);
-        notificationsAlertSpinner.setSelection(0,false);
+        notificationsAlertSpinner.setSelection(0, false);
         notificationsAlertSpinner.setOnItemSelectedListener(this);
 
         themeSpinner = view.findViewById(R.id.themeSpinner);
         ArrayAdapter<String> adapterTheme = new ArrayAdapter<>(SettingsFragment.this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.themeOptions));
         adapterTheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         themeSpinner.setAdapter(adapterTheme);
-        themeSpinner.setSelection(0,false);
+        themeSpinner.setSelection(0, false);
         themeSpinner.setOnItemSelectedListener(this);
 
         profilePicture = view.findViewById(R.id.profilePicture);
         byte[] byteArray = DataBaseAdapter.getByteArray();
-        profilePicture.setImageBitmap(BitmapFactory.decodeByteArray(byteArray,0,byteArray.length));
+        profilePicture.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
 
         changeProfilePictureBtn = view.findViewById(R.id.changeProfilePictureBtn);
         changeProfilePictureBtn.setOnClickListener(new View.OnClickListener() {
@@ -121,10 +121,10 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        ((NavigationDrawer)getActivity()).updateProfilePicture();
+                        ((NavigationDrawer) getActivity()).updateProfilePicture();
                     }
                 });
-                Bitmap bitmapUpdated = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+                Bitmap bitmapUpdated = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
                 profilePicture.setImageBitmap(bitmapUpdated);
             }
         }

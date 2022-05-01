@@ -138,7 +138,7 @@
                 android:clickable="true"
                 app:srcCompat="@android:drawable/ic_input_add"
                 tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck"
-                android:contentDescription="@string/add_participant"
+                android:contentDescription="@string/invite_participants"
                 android:focusable="true" />
 
         </LinearLayout>
