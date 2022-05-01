@@ -61,7 +61,8 @@
     <string name="edit_group_description">Edit group</string>
     <string name="leave_group_description">Leave group</string>
     <string name="confirmation_leaving">Are you sure you want to leave?\nThis action is unchangeable.</string>
-    <string name="expel_participant_description">Expel participant from group</string>
+    <string name="expel_participant_description">Expel user</string>
+    <string name="confirmation_expelling">Are you sure you want to expel this user?\nOnce the group is edited, this action will be unchangeable.</string>
     <string name="admin_description">Change participant permission</string>
     <string name="invite_participants">Invite participants</string>
     <string name="add">Add</string>

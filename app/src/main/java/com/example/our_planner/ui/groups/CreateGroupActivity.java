@@ -21,8 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.our_planner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.HashMap;
-
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class CreateGroupActivity extends AppCompatActivity {
@@ -31,7 +29,6 @@ public class CreateGroupActivity extends AppCompatActivity {
     private EditText txtDetails;
     private View colourView;
     private int currentColour;
-    private RecyclerView recyclerViewParticipants;
     private CreateGroupActivityViewModel viewModel;
 
     @Override
@@ -49,10 +46,6 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         //Default colour: black
         currentColour = Color.BLACK;
-
-        recyclerViewParticipants = findViewById(R.id.recyclerViewParticipants);
-        recyclerViewParticipants.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewParticipants.setAdapter(new AdapterParticipants(new HashMap<>(), new HashMap<>()));
 
         FloatingActionButton btnParticipant = findViewById(R.id.btnParticipant);
         btnParticipant.setOnClickListener(view -> {

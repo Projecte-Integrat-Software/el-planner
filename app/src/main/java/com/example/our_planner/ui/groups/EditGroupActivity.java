@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
+import com.example.our_planner.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Map;
@@ -52,41 +53,50 @@ public class EditGroupActivity extends AppCompatActivity {
         setColour(viewModel.getColour(group));
         TextView user = findViewById(R.id.txtUser);
         user.setText(viewModel.getUserName() + " (You)");
+        Map<String, User> participants = group.getParticipants();
         Map<String, Boolean> admins = group.getAdmins();
+        boolean b = admins.get(viewModel.getEmail());
         CheckBox cb = findViewById(R.id.cbUserAdmin);
-        cb.setChecked(admins.get(viewModel.getEmail()));
+        cb.setChecked(b);
 
         recyclerViewParticipants = findViewById(R.id.recyclerViewParticipants);
         recyclerViewParticipants.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewParticipants.setAdapter(new AdapterParticipants(group.getParticipants(), admins));
+        recyclerViewParticipants.setAdapter(new AdapterParticipants(this, participants, admins));
 
+        //Allow inviting participants only if admin
         FloatingActionButton btnParticipant = findViewById(R.id.btnParticipant);
-        btnParticipant.setOnClickListener(view -> {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_invite_participants, null, false), 900, 1000, true);
-            pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+        if (b) {
+            btnParticipant.setOnClickListener(view -> {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_invite_participants, null, false), 900, 1000, true);
+                pw.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-            EditText emailTxt = pw.getContentView().findViewById(R.id.txtParticipantEmail);
-            RecyclerView recyclerView = pw.getContentView().findViewById(R.id.recycleViewParticipantsToInvite);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            recyclerView.setAdapter(new AdapterParticipantsInvite(viewModel.getInvitationEmails()));
-            pw.getContentView().findViewById(R.id.addEmailBtn).setOnClickListener(view1 -> {
-                String email = emailTxt.getText().toString();
-                if (email.isEmpty()) {
-                    Toast.makeText(EditGroupActivity.this, "Email field is empty!", Toast.LENGTH_SHORT).show();
-                } else {
-                    //TODO: Check in database if email exists!!
-                    if (!((AdapterParticipantsInvite) recyclerView.getAdapter()).addElement(email)) {
-                        Toast.makeText(EditGroupActivity.this, "User already selected to be invited!", Toast.LENGTH_SHORT).show();
+                EditText emailTxt = pw.getContentView().findViewById(R.id.txtParticipantEmail);
+                RecyclerView recyclerView = pw.getContentView().findViewById(R.id.recycleViewParticipantsToInvite);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerView.setAdapter(new AdapterParticipantsInvite(viewModel.getInvitationEmails()));
+                pw.getContentView().findViewById(R.id.addEmailBtn).setOnClickListener(view1 -> {
+                    String email = emailTxt.getText().toString();
+                    if (email.isEmpty()) {
+                        Toast.makeText(EditGroupActivity.this, "Email field is empty!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //TODO: Check in database if email exists!!
+                        if (!((AdapterParticipantsInvite) recyclerView.getAdapter()).addElement(email)) {
+                            Toast.makeText(EditGroupActivity.this, "User already selected to be invited!", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
+                });
+                pw.getContentView().findViewById(R.id.cancelBtn).setOnClickListener(view1 -> pw.dismiss());
+                pw.getContentView().findViewById(R.id.saveInvitationsBtn).setOnClickListener(view1 -> {
+                    viewModel.saveInvitationEmails(((AdapterParticipantsInvite) recyclerView.getAdapter()).getParticipantEmails());
+                    pw.dismiss();
+                });
             });
-            pw.getContentView().findViewById(R.id.cancelBtn).setOnClickListener(view1 -> pw.dismiss());
-            pw.getContentView().findViewById(R.id.saveInvitationsBtn).setOnClickListener(view1 -> {
-                viewModel.saveInvitationEmails(((AdapterParticipantsInvite) recyclerView.getAdapter()).getParticipantEmails());
-                pw.dismiss();
-            });
-        });
+        } else {
+            txtTitle.setFocusable(b);
+            txtDetails.setFocusable(b);
+            btnParticipant.setOnClickListener(view -> Toast.makeText(this, "Cannot invite users to the group without being an admin!", Toast.LENGTH_SHORT).show());
+        }
 
         Button btnEdit = findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(view -> {
@@ -96,8 +106,9 @@ public class EditGroupActivity extends AppCompatActivity {
             if (title.isEmpty()) {
                 Toast.makeText(this, "Title field is empty!", Toast.LENGTH_SHORT).show();
             } else {
-                AdapterParticipants adapter = (AdapterParticipants) recyclerViewParticipants.getAdapter();
-                viewModel.editGroup(group.getId(), title, details, currentColour, adapter.getParticipants(), adapter.getAdmins());
+                System.out.println(participants);
+                System.out.println(admins);
+                viewModel.editGroup(group.getId(), title, details, currentColour, participants, admins);
                 finish();
             }
         });

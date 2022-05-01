@@ -30,6 +30,12 @@ public class EditGroupActivityViewModel extends AndroidViewModel implements Data
 
     public void editGroup(String id, String title, String details, int colour, Map<String, User> participants, Map<String, Boolean> admins) {
         colours.replace(email, colour);
+        //Update colours map with expelled users
+        for (String k : colours.keySet()) {
+            if (!participants.containsKey(k)) {
+                colours.remove(k);
+            }
+        }
         DataBaseAdapter.editGroup(this, id, title, details, colours, participants, admins);
     }
 

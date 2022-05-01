@@ -44,8 +44,6 @@ public abstract class DataBaseAdapter {
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private static byte[] byteArray = new byte[]{};
-
-    //private static final FirebaseMessaging mes = FirebaseMessaging.getInstance();
     private static GroupInterface groupInterface;
 
     public static void login(DBInterface i, String email, String password) {
@@ -126,17 +124,13 @@ public abstract class DataBaseAdapter {
         participants.put(email, new User(getUserName()));
         Map<String, Boolean> admins = new HashMap<>();
         admins.put(email, true);
-        db.collection("groups").add(mapGroupDocument(title, details, colours, participants, admins)).addOnSuccessListener(documentReference -> {
-            i.setToast("Group created successfully");
-            loadGroups();
-        }).addOnFailureListener(e -> i.setToast(e.getMessage()));
+        db.collection("groups").add(mapGroupDocument(title, details, colours, participants, admins))
+                .addOnSuccessListener(documentReference -> loadGroups()).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
 
     public static void editGroup(DBInterface i, String id, String title, String details, Map<String, Integer> colours, Map<String, User> participants, Map<String, Boolean> admins) {
-        db.collection("groups").document(id).set(mapGroupDocument(title, details, colours, participants, admins)).addOnSuccessListener(documentReference -> {
-            i.setToast("Group edited successfully");
-            loadGroups();
-        }).addOnFailureListener(e -> i.setToast(e.getMessage()));
+        db.collection("groups").document(id).set(mapGroupDocument(title, details, colours, participants, admins))
+                .addOnSuccessListener(documentReference -> loadGroups()).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
 
     public static void leaveGroup(Group g) {

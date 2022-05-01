@@ -1,10 +1,14 @@
 package com.example.our_planner.ui.groups;
 
+import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,23 +24,20 @@ import java.util.Map;
 
 public class AdapterParticipants extends RecyclerView.Adapter<AdapterParticipants.ViewHolderParticipants> {
 
+    private final Context context;
     private final Map<String, User> participants;
     private final Map<String, Boolean> admins;
     private final ArrayList<String> users;
+    private final boolean userAdmin;
 
-    public AdapterParticipants(Map<String, User> participants, Map<String, Boolean> admins) {
+    public AdapterParticipants(Context context, Map<String, User> participants, Map<String, Boolean> admins) {
+        this.context = context;
         this.participants = participants;
         this.admins = admins;
         this.users = new ArrayList<>(participants.keySet());
-        users.remove(DataBaseAdapter.getEmail());
-    }
-
-    public Map<String, User> getParticipants() {
-        return participants;
-    }
-
-    public Map<String, Boolean> getAdmins() {
-        return admins;
+        String e = DataBaseAdapter.getEmail();
+        users.remove(e);
+        userAdmin = admins.get(e);
     }
 
     @NonNull
@@ -50,14 +51,30 @@ public class AdapterParticipants extends RecyclerView.Adapter<AdapterParticipant
     public void onBindViewHolder(@NonNull ViewHolderParticipants holder, int position) {
         String e = users.get(position);
         holder.setData(participants.get(e).getUsername(), admins.get(e));
-        holder.adminCheckBox.setOnClickListener(view -> {
-            //TODO: Change the permission of the user when group created
-            Toast.makeText(view.getContext(), "Changing admin permission", Toast.LENGTH_LONG).show();
-        });
-        holder.expelParticipantBtn.setOnClickListener(view -> {
-            //TODO: Open confirmation to expel participant from group
-            Toast.makeText(view.getContext(), "Expelling from group", Toast.LENGTH_LONG).show();
-        });
+        if (userAdmin) {
+            holder.adminCheckBox.setOnClickListener(view -> admins.replace(e, holder.adminCheckBox.isChecked()));
+            holder.expelParticipantBtn.setOnClickListener(view -> {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_expel_user, null, false), 900, 500, true);
+                pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                Button cancelBtn = pw.getContentView().findViewById(R.id.cancelBtn);
+                cancelBtn.setOnClickListener(view1 -> pw.dismiss());
+
+                Button yesBtn = pw.getContentView().findViewById(R.id.yesBtn);
+                yesBtn.setOnClickListener(view1 -> {
+                    users.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, getItemCount());
+                    pw.dismiss();
+                    participants.remove(e);
+                    admins.remove(e);
+                });
+            });
+        } else {
+            holder.adminCheckBox.setClickable(false);
+            holder.expelParticipantBtn.setOnClickListener(view -> Toast.makeText(view.getContext(), "Cannot expel users from the group without being an admin!", Toast.LENGTH_SHORT).show());
+        }
     }
 
     @Override
