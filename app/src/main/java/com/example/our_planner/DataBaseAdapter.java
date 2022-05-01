@@ -22,13 +22,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
+public abstract class DataBaseAdapter {
 
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static FirebaseUser user = mAuth.getCurrentUser();
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
-    //private static final FirebaseMessaging mes = FirebaseMessaging.getInstance();
     private static GroupInterface groupInterface;
 
     public static FirebaseUser getUser() {
@@ -51,7 +50,6 @@ public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
                 user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build());
-                //mes.subscribeToTopic(email);
                 i.setToast("Registered successfully");
             } else {
                 i.setToast(task.getException().getMessage());
@@ -107,8 +105,7 @@ public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
             loadGroups();
         });
     }
-
-    /*
+/*
         @Override
         public void onMessageReceived(RemoteMessage remoteMessage) {
             if (remoteMessage.getNotification() != null) {
@@ -141,6 +138,7 @@ public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
             return b[0];
         }
 
+
         public void inviteUser(DBInterface i, String email, String title) {
             if (userExists(email)) {
                 Message m = new Message.Builder
@@ -150,8 +148,8 @@ public abstract class DataBaseAdapter /*extends FirebaseMessagingService*/ {
             } else {
                 i.setToast("There is no user registered with this email!");
             }
-        }
-    */
+        }*/
+
     public static String getUserName() {
         return user.getDisplayName();
     }

@@ -7,11 +7,11 @@
     android:background="@drawable/rounded_corners">
 
     <TextView
-        android:id="@+id/txtAddParticipant"
+        android:id="@+id/txtInvitationsReceived"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/add_participant"
+        android:text="@string/invitations_received"
         android:textSize="32sp"
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,21 +20,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0" />
 
-    <EditText
-        android:id="@+id/txtInviteUserEmail"
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="@string/email"
-        android:importantForAutofill="no"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
+        android:lines="2"
+        android:text="@string/new_invitations"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAddParticipant"
+        app:layout_constraintTop_toBottomOf="@+id/txtInvitationsReceived"
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
@@ -45,11 +44,18 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/inviteUserBtn"
-            android:layout_width="0dp"
+            android:id="@+id/closeBtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/send_invitation" />
+            android:text="@string/close" />
+
+        <Button
+            android:id="@+id/seeInvitationsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/see_them" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

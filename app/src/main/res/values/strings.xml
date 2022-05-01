@@ -63,8 +63,14 @@
     <string name="confirmation_leaving">Are you sure you want to leave?\nThis action is unchangeable.</string>
     <string name="expel_participant_description">Expel participant from group</string>
     <string name="admin_description">Change participant permission</string>
-    <string name="add_participant">Invite participant</string>
-    <string name="send_invitation">Send invitation</string>
+    <string name="invite_participants">Invite participants</string>
+    <string name="add">Add</string>
+    <string name="participants_to_invite">Participants to invite:</string>
+    <string name="remove_invitation_description">Delete user from the list of participants to invite.</string>
+    <string name="invitations_received">Invitations received</string>
+    <string name="new_invitations">You have been invited to new groups.\nDo you want to see your invitations?</string>
+    <string name="see_them">See them</string>
+    <string name="close">Close</string>
     <string name="add_group_description">Add new group</string>
 
     <string name="create_group">Create Group</string>

@@ -1,10 +1,14 @@
 package com.example.our_planner.ui.groups;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,12 +58,35 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         FloatingActionButton btnParticipant = findViewById(R.id.btnParticipant);
         btnParticipant.setOnClickListener(view -> {
-            //TODO: Add a dialogue in which you can send invitations to the group to several participants
-            Toast.makeText(getApplicationContext(), "Inviting participants", Toast.LENGTH_SHORT).show();
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_invite_participants, null, false), 900, 1000, true);
+            pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+            EditText emailTxt = pw.getContentView().findViewById(R.id.txtParticipantEmail);
+            RecyclerView recyclerView = pw.getContentView().findViewById(R.id.recycleViewParticipantsToInvite);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            recyclerView.setAdapter(new AdapterParticipantsInvite(viewModel.getInvitationEmails()));
+            pw.getContentView().findViewById(R.id.addEmailBtn).setOnClickListener(view1 -> {
+                String email = emailTxt.getText().toString();
+                if (email.isEmpty()) {
+                    Toast.makeText(CreateGroupActivity.this, "Email field is empty!", Toast.LENGTH_SHORT).show();
+                } else {
+                    //TODO: Check in database if email exists!!
+                    if (!((AdapterParticipantsInvite) recyclerView.getAdapter()).addElement(email)) {
+                        Toast.makeText(CreateGroupActivity.this, "User already selected to be invited!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            pw.getContentView().findViewById(R.id.cancelBtn).setOnClickListener(view1 -> pw.dismiss());
+            pw.getContentView().findViewById(R.id.saveInvitationsBtn).setOnClickListener(view1 -> {
+                viewModel.saveInvitationEmails(((AdapterParticipantsInvite) recyclerView.getAdapter()).getParticipantEmails());
+                pw.dismiss();
+            });
         });
 
         Button btnCreate = findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(view -> {
+            //TODO: Invite participants!
             String title = txtTitle.getText().toString();
             String details = txtDetails.getText().toString();
             if (title.isEmpty()) {
