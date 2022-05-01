@@ -1,12 +1,17 @@
 package com.example.our_planner;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.our_planner.model.Comment;
 import com.example.our_planner.model.Group;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -17,7 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +37,8 @@ public abstract class DataBaseAdapter {
     private static FirebaseUser user = mAuth.getCurrentUser();
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
+    private static final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private static byte[] byteArray = new byte[]{};
     private static GroupInterface groupInterface;
 
     public static FirebaseUser getUser() {
@@ -53,6 +64,19 @@ public abstract class DataBaseAdapter {
                 i.setToast("Registered successfully");
             } else {
                 i.setToast(task.getException().getMessage());
+            }
+        });
+    }
+
+    public static void forgotPassword(DBInterface i, String email) {
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    i.setToast("We have sent you instructions to reset your password!");
+                } else {
+                    i.setToast("Failed to send reset email!");
+                }
             }
         });
     }
@@ -105,39 +129,13 @@ public abstract class DataBaseAdapter {
             loadGroups();
         });
     }
-/*
-        @Override
-        public void onMessageReceived(RemoteMessage remoteMessage) {
-            if (remoteMessage.getNotification() != null) {
-                showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
-            }
-        }
 
-        private void showNotification(String title, String message) {
-            // Assign channel ID
-            String channel_id = "notification_channel";
-
-            // Create a Builder object using NotificationCompat
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channel_id)
-                    .setSmallIcon(R.drawable.ic_menu_invitations).setAutoCancel(true).setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                    .setOnlyAlertOnce(true);
-            builder = builder.setContentTitle(title).setContentText(message).setSmallIcon(R.drawable.ic_menu_invitations);
-
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            // Check if the Android Version is greater than Oreo
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                notificationManager.createNotificationChannel(new NotificationChannel(channel_id, "web_app", NotificationManager.IMPORTANCE_HIGH));
-            }
-
-            notificationManager.notify(0, builder.build());
-        }
-
+    /*
         private boolean userExists(String email) {
             final boolean[] b = new boolean[1];
             mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> b[0] = !task.getResult().getSignInMethods().isEmpty());
             return b[0];
         }
-
 
         public void inviteUser(DBInterface i, String email, String title) {
             if (userExists(email)) {
@@ -148,10 +146,18 @@ public abstract class DataBaseAdapter {
             } else {
                 i.setToast("There is no user registered with this email!");
             }
-        }*/
-
+        }
+    */
     public static String getUserName() {
         return user.getDisplayName();
+    }
+
+    public static String getEmail() {
+        return user.getEmail();
+    }
+
+    public static byte[] getByteArray() {
+        return byteArray;
     }
 
     public interface DBInterface {
@@ -201,6 +207,29 @@ public abstract class DataBaseAdapter {
             }
         });
     }
+
+    public static Task<byte[]> updateProfilePicture(Drawable drawableDefault) {
+        Task<byte[]> byteArrayTask = storage.getReference().child(user.getUid()).getBytes(1024 * 1024);
+        byteArrayTask.addOnSuccessListener(o -> {
+            byteArray = (byte[]) byteArrayTask.getResult();
+        });
+        byteArrayTask.addOnFailureListener(e -> {
+            Bitmap bitmap = Bitmap.createBitmap(drawableDefault.getIntrinsicWidth(), drawableDefault.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawableDefault.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawableDefault.draw(canvas);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byteArray = stream.toByteArray();
+        });
+        return byteArrayTask;
+    }
+
+    public static UploadTask setProfilePicture(byte[] byteArray) {
+        StorageReference storageRef = storage.getReference().child(user.getUid());
+        return storageRef.putBytes(byteArray);
+    }
+
     public interface GroupInterface extends DBInterface {
         void update(ArrayList<Group> groups);
     }

@@ -36,9 +36,8 @@
 
     <string name="calendar">Calendar</string>
     <string-array name="calendarOptions">
-        <item>Mes</item>
-        <item>Setmana</item>
-        <item>Any</item>
+        <item>Week</item>
+        <item>Month</item>
     </string-array>
 
     <string-array name="notificationsAlterOptions">
@@ -55,6 +54,7 @@
     </string-array>
 
     <string name="invitations">Invitations</string>
+    <string name="all_day">All day</string>
 
     <string name="groups">Groups</string>
     <string name="edit">EDIT</string>
@@ -73,6 +73,11 @@
     <string name="close">Close</string>
     <string name="add_group_description">Add new group</string>
 
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="location">Location</string>
+
+
     <string name="create_group">Create Group</string>
     <string name="edit_group">Edit Group</string>
     <string name="create">CREATE</string>
@@ -84,7 +89,6 @@
     <string name="participants">Participants:</string>
     <string name="notifications_alert">Notifications alert:</string>
     <string name="theme">Theme:</string>
-    <string name="change_profile_picture">Change profile picture</string>
     <string name="message">Message</string>
     <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
     <string name="yes">Yes</string>
@@ -108,4 +112,8 @@
     <string name="save">SAVE</string>
     <string name="eventNameHint">Event Name</string>
     <string name="event">Event</string>
+    <string name="select_the_picture_source">Select the picture source</string>
+    <string name="change_profile_picture">Change profile picture</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
 </resources>

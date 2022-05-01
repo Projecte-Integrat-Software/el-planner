@@ -46,7 +46,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private void insertNestedFragment() {
-        Fragment childFragment = new MonthCalendarFragment();
+        Fragment childFragment = new WeekCalendarFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.child_fragment_container, childFragment).commit();
     }
@@ -59,14 +59,14 @@ public class CalendarFragment extends Fragment {
                 Fragment childFragment;
                 FragmentTransaction transaction;
                 switch (mode) {
-                    case "Mes":
-                        childFragment = new MonthCalendarFragment();
+                    case "Week":
+                        childFragment = new WeekCalendarFragment();
                         transaction = getChildFragmentManager().
                                 beginTransaction();
                         transaction.replace(R.id.child_fragment_container, childFragment).commit();
                         break;
-                    case "Setmana":
-                        childFragment = new WeekCalendarFragment();
+                    case "Month":
+                        childFragment = new MonthCalendarFragment();
                         transaction = getChildFragmentManager().
                                 beginTransaction();
                         transaction.replace(R.id.child_fragment_container, childFragment).commit();
