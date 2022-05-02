@@ -50,6 +50,7 @@ public abstract class DataBaseAdapter {
     private static byte[] byteArray = new byte[]{};
     private static GroupInterface groupInterface;
     private static InvitationInterface invitationInterface;
+    private static boolean registrationCompleted = true;
 
     public static void login(DBInterface i, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -66,8 +67,12 @@ public abstract class DataBaseAdapter {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
-                user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build());
-                i.setToast("Registered successfully");
+                user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        i.setToast("Registered successfully");
+                    }
+                });
             } else {
                 i.setToast(task.getException().getMessage());
             }
@@ -364,6 +369,10 @@ public abstract class DataBaseAdapter {
     public static UploadTask setProfilePicture(byte[] byteArray) {
         StorageReference storageRef = storage.getReference().child(Objects.requireNonNull(user.getEmail()));
         return storageRef.putBytes(byteArray);
+    }
+
+    public static boolean isRegistrationCompleted() {
+        return registrationCompleted;
     }
 
     public interface DBInterface {
