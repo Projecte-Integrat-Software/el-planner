@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditGroupActivityViewModel extends AndroidViewModel implements DataBaseAdapter.DBInterface {
+public class EditGroupActivityViewModel extends AndroidViewModel implements DataBaseAdapter.EmailCheckerInterface {
 
     private final MutableLiveData<String> mToast;
     private ArrayList<String> invitationEmails;
     private final String email;
     private Map<String, Integer> colours;
+    private MutableLiveData<Boolean> mRegistered;
 
     public EditGroupActivityViewModel(Application application) {
         super(application);
@@ -36,11 +37,15 @@ public class EditGroupActivityViewModel extends AndroidViewModel implements Data
                 colours.remove(k);
             }
         }
-        DataBaseAdapter.editGroup(this, id, title, details, colours, participants, admins);
+        DataBaseAdapter.editGroup(this, id, title, details, colours, participants, admins, invitationEmails);
     }
 
     public MutableLiveData<String> getToast() {
         return mToast;
+    }
+
+    public MutableLiveData<Boolean> getRegistered() {
+        return mRegistered;
     }
 
     @Override
@@ -67,5 +72,18 @@ public class EditGroupActivityViewModel extends AndroidViewModel implements Data
 
     public String getEmail() {
         return DataBaseAdapter.getEmail();
+    }
+
+    public void resetRegistered() {
+        mRegistered = new MutableLiveData<>();
+    }
+
+    public void checkRegistered(String email) {
+        DataBaseAdapter.checkRegistered(this, email);
+    }
+
+    @Override
+    public void setChecked(boolean b) {
+        mRegistered.setValue(b);
     }
 }

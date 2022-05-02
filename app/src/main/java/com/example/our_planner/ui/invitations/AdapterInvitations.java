@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Invitation;
 
@@ -32,13 +33,20 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderInvitations holder, int position) {
-        holder.setData(invitations.get(position));
-        /* TODO: Buttons functionality
-        holder.acceptInvitationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });*/
+        Invitation i = invitations.get(position);
+        holder.setData(i);
+        holder.acceptInvitationBtn.setOnClickListener(v -> {
+            DataBaseAdapter.acceptInvitation(i);
+            invitations.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, getItemCount());
+        });
+        holder.declineInvitationBtn.setOnClickListener(v -> {
+            DataBaseAdapter.deleteInvitation(i);
+            invitations.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, getItemCount());
+        });
     }
 
     @Override
@@ -64,9 +72,10 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         }
 
         public void setData(Invitation invitation) {
-            imageInvitation = invitation.getImage();
             titleInvitation.setText(invitation.getTitle());
             authorInvitation.setText(invitation.getAuthor());
+            //TODO: Connect to database to load author photo
+            //imageInvitation = invitation.getImage();
         }
     }
 }

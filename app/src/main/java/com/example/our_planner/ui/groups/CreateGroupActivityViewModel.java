@@ -9,9 +9,10 @@ import com.example.our_planner.DataBaseAdapter;
 
 import java.util.ArrayList;
 
-public class CreateGroupActivityViewModel extends AndroidViewModel implements DataBaseAdapter.DBInterface {
+public class CreateGroupActivityViewModel extends AndroidViewModel implements DataBaseAdapter.EmailCheckerInterface {
 
     private final MutableLiveData<String> mToast;
+    private MutableLiveData<Boolean> mRegistered;
     private ArrayList<String> invitationEmails;
 
     public CreateGroupActivityViewModel(Application application) {
@@ -21,11 +22,15 @@ public class CreateGroupActivityViewModel extends AndroidViewModel implements Da
     }
 
     public void createGroup(String title, String details, int colour) {
-        DataBaseAdapter.createGroup(this, title, details, colour);
+        DataBaseAdapter.createGroup(this, title, details, colour, invitationEmails);
     }
 
     public MutableLiveData<String> getToast() {
         return mToast;
+    }
+
+    public MutableLiveData<Boolean> getRegistered() {
+        return mRegistered;
     }
 
     @Override
@@ -43,5 +48,22 @@ public class CreateGroupActivityViewModel extends AndroidViewModel implements Da
 
     public String getUserName() {
         return DataBaseAdapter.getUserName();
+    }
+
+    public String getEmail() {
+        return DataBaseAdapter.getEmail();
+    }
+
+    public void resetRegistered() {
+        mRegistered = new MutableLiveData<>();
+    }
+
+    public void checkRegistered(String email) {
+        DataBaseAdapter.checkRegistered(this, email);
+    }
+
+    @Override
+    public void setChecked(boolean b) {
+        mRegistered.setValue(b);
     }
 }

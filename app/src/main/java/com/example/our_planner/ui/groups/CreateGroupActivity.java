@@ -57,14 +57,29 @@ public class CreateGroupActivity extends AppCompatActivity {
             RecyclerView recyclerView = pw.getContentView().findViewById(R.id.recycleViewParticipantsToInvite);
             recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             recyclerView.setAdapter(new AdapterParticipantsInvite(viewModel.getInvitationEmails()));
-            pw.getContentView().findViewById(R.id.addEmailBtn).setOnClickListener(view1 -> {
-                String email = emailTxt.getText().toString();
-                if (email.isEmpty()) {
-                    Toast.makeText(CreateGroupActivity.this, "Email field is empty!", Toast.LENGTH_SHORT).show();
-                } else {
-                    //TODO: Check in database if email exists!!
-                    if (!((AdapterParticipantsInvite) recyclerView.getAdapter()).addElement(email)) {
-                        Toast.makeText(CreateGroupActivity.this, "User already selected to be invited!", Toast.LENGTH_SHORT).show();
+            pw.getContentView().findViewById(R.id.addEmailBtn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String email = emailTxt.getText().toString();
+                    final Observer<Boolean> observerRegistered = b -> addEmail(email, b);
+                    viewModel.resetRegistered();
+                    viewModel.getRegistered().observe(CreateGroupActivity.this, observerRegistered);
+                    if (email.isEmpty()) {
+                        Toast.makeText(CreateGroupActivity.this, "Email field is empty!", Toast.LENGTH_SHORT).show();
+                    } else if (email.equals(viewModel.getEmail())) {
+                        Toast.makeText(CreateGroupActivity.this, "You cannot invite yourself!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        viewModel.checkRegistered(email);
+                    }
+                }
+
+                private void addEmail(String email, boolean b) {
+                    if (b) {
+                        if (!((AdapterParticipantsInvite) recyclerView.getAdapter()).addElement(email)) {
+                            Toast.makeText(CreateGroupActivity.this, "User already selected to be invited!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(CreateGroupActivity.this, "There is no user registered with this email", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -77,7 +92,6 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         Button btnCreate = findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(view -> {
-            //TODO: Invite participants!
             String title = txtTitle.getText().toString();
             String details = txtDetails.getText().toString();
             if (title.isEmpty()) {

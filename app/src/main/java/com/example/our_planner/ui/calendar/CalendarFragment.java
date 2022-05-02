@@ -35,7 +35,6 @@ public class CalendarFragment extends Fragment {
 
         commentEvent = view.findViewById(R.id.commentEvent);
 
-
         return view;
     }
 

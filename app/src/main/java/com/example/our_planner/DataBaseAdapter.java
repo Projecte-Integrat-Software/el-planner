@@ -3,6 +3,7 @@ package com.example.our_planner;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.example.our_planner.model.Comment;
 import com.example.our_planner.model.Group;
+import com.example.our_planner.model.Invitation;
 import com.example.our_planner.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -33,6 +36,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -45,12 +49,13 @@ public abstract class DataBaseAdapter {
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private static byte[] byteArray = new byte[]{};
     private static GroupInterface groupInterface;
+    private static InvitationInterface invitationInterface;
 
     public static void login(DBInterface i, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
-                i.setToast("Logged as " + user.getDisplayName());
+                i.setToast("Logged as " + getUserName());
             } else {
                 i.setToast(task.getException().getMessage());
             }
@@ -115,7 +120,54 @@ public abstract class DataBaseAdapter {
         return g;
     }
 
-    public static void createGroup(DBInterface i, String title, String details, int colour) {
+    public static void subscribeInvitationObserver(InvitationInterface i) {
+        invitationInterface = i;
+        loadInvitations();
+    }
+
+    public static void loadInvitations() {
+        db.collection("invitations").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Invitation> i = new ArrayList<>();
+                String email = getEmail();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    if (g.get("user").equals(email)) {
+                        i.add(new Invitation((String) g.get("group"), (String) g.get("title"), (String) g.get("author")));
+                    }
+                }
+                invitationInterface.update(i);
+            } else {
+                invitationInterface.setToast(task.getException().getMessage());
+            }
+        });
+    }
+
+    private static void sendInvitation(String email, String groupId, String title) {
+        String id = email + "-" + groupId;
+        DocumentReference doc = db.collection("invitations").document(id);
+        doc.get().addOnCompleteListener(t -> {
+            if (t.isSuccessful()) {
+                if (!t.getResult().exists()) {
+                    //Send invitation if not invited yet
+                    Map<String, Object> invitation = new HashMap<>();
+                    invitation.put("user", email);
+                    invitation.put("group", groupId);
+                    invitation.put("author", getEmail());
+                    invitation.put("title", title);
+                    doc.set(invitation);
+                }
+            }
+        });
+    }
+
+    private static void sendInvitations(List<String> invitationEmails, String groupId, String title) {
+        for (String s : invitationEmails) {
+            sendInvitation(s, groupId, title);
+        }
+    }
+
+    public static void createGroup(DBInterface i, String title, String details, int colour, List<String> invitationEmails) {
         //The creator of the group is an admin by default
         String email = getEmail();
         Map<String, Integer> colours = new HashMap<>();
@@ -125,12 +177,64 @@ public abstract class DataBaseAdapter {
         Map<String, Boolean> admins = new HashMap<>();
         admins.put(email, true);
         db.collection("groups").add(mapGroupDocument(title, details, colours, participants, admins))
-                .addOnSuccessListener(documentReference -> loadGroups()).addOnFailureListener(e -> i.setToast(e.getMessage()));
+                .addOnSuccessListener(documentReference -> {
+                    loadGroups();
+                    sendInvitations(invitationEmails, documentReference.getId(), title);
+                }).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
 
-    public static void editGroup(DBInterface i, String id, String title, String details, Map<String, Integer> colours, Map<String, User> participants, Map<String, Boolean> admins) {
+    private static void modifyInvitations(String groupId, String title) {
+        db.collection("invitations").get().addOnSuccessListener(q -> {
+            for (QueryDocumentSnapshot document : q) {
+                Map<String, Object> g = document.getData();
+                if (g.get("group").equals(groupId)) {
+                    g.replace("title", title);
+                    db.collection("invitations").document(g.get("user") + "-" + groupId).set(g);
+                }
+            }
+        });
+    }
+
+    public static void deleteInvitation(Invitation i) {
+        db.collection("invitations").document(getEmail() + "-" + i.getGroupId()).delete().addOnSuccessListener(documentReference -> {
+            loadInvitations();
+        });
+    }
+
+    public static void acceptInvitation(Invitation i) {
+        String groupId = i.getGroupId();
+        db.collection("groups").document(groupId).get().addOnSuccessListener(d -> {
+            Map<String, Object> g = d.getData();
+            String e = getEmail();
+            //Add user to the group with no admin permission and with the colour black by default
+            ((Map<String, String>) g.get("participants")).put(e, getUserName());
+            ((Map<String, String>) g.get("colours")).put(e, String.valueOf(Color.BLACK));
+            ((Map<String, Boolean>) g.get("admins")).put(e, false);
+            db.collection("groups").document(groupId).set(g);
+
+            //Finally, delete the invitation
+            deleteInvitation(i);
+        });
+    }
+
+    public static void editGroup(DBInterface i, String id, String title, String details, Map<String, Integer> colours, Map<String, User> participants, Map<String, Boolean> admins, List<String> invitationEmails) {
         db.collection("groups").document(id).set(mapGroupDocument(title, details, colours, participants, admins))
-                .addOnSuccessListener(documentReference -> loadGroups()).addOnFailureListener(e -> i.setToast(e.getMessage()));
+                .addOnSuccessListener(documentReference -> {
+                    loadGroups();
+                    sendInvitations(invitationEmails, id, title);
+                    modifyInvitations(id, title);
+                }).addOnFailureListener(e -> i.setToast(e.getMessage()));
+    }
+
+    private static void deleteGroupInvitations(String id) {
+        db.collection("invitations").get().addOnSuccessListener(q -> {
+            for (QueryDocumentSnapshot document : q) {
+                Map<String, Object> g = document.getData();
+                if (g.get("group").equals(id)) {
+                    db.collection("invitations").document(g.get("user") + "-" + id).delete();
+                }
+            }
+        });
     }
 
     public static void leaveGroup(Group g) {
@@ -140,6 +244,7 @@ public abstract class DataBaseAdapter {
             db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> {
                 groupInterface.setToast("Group left and deleted since there are no participants left");
                 loadGroups();
+                deleteGroupInvitations(g.getId());
             });
         } else {
             p.remove(email);
@@ -155,24 +260,16 @@ public abstract class DataBaseAdapter {
         }
     }
 
-    /*
-        private boolean userExists(String email) {
-            final boolean[] b = new boolean[1];
-            mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> b[0] = !task.getResult().getSignInMethods().isEmpty());
-            return b[0];
-        }
-
-        public void inviteUser(DBInterface i, String email, String title) {
-            if (userExists(email)) {
-                Message m = new Message.Builder
-                        .setBody(getUserName() + " has invited you to the group " + title).build())
-                        .setTopic(email).build();
-                mes.send(m);
+    public static void checkRegistered(EmailCheckerInterface i, String email) {
+        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                i.setChecked(!task.getResult().getSignInMethods().isEmpty());
             } else {
-                i.setToast("There is no user registered with this email!");
+                i.setToast(task.getException().getMessage());
             }
-        }
-    */
+        });
+    }
+
     public static String getUserName() {
         return user.getDisplayName();
     }
@@ -183,10 +280,6 @@ public abstract class DataBaseAdapter {
 
     public static byte[] getByteArray() {
         return byteArray;
-    }
-
-    public interface DBInterface {
-        void setToast(String s);
     }
 
     public static boolean alreadyLoggedIn() {
@@ -273,8 +366,20 @@ public abstract class DataBaseAdapter {
         return storageRef.putBytes(byteArray);
     }
 
+    public interface DBInterface {
+        void setToast(String s);
+    }
+
+    public interface EmailCheckerInterface extends DBInterface {
+        void setChecked(boolean b);
+    }
+
     public interface GroupInterface extends DBInterface {
         void update(ArrayList<Group> groups);
+    }
+
+    public interface InvitationInterface extends DBInterface {
+        void update(ArrayList<Invitation> invitations);
     }
 
     public interface CommentInterface {
