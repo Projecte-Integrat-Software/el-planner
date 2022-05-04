@@ -17,7 +17,7 @@ import com.example.our_planner.R;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class EventEditActivity extends AppCompatActivity {
+public class EditEventActivity extends AppCompatActivity {
 
     private EditText eventNameET;
     private TextView eventDateTV, eventTimeTV;

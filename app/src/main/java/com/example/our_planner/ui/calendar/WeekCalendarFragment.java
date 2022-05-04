@@ -104,7 +104,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     }
 
     public void newEventAction(View view) {
-        startActivity(new Intent(this.getActivity(), EventEditActivity.class));
+        startActivity(new Intent(this.getActivity(), EditEventActivity.class));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
