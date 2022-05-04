@@ -182,11 +182,11 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnCreate"
+        android:id="@+id/btnBack"
         android:layout_width="194dp"
         android:layout_height="48dp"
         android:layout_marginBottom="64dp"
-        android:text="@string/create"
+        android:text="@string/go_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

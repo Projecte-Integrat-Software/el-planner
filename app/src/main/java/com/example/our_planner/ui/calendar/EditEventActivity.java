@@ -17,7 +17,7 @@ import com.example.our_planner.R;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class EventEditActivity extends AppCompatActivity {
+public class EditEventActivity extends AppCompatActivity {
 
     private EditText eventNameET;
     private TextView eventDateTV, eventTimeTV;
@@ -29,7 +29,7 @@ public class EventEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_edit);
+        setContentView(R.layout.activity_edit_event);
         initWidgets();
         time = LocalTime.now();
         eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
@@ -39,10 +39,10 @@ public class EventEditActivity extends AppCompatActivity {
     }
 
     private void initWidgets() {
-        eventNameET = findViewById(R.id.eventNameET);
-        eventDateTV = findViewById(R.id.eventDateTV);
-        eventTimeTV = findViewById(R.id.eventTimeTV);
-        saveBtn = findViewById(R.id.saveBtn);
+        eventNameET = findViewById(R.id.txtEventTitle);
+        eventDateTV = findViewById(R.id.txtEventStart);
+        eventTimeTV = findViewById(R.id.txtEventEnd);
+        saveBtn = findViewById(R.id.btnEdit);
     }
 
     private void initListeners() {

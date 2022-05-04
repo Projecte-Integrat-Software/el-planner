@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".ui.calendar.CreateEventActivity">
+    tools:context=".ui.calendar.EditEventActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -182,18 +182,29 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnCreate"
+        android:id="@+id/btnEdit"
         android:layout_width="194dp"
         android:layout_height="48dp"
         android:layout_marginBottom="64dp"
-        android:text="@string/create"
+        android:text="@string/edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.9" />
 
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="194dp"
+        android:layout_height="48dp"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEdit"
+        app:layout_constraintVertical_bias="0.278" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
