@@ -1,27 +1,19 @@
 package com.example.our_planner.ui.calendar;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.our_planner.R;
-
-import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class EditEventActivity extends AppCompatActivity {
-
+public class CreateEventActivity extends AppCompatActivity{
     private EditText eventNameET;
     private TextView eventDateTV, eventTimeTV;
-    private Button saveBtn;
+    private Button createBtn;
 
     private LocalTime time;
 
@@ -29,7 +21,7 @@ public class EditEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_event);
+        setContentView(R.layout.activity_create_event);
         initWidgets();
         time = LocalTime.now();
         eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
@@ -42,11 +34,11 @@ public class EditEventActivity extends AppCompatActivity {
         eventNameET = findViewById(R.id.txtEventTitle);
         eventDateTV = findViewById(R.id.txtEventStart);
         eventTimeTV = findViewById(R.id.txtEventEnd);
-        saveBtn = findViewById(R.id.btnEdit);
+        createBtn = findViewById(R.id.btnCreate);
     }
 
     private void initListeners() {
-        saveBtn.setOnClickListener(this::saveEventAction);
+        createBtn.setOnClickListener(this::saveEventAction);
     }
 
     private void saveEventAction(View view) {
