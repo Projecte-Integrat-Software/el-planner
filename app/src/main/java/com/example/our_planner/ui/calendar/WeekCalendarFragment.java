@@ -10,13 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
@@ -30,7 +30,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     private View view;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
-    private ListView eventListView;
+    private RecyclerView recyclerViewEvents;
 
     private Button previousWeekBtn;
     private Button nextWeekBtn;
@@ -61,7 +61,9 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     {
         monthYearText = view.findViewById(R.id.monthYearTV);
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
-        eventListView = view.findViewById(R.id.eventListView);
+
+        recyclerViewEvents = view.findViewById(R.id.recyclerViewEvents);
+        recyclerViewEvents.setLayoutManager(new LinearLayoutManager(getContext()));
 
         previousWeekBtn = view.findViewById(R.id.previousWeekBtn);
         nextWeekBtn = view.findViewById(R.id.nextWeekBtn);
@@ -81,7 +83,6 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
         ArrayList<LocalDate> days = daysInWeekArray(CalendarUtils.selectedDate);
 
-        //minut 4:03 video, canvis  a weekcalfrag, utils (potser), just ara s'expliquen els canvis a adapter
         CalendarAdapter calendarAdapter = new CalendarAdapter(days, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(view.getContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
@@ -122,7 +123,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
 
     private void setEventAdapter() {
         ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(requireActivity().getApplicationContext(), dailyEvents);
-        eventListView.setAdapter(eventAdapter);
+        EventAdapterR adapter = new EventAdapterR(getContext(), dailyEvents);
+        recyclerViewEvents.setAdapter(adapter);
     }
 }

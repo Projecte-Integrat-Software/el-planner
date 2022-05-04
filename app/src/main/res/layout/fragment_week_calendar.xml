@@ -123,7 +123,15 @@
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
+
+    <!--Possibilitat de fer aquest disseny més responsive, de moment amb el tamany
+    del recycler view inferior es restringeix el tamany del superior, que és el que
+    volem però així depèn de la mida de la pantalla-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewEvents"
+        android:layout_width="match_parent"
+        android:layout_height="430dp"/>
 
     <Button
         android:id="@+id/newEventBtn"
@@ -135,11 +143,5 @@
         android:layout_gravity="center"
         android:textSize="20sp"
         android:textStyle="bold" />
-
-    <ListView
-        android:id="@+id/eventListView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5" />
 
 </LinearLayout>
