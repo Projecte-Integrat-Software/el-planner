@@ -1,6 +1,5 @@
-package com.example.our_planner.ui.calendar;
+package com.example.our_planner.model;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;

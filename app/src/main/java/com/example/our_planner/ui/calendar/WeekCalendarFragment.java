@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
+import com.example.our_planner.model.Event;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

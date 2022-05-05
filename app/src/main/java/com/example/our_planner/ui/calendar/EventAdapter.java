@@ -1,7 +1,6 @@
 package com.example.our_planner.ui.calendar;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.our_planner.R;
+import com.example.our_planner.model.Event;
 
 import java.util.List;
 

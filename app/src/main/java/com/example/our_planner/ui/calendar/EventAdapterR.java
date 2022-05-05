@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
+import com.example.our_planner.model.Event;
 
 import java.util.ArrayList;
 

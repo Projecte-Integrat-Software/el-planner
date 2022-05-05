@@ -1,26 +1,18 @@
 package com.example.our_planner.ui.calendar;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.our_planner.R;
-import com.example.our_planner.model.Group;
+import com.example.our_planner.model.Event;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
 
 public class EditEventActivity extends AppCompatActivity {
 

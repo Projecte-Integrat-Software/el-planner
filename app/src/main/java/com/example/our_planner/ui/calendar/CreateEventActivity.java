@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.our_planner.R;
+import com.example.our_planner.model.Event;
+
 import java.time.LocalTime;
 
 public class CreateEventActivity extends AppCompatActivity{
