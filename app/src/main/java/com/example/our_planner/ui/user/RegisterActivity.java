@@ -48,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
             } else if (password.isEmpty()) {
                 Toast.makeText(RegisterActivity.this, "Password field is empty!", Toast.LENGTH_SHORT).show();
             } else if (txtRepeatPassword.getText().toString().equals(password)) {
-                viewModel.register(email, password, username);
+                viewModel.register(email, password, username, getResources().getDrawable(R.drawable.ic_launcher_foreground));
             } else {
                 Toast.makeText(RegisterActivity.this, "Passwords are not the same!", Toast.LENGTH_SHORT).show();
             }

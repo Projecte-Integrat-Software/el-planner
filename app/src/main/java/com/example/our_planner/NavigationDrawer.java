@@ -169,7 +169,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     }
 
     public void updateProfilePicture() {
-        Task<byte[]> task = DataBaseAdapter.updateProfilePicture(getResources().getDrawable(R.drawable.ic_launcher_foreground));
+        Task<byte[]> task = DataBaseAdapter.updateProfilePicture();
         task.addOnCompleteListener(task1 -> {
             byte[] byteArray = DataBaseAdapter.getByteArray();
             profilePictureND.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));

@@ -1,6 +1,7 @@
 package com.example.our_planner.ui.user;
 
 import android.app.Application;
+import android.graphics.drawable.Drawable;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
@@ -16,8 +17,8 @@ public class RegisterActivityViewModel extends AndroidViewModel implements DataB
         mToast = new MutableLiveData<>();
     }
 
-    public void register(String email, String password, String username) {
-        DataBaseAdapter.register(this, email, password, username);
+    public void register(String email, String password, String username, Drawable drawableDefault) {
+        DataBaseAdapter.register(this, email, password, username, drawableDefault);
     }
 
     public MutableLiveData<String> getToast() {

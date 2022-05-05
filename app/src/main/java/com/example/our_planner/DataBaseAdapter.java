@@ -30,6 +30,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -65,15 +66,22 @@ public abstract class DataBaseAdapter {
         });
     }
 
-    public static void register(DBInterface i, String email, String password, String username) {
+    public static void register(DBInterface i, String email, String password, String username, Drawable drawableDefault) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
-                user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()).addOnCompleteListener(task12 -> {
+
+                    Bitmap bitmap = Bitmap.createBitmap(drawableDefault.getIntrinsicWidth(), drawableDefault.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bitmap);
+                    drawableDefault.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                    drawableDefault.draw(canvas);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    Task setProfilePictureTask = setProfilePicture(stream.toByteArray());
+                    setProfilePictureTask.addOnCompleteListener(task1 -> {
                         i.setToast("Registered successfully");
-                    }
+                    });
                 });
             } else {
                 i.setToast(task.getException().getMessage());
@@ -347,25 +355,17 @@ public abstract class DataBaseAdapter {
         });
     }
 
-    public static Task<byte[]> updateProfilePicture(Drawable drawableDefault) {
+    public static Task<byte[]> updateProfilePicture() {
         Task<byte[]> byteArrayTask = storage.getReference().child(Objects.requireNonNull(user.getEmail())).getBytes(1024 * 1024);
         byteArrayTask.addOnSuccessListener(o -> {
             byteArray = (byte[]) byteArrayTask.getResult();
-        });
-        byteArrayTask.addOnFailureListener(e -> {
-            Bitmap bitmap = Bitmap.createBitmap(drawableDefault.getIntrinsicWidth(), drawableDefault.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            drawableDefault.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawableDefault.draw(canvas);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byteArray = stream.toByteArray();
         });
         return byteArrayTask;
     }
 
     public static UploadTask setProfilePicture(byte[] byteArray) {
         StorageReference storageRef = storage.getReference().child(Objects.requireNonNull(user.getEmail()));
+        DataBaseAdapter.byteArray = byteArray;
         return storageRef.putBytes(byteArray);
     }
 
