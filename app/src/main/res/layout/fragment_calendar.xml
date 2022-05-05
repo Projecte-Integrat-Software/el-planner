@@ -32,7 +32,7 @@
 
 
     <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+        android:id="@+id/BarCalendarGroups"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,17 +42,18 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="BottomAppBar" >
 
-        <Button
-        android:id="@+id/button"
+        <ImageButton
+        android:id="@+id/btnCalendarGroups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:src="@drawable/ic_calendar_groups"
         android:layout_gravity="end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
         app:layout_constraintTop_toTopOf="@+id/bottomAppBar" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
+
 
 </LinearLayout>
 
