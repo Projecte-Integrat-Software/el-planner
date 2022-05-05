@@ -48,25 +48,25 @@ public class CalendarFragment extends Fragment {
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        groups = new ArrayList<>();
+        HashMap m = new HashMap();
+        groups.add(new Group("", "PIS", "Theory", m, m, m));
+        groups.add(new Group("", "Geometry", "Problems", m, m, m));
+        groups.add(new Group("", "PAE", "Labs", m, m, m));
+
         commentEvent = view.findViewById(R.id.commentEvent);
         calendarGroups = view.findViewById(R.id.btnCalendarGroups);
         calendarGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Arreglar la següent línia
-                // LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_calendar_groups, null, false), 450, 400, true);
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_calendar_groups, null, false), 600, 800, true);
                 //pw.showAtLocation(button, Gravity.CENTER, 0, 0);
                 pw.showAsDropDown(calendarGroups, 0, 0);
 
-
                 RecyclerView recyclerView = pw.getContentView().findViewById(R.id.recyclerViewCalendarGroups);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false));
-
-                HashMap m = new HashMap();
-                groups.add(new Group("", "PIS", "Theory", m, m, m));
-                groups.add(new Group("", "Geometry", "Problems", m, m, m));
-                groups.add(new Group("", "PAE", "Labs", m, m, m));
 
                 AdapterCalendarGroups adapter = new AdapterCalendarGroups(groups);
                 recyclerView.setAdapter(adapter);

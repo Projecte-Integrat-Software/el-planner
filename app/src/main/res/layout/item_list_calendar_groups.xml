@@ -15,18 +15,16 @@
         tools:layout_editor_absoluteX="66dp"
         tools:layout_editor_absoluteY="12dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/nameGroup"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:gravity="center"/>
 
             <CheckBox
                 android:id="@+id/SelectGroupBox"
@@ -34,7 +32,7 @@
                 android:layout_height="wrap_content" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.cardview.widget.CardView>
 
