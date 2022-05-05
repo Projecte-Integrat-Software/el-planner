@@ -9,26 +9,33 @@ import com.example.our_planner.model.Group;
 
 import java.util.ArrayList;
 
-public class CalendarViewModel extends ViewModel implements DataBaseAdapter.CalendarGroupInterface{
+public class CalendarViewModel extends ViewModel implements DataBaseAdapter.GroupInterface{
 
-    private final MutableLiveData<String> mText;
+    private final MutableLiveData<ArrayList<Group>> mGroups;
+    //private final MutableLiveData<String> mToast;
 
     public CalendarViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is calendar fragment");
+        mGroups = new MutableLiveData<>();
+        /*mToast = new MutableLiveData<>();
+        mToast.setValue("This is calendar fragment");*/
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public MutableLiveData<ArrayList<Group>> getGroups() {
+        return mGroups;
+    }
+
+    /*
+    public LiveData<String> getToast() {
+        return mToast;
     }
 
     @Override
     public void setToast(String s) {
 
     }
-
+*/
     @Override
     public void update(ArrayList<Group> groups) {
-
+        mGroups.setValue(groups);
     }
 }

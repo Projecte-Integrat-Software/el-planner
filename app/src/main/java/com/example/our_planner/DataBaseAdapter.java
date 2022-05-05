@@ -50,7 +50,7 @@ public abstract class DataBaseAdapter {
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private static byte[] byteArray = new byte[]{};
-    private static GroupInterface groupInterface;
+    private static List<GroupInterface> groupInterfaces = new ArrayList<>();
     private static InvitationInterface invitationInterface;
     private static boolean registrationCompleted = true;
 
@@ -82,7 +82,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static void subscribeGroupObserver(GroupInterface i) {
-        groupInterface = i;
+        groupInterfaces.add(i);
         loadGroups();
     }
 
@@ -104,9 +104,9 @@ public abstract class DataBaseAdapter {
                         groups.add(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, (Map<String, Boolean>) g.get("admins")));
                     }
                 }
-                groupInterface.update(groups);
-            } else {
-                groupInterface.setToast(task.getException().getMessage());
+                for (GroupInterface i : groupInterfaces) {
+                    i.update(groups);
+                }
             }
         });
     }
@@ -249,7 +249,6 @@ public abstract class DataBaseAdapter {
         Map<String, User> p = g.getParticipants();
         if (p.size() == 1) {
             db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> {
-                groupInterface.setToast("Group left and deleted since there are no participants left");
                 loadGroups();
                 deleteGroupInvitations(g.getId());
             });
@@ -260,10 +259,7 @@ public abstract class DataBaseAdapter {
             Map<String, Boolean> a = g.getAdmins();
             a.remove(email);
             Map<String, Object> group = mapGroupDocument(g.getTitle(), g.getDetails(), c, p, a);
-            db.collection("groups").document(g.getId()).set(group).addOnSuccessListener(documentReference -> {
-                groupInterface.setToast("Group edited successfully");
-                loadGroups();
-            }).addOnFailureListener(e -> groupInterface.setToast(e.getMessage()));
+            db.collection("groups").document(g.getId()).set(group).addOnSuccessListener(documentReference -> loadGroups());
         }
     }
 
@@ -385,7 +381,7 @@ public abstract class DataBaseAdapter {
         void setChecked(boolean b);
     }
 
-    public interface GroupInterface extends DBInterface {
+    public interface GroupInterface {
         void update(ArrayList<Group> groups);
     }
 
@@ -395,10 +391,6 @@ public abstract class DataBaseAdapter {
 
     public interface CommentInterface {
         void addComment(Comment comment);
-    }
-
-    public interface CalendarGroupInterface extends DBInterface {
-        void update(ArrayList<Group> groups);
     }
 
     public static void createEvent(DBInterface i, String name, LocalDate date, LocalTime time) {

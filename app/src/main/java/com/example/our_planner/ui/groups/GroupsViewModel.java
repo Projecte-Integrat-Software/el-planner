@@ -10,7 +10,7 @@ import com.example.our_planner.model.Group;
 
 import java.util.ArrayList;
 
-public class GroupsViewModel extends AndroidViewModel implements DataBaseAdapter.GroupInterface {
+public class GroupsViewModel extends AndroidViewModel implements DataBaseAdapter.GroupInterface, DataBaseAdapter.DBInterface {
 
     private final MutableLiveData<ArrayList<Group>> mGroups;
     private final MutableLiveData<String> mToast;
