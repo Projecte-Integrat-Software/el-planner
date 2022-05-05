@@ -22,11 +22,7 @@
         android:layout_weight="1"
         android:layout_gravity="top" >
 
-        <Button
-            android:id="@+id/commentEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="comment Event" />
+
     </FrameLayout>
 
 
@@ -43,14 +39,21 @@
         tools:ignore="BottomAppBar" >
 
         <ImageButton
-        android:id="@+id/btnCalendarGroups"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_calendar_groups"
-        android:layout_gravity="end"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
-        app:layout_constraintTop_toTopOf="@+id/bottomAppBar" />
+            android:id="@+id/btnCalendarGroups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_calendar_groups"
+            android:layout_gravity="end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
+            app:layout_constraintTop_toTopOf="@+id/bottomAppBar" />
+
+        <Button
+            android:id="@+id/commentEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="comment Event" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
