@@ -34,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -393,5 +395,21 @@ public abstract class DataBaseAdapter {
 
     public interface CommentInterface {
         void addComment(Comment comment);
+    }
+
+    public interface CalendarGroupInterface extends DBInterface {
+        void update(ArrayList<Group> groups);
+    }
+
+    public static void createEvent(DBInterface i, String name, LocalDate date, LocalTime time) {
+
+    }
+
+    public static void editEvent(DBInterface i, String name, LocalDate date, LocalTime time) {
+
+    }
+
+    public static void deleteEvent(DBInterface i, String name) {
+
     }
 }

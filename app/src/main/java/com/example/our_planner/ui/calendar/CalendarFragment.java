@@ -53,6 +53,7 @@ public class CalendarFragment extends Fragment {
         calendarGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Arreglar la següent línia
                 // LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_calendar_groups, null, false), 450, 400, true);
                 //pw.showAtLocation(button, Gravity.CENTER, 0, 0);

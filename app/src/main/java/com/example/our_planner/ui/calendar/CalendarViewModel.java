@@ -4,7 +4,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class CalendarViewModel extends ViewModel {
+import com.example.our_planner.DataBaseAdapter;
+import com.example.our_planner.model.Group;
+
+import java.util.ArrayList;
+
+public class CalendarViewModel extends ViewModel implements DataBaseAdapter.CalendarGroupInterface{
 
     private final MutableLiveData<String> mText;
 
@@ -15,5 +20,15 @@ public class CalendarViewModel extends ViewModel {
 
     public LiveData<String> getText() {
         return mText;
+    }
+
+    @Override
+    public void setToast(String s) {
+
+    }
+
+    @Override
+    public void update(ArrayList<Group> groups) {
+
     }
 }
