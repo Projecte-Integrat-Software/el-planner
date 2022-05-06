@@ -1,0 +1,226 @@
+@startuml
+
+title __GROUPS's Class Diagram__\n
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.AdapterGroups {
+          - context : Context
+          - groups : ArrayList<Group>
+          + AdapterGroups()
+          + getItemCount()
+          + onBindViewHolder()
+          + onCreateViewHolder()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.AdapterGroups.ViewHolderGroups {
+          - editGroupBtn : Button
+          - leaveGroupBtn : ImageButton
+          - titleGroupTxt : TextView
+          + ViewHolderGroups()
+          + setData()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.AdapterParticipants {
+          - admins : Map<String, Boolean>
+          - context : Context
+          - participants : Map<String, User>
+          - userAdmin : boolean
+          - users : ArrayList<String>
+          + AdapterParticipants()
+          + getItemCount()
+          + onBindViewHolder()
+          + onCreateViewHolder()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.AdapterParticipants.ViewHolderParticipants {
+          - adminCheckBox : CheckBox
+          - expelParticipantBtn : ImageButton
+          - participantTxt : TextView
+          + ViewHolderParticipants()
+          + setData()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.AdapterParticipantsInvite {
+          - participantEmails : ArrayList<String>
+          + AdapterParticipantsInvite()
+          + addElement()
+          + getItemCount()
+          + getParticipantEmails()
+          + onBindViewHolder()
+          + onCreateViewHolder()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.AdapterParticipantsInvite.ViewHolderParticipantsInvite {
+          - emailTxt : TextView
+          - removeInvitationBtn : ImageButton
+          + ViewHolderParticipantsInvite()
+          + setData()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.CreateGroupActivity {
+          - colourView : View
+          - currentColour : int
+          - txtDetails : EditText
+          - txtTitle : EditText
+          + chooseColour()
+          # onCreate()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.CreateGroupActivityViewModel {
+          - invitationEmails : ArrayList<String>
+          - mRegistered : MutableLiveData<Boolean>
+          - mToast : MutableLiveData<String>
+          + CreateGroupActivityViewModel()
+          + checkRegistered()
+          + createGroup()
+          + getEmail()
+          + getInvitationEmails()
+          + getRegistered()
+          + getToast()
+          + getUserName()
+          + resetRegistered()
+          + saveInvitationEmails()
+          + setChecked()
+          + setToast()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.EditGroupActivity {
+          - colourView : View
+          - currentColour : int
+          - recyclerViewParticipants : RecyclerView
+          - txtDetails : EditText
+          - txtTitle : EditText
+          + chooseColour()
+          # onCreate()
+          - setColour()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.EditGroupActivityViewModel {
+          - colours : Map<String, Integer>
+          - email : String
+          - invitationEmails : ArrayList<String>
+          - mRegistered : MutableLiveData<Boolean>
+          - mToast : MutableLiveData<String>
+          + EditGroupActivityViewModel()
+          + checkRegistered()
+          + editGroup()
+          + getColour()
+          + getEmail()
+          + getInvitationEmails()
+          + getRegistered()
+          + getToast()
+          + getUserName()
+          + resetRegistered()
+          + saveInvitationEmails()
+          + setChecked()
+          + setToast()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.GroupsFragment {
+          - parentContext : Context
+          - recyclerViewGroups : RecyclerView
+          + onCreateView()
+          + onDestroyView()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.groups {
+      class com.example.our_planner.ui.groups.GroupsViewModel {
+          - mGroups : MutableLiveData<ArrayList<Group>>
+          - mToast : MutableLiveData<String>
+          + GroupsViewModel()
+          + getGroups()
+          + getToast()
+          + setToast()
+          + update()
+      }
+    }
+  }
+  
+
+  com.example.our_planner.ui.groups.AdapterGroups -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.example.our_planner.ui.groups.AdapterGroups +-down- com.example.our_planner.ui.groups.AdapterGroups.ViewHolderGroups
+  com.example.our_planner.ui.groups.AdapterGroups.ViewHolderGroups -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.example.our_planner.ui.groups.AdapterParticipants -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.example.our_planner.ui.groups.AdapterParticipants +-down- com.example.our_planner.ui.groups.AdapterParticipants.ViewHolderParticipants
+  com.example.our_planner.ui.groups.AdapterParticipants.ViewHolderParticipants -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.example.our_planner.ui.groups.AdapterParticipantsInvite -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.example.our_planner.ui.groups.AdapterParticipantsInvite +-down- com.example.our_planner.ui.groups.AdapterParticipantsInvite.ViewHolderParticipantsInvite
+  com.example.our_planner.ui.groups.AdapterParticipantsInvite.ViewHolderParticipantsInvite -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.example.our_planner.ui.groups.CreateGroupActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.example.our_planner.ui.groups.CreateGroupActivity o-- com.example.our_planner.ui.groups.CreateGroupActivityViewModel : viewModel
+  com.example.our_planner.ui.groups.CreateGroupActivityViewModel .up.|> com.example.our_planner.DataBaseAdapter.EmailCheckerInterface
+  com.example.our_planner.ui.groups.CreateGroupActivityViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.example.our_planner.ui.groups.EditGroupActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.example.our_planner.ui.groups.EditGroupActivity o-- com.example.our_planner.ui.groups.EditGroupActivityViewModel : viewModel
+  com.example.our_planner.ui.groups.EditGroupActivityViewModel .up.|> com.example.our_planner.DataBaseAdapter.EmailCheckerInterface
+  com.example.our_planner.ui.groups.EditGroupActivityViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.example.our_planner.ui.groups.GroupsFragment -up-|> androidx.fragment.app.Fragment
+  com.example.our_planner.ui.groups.GroupsFragment o-- com.example.our_planner.ui.groups.GroupsViewModel : viewModel
+  com.example.our_planner.ui.groups.GroupsViewModel .up.|> com.example.our_planner.DataBaseAdapter.DBInterface
+  com.example.our_planner.ui.groups.GroupsViewModel .up.|> com.example.our_planner.DataBaseAdapter.GroupInterface
+  com.example.our_planner.ui.groups.GroupsViewModel -up-|> androidx.lifecycle.AndroidViewModel
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

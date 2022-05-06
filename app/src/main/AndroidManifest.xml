@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.our_planner">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission
+        android:name="android.permission.MANAGE_DOCUMENTS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -10,19 +21,46 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ourplanner">
         <activity
-            android:name=".NavigationDrawer"
+            android:name=".ui.calendar.CreateEventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.calendar.EditEventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.user.ForgotPasswordActivity"
             android:exported="false"
+            android:label="@string/title_activity_forgot_password" />
+        <activity
+            android:name=".ui.user.RegisterActivity"
+            android:exported="false"
+            android:label="@string/title_activity_register" />
+        <activity
+            android:name=".NavigationDrawer"
+            android:exported="true"
             android:label="@string/title_activity_navigation_drawer"
             android:theme="@style/Theme.Ourplanner.NoActionBar" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".ui.user.LoginActivity"
+            android:exported="true"
+            android:label="@string/title_activity_sign_in">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.groups.CreateGroupActivity"
+            android:exported="false"
+            android:label="@string/create_group" />
+        <activity
+            android:name=".ui.groups.EditGroupActivity"
+            android:exported="false"
+            android:label="@string/edit_group" />
+        <activity
+            android:name=".ui.calendar.comments.CommentsActivity"
+            android:exported="true"
+            android:label="Show Comments" />
     </application>
 
 </manifest>
