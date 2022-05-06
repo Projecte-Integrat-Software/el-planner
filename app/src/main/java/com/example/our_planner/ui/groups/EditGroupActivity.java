@@ -125,7 +125,7 @@ public class EditGroupActivity extends AppCompatActivity {
             } else {
                 System.out.println(participants);
                 System.out.println(admins);
-                viewModel.editGroup(group.getId(), title, details, currentColour, participants, admins);
+                viewModel.editGroup(group.getId(), title, details, currentColour, participants, admins, group.getEvents());
                 finish();
             }
         });

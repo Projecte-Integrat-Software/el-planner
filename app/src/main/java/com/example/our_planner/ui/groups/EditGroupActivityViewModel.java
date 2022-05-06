@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.our_planner.DataBaseAdapter;
+import com.example.our_planner.model.Event;
 import com.example.our_planner.model.Group;
 import com.example.our_planner.model.User;
 
@@ -29,7 +30,7 @@ public class EditGroupActivityViewModel extends AndroidViewModel implements Data
         email = DataBaseAdapter.getEmail();
     }
 
-    public void editGroup(String id, String title, String details, int colour, Map<String, User> participants, Map<String, Boolean> admins) {
+    public void editGroup(String id, String title, String details, int colour, Map<String, User> participants, Map<String, Boolean> admins, ArrayList<Event> events) {
         colours.replace(email, colour);
         //Update colours map with expelled users
         for (String k : colours.keySet()) {
@@ -37,7 +38,7 @@ public class EditGroupActivityViewModel extends AndroidViewModel implements Data
                 colours.remove(k);
             }
         }
-        DataBaseAdapter.editGroup(this, id, title, details, colours, participants, admins, invitationEmails);
+        DataBaseAdapter.editGroup(this, id, title, details, colours, participants, admins, invitationEmails, events);
     }
 
     public MutableLiveData<String> getToast() {

@@ -52,7 +52,7 @@ public class EditEventActivity extends AppCompatActivity {
 
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
-        Event newEvent = new Event(eventName, CalendarUtils.selectedDate, time);
+        Event newEvent = new Event("idTest", eventName, "location", false, CalendarUtils.selectedDate, time);
         Event.eventsList.add(newEvent);
         finish();
     }

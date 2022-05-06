@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
+import com.example.our_planner.model.Group;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -136,9 +138,15 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
-        Event newEvent = new Event(eventName, date, startTime);
+        Group test = new Group(null, null, null, null, null, null);
+        Event newEvent = new Event("idTest1", eventName, "location", false, CalendarUtils.selectedDate, startTime);
+        test.addEvent(newEvent);
         Event.eventsList.add(newEvent);
+        DataBaseAdapter.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), "", "");
+        DataBaseAdapter.deleteEvent("idTest");
+
         finish();
     }
+
 
 }

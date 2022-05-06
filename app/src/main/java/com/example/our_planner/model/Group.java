@@ -1,6 +1,7 @@
 package com.example.our_planner.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Group implements Serializable {
@@ -10,6 +11,7 @@ public class Group implements Serializable {
     private final Map<String, Integer> colours;
     private final Map<String, User> participants;
     private final Map<String, Boolean> admins;
+    private final ArrayList<Event> events;
 
     public Group(String id, String title, String details, Map<String, Integer> colours, Map<String, User> participants, Map<String, Boolean> admins) {
         this.id = id;
@@ -18,6 +20,7 @@ public class Group implements Serializable {
         this.colours = colours;
         this.participants = participants;
         this.admins = admins;
+        this.events = new ArrayList<>();
     }
 
     public String getId() {
@@ -42,5 +45,17 @@ public class Group implements Serializable {
 
     public Map<String, Integer> getColours() {
         return colours;
+    }
+
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
+
+    public void addEvent(Event e) {
+        events.add(e);
+    }
+
+    public void removeEvent(Event e) {
+        events.remove(e);
     }
 }

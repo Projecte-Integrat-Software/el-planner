@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.our_planner.model.Comment;
+import com.example.our_planner.model.Event;
 import com.example.our_planner.model.Group;
 import com.example.our_planner.model.Invitation;
 import com.example.our_planner.model.User;
@@ -30,7 +31,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -119,7 +119,7 @@ public abstract class DataBaseAdapter {
         });
     }
 
-    private static Map<String, Object> mapGroupDocument(String t, String d, Map<String, Integer> c, Map<String, User> p, Map<String, Boolean> a) {
+    private static Map<String, Object> mapGroupDocument(String t, String d, Map<String, Integer> c, Map<String, User> p, Map<String, Boolean> a, ArrayList<Event> e) {
         Map<String, Object> g = new HashMap<>();
         g.put("title", t);
         g.put("details", d);
@@ -132,6 +132,7 @@ public abstract class DataBaseAdapter {
         g.put("colours", colours);
         g.put("participants", participants);
         g.put("admins", a);
+        g.put("events", e);
         return g;
     }
 
@@ -191,7 +192,8 @@ public abstract class DataBaseAdapter {
         participants.put(email, new User(getUserName()));
         Map<String, Boolean> admins = new HashMap<>();
         admins.put(email, true);
-        db.collection("groups").add(mapGroupDocument(title, details, colours, participants, admins))
+        ArrayList<Event> events = new ArrayList<>();
+        db.collection("groups").add(mapGroupDocument(title, details, colours, participants, admins, events))
                 .addOnSuccessListener(documentReference -> {
                     loadGroups();
                     sendInvitations(invitationEmails, documentReference.getId(), title);
@@ -232,8 +234,8 @@ public abstract class DataBaseAdapter {
         });
     }
 
-    public static void editGroup(DBInterface i, String id, String title, String details, Map<String, Integer> colours, Map<String, User> participants, Map<String, Boolean> admins, List<String> invitationEmails) {
-        db.collection("groups").document(id).set(mapGroupDocument(title, details, colours, participants, admins))
+    public static void editGroup(DBInterface i, String id, String title, String details, Map<String, Integer> colours, Map<String, User> participants, Map<String, Boolean> admins, List<String> invitationEmails, ArrayList<Event> events) {
+        db.collection("groups").document(id).set(mapGroupDocument(title, details, colours, participants, admins, events))
                 .addOnSuccessListener(documentReference -> {
                     loadGroups();
                     sendInvitations(invitationEmails, id, title);
@@ -266,7 +268,8 @@ public abstract class DataBaseAdapter {
             c.remove(email);
             Map<String, Boolean> a = g.getAdmins();
             a.remove(email);
-            Map<String, Object> group = mapGroupDocument(g.getTitle(), g.getDetails(), c, p, a);
+            ArrayList<Event> e = g.getEvents();
+            Map<String, Object> group = mapGroupDocument(g.getTitle(), g.getDetails(), c, p, a, e);
             db.collection("groups").document(g.getId()).set(group).addOnSuccessListener(documentReference -> loadGroups());
         }
     }
@@ -393,15 +396,40 @@ public abstract class DataBaseAdapter {
         void addComment(Comment comment);
     }
 
-    public static void createEvent(DBInterface i, String name, LocalDate date, LocalTime time) {
+    private static Map<String, Object> mapEventDocument(String id, String name, String location, boolean allDay, String date, String time) {
+        Map<String, Object> g = new HashMap<>();
+        g.put("id", id);
+        g.put("name", name);
+        g.put("location", location);
+        g.put("all day", allDay);
+        g.put("date", date);
+        g.put("time", time);
+        return g;
+    }
+
+    public static void createEvent(String eventId, String name, String location, boolean allDay, String date, String time) {
+        DocumentReference doc = db.collection("event").document(eventId);
+        doc.set(mapEventDocument(eventId, name, location, allDay, date, time))
+                .addOnSuccessListener(documentReference -> {
+                    loadEvents();
+                });
 
     }
 
-    public static void editEvent(DBInterface i, String name, LocalDate date, LocalTime time) {
+    private static void loadEvents() {
+    }
+
+    public static void editEvent(String eventId, String name, String location, boolean allDay, LocalDate date, LocalTime time, Group group) {
+        String groupId = group.getId();
+        deleteEvent(eventId);
+
 
     }
 
-    public static void deleteEvent(DBInterface i, String name) {
-
+    public static void deleteEvent(String eventId) {
+        DocumentReference doc = db.collection("event").document(eventId);
+        doc.delete().addOnSuccessListener(documentReference -> {
+            loadEvents();
+        });
     }
 }
