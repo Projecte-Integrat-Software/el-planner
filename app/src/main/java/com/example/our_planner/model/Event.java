@@ -25,22 +25,26 @@ public class Event implements Serializable {
     private String location;
     private boolean allDay;
     private LocalDate date;
-    private LocalTime time;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
-    public Event(String id, String name, String location, Boolean allDay, LocalDate date, LocalTime time) {
+    public Event(String id, String name, String location, Boolean allDay, LocalDate date, LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.allDay = allDay;
         this.date = date;
-        this.time = time;
+        this.startTime = startTime;
+        this.endTime = endTime;
+
     }
 
-    public Event(String id, String name, String location, Boolean allDay) {
+    public Event(String id, String name, String location, Boolean allDay, LocalDate date) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.allDay = allDay;
+        this.date = date;
     }
 
     public String getId() {
@@ -75,16 +79,27 @@ public class Event implements Serializable {
         return date;
     }
 
-    public LocalTime getTime() {
-        return time;
-    }
-
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public void setTime(LocalTime time) {
-        this.time = time;
+    public static void updateEventsList(ArrayList<Event> events) {
+        eventsList = events;
     }
 
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
 }

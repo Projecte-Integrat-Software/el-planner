@@ -52,7 +52,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolderEv
         }
 
         public void setData(Event event) {
-            String eventTitle = event.getName() + " " + CalendarUtils.formattedTime(event.getTime());
+            String eventTitle = event.getName() + " " + CalendarUtils.formattedTime(event.getStartTime());
             eventCellTV.setText(eventTitle);
         }
     }
