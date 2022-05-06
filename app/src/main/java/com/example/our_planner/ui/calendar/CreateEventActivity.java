@@ -20,13 +20,15 @@ import java.time.LocalTime;
 
 public class CreateEventActivity extends AppCompatActivity {
     private EditText eventNameET;
-    private TextView eventDateTV, eventTimeTV, dateTV, startTimeTV;
-    private Button selectDateBtn, selectStartTimeBtn, createBtn;
+    private TextView eventDateTV, eventTimeTV, dateTV, startTimeTV, endTimeTV;
+    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, createBtn;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog startTimePickerDialog;
+    private TimePickerDialog endTimePickerDialog;
 
     private LocalDate date;
     private LocalTime startTime;
+    private LocalTime endTime;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -37,9 +39,12 @@ public class CreateEventActivity extends AppCompatActivity {
         date = CalendarUtils.selectedDate;
         startTime = LocalTime.now();
         startTime = startTime.minusSeconds(startTime.getSecond());
+        endTime = startTime.plusHours(1);
+
         initWidgets();
         initDatePicker();
         initStartTimePicker();
+        initEndTimePicker();
         initListeners();
     }
 
@@ -51,14 +56,17 @@ public class CreateEventActivity extends AppCompatActivity {
         eventTimeTV = findViewById(R.id.txtEventEnd);
         dateTV = findViewById(R.id.dateTV);
         startTimeTV = findViewById(R.id.startTimeTV);
+        endTimeTV = findViewById(R.id.endTimeTV);
 
         selectDateBtn = findViewById(R.id.selectDateBtn);
         selectStartTimeBtn = findViewById(R.id.selectStartTimeBtn);
+        selectEndTimeBtn = findViewById(R.id.selectEndTimeBtn);
         createBtn = findViewById(R.id.btnCreate);
 
 
         dateTV.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         startTimeTV.setText(CalendarUtils.formattedTime(startTime));
+        endTimeTV.setText(CalendarUtils.formattedTime(endTime));
         eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         eventTimeTV.setText("Time: " + CalendarUtils.formattedTime(startTime));
     }
@@ -93,9 +101,24 @@ public class CreateEventActivity extends AppCompatActivity {
         startTimePickerDialog = new TimePickerDialog(this, style, onTimeSetListener, hour, minute, true);
     }
 
+    private void initEndTimePicker() {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, selectedHour, selectedMinute) -> {
+            endTime = LocalTime.of(selectedHour, selectedMinute);
+            endTimeTV.setText(CalendarUtils.formattedTime(endTime));
+        };
+
+        int hour = endTime.getHour();
+        int minute = endTime.getMinute();
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+
+        endTimePickerDialog = new TimePickerDialog(this, style, onTimeSetListener, hour, minute, true);
+    }
+
     private void initListeners() {
         selectDateBtn.setOnClickListener(this::openDatePicker);
         selectStartTimeBtn.setOnClickListener(this::openStartTimePicker);
+        selectEndTimeBtn.setOnClickListener(this::openEndTimePicker);
         createBtn.setOnClickListener(this::saveEventAction);
     }
 
@@ -105,6 +128,10 @@ public class CreateEventActivity extends AppCompatActivity {
 
     public void openStartTimePicker(View view) {
         startTimePickerDialog.show();
+    }
+
+    public void openEndTimePicker(View view) {
+        endTimePickerDialog.show();
     }
 
     private void saveEventAction(View view) {
