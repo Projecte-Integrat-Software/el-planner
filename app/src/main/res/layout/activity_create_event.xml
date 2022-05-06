@@ -88,6 +88,30 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/dateTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:textColorHint="#757575"
+                android:textSize="23sp" />
+
+            <Button
+                android:id="@+id/selectDateBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/select_date" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
                 android:id="@+id/labelEventStart"
                 android:layout_width="42dp"
                 android:layout_height="match_parent"
@@ -109,8 +133,6 @@
                 android:minHeight="48dp"
                 android:selectAllOnFocus="true"
                 android:textColorHint="#757575" />
-
-
         </LinearLayout>
 
         <LinearLayout
