@@ -37,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +53,7 @@ public abstract class DataBaseAdapter {
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private static byte[] byteArray = new byte[]{};
     private static List<GroupInterface> groupInterfaces = new ArrayList<>();
+    private static EventInterface eventInterface;
     private static InvitationInterface invitationInterface;
     private static boolean registrationCompleted = true;
 
@@ -396,27 +398,49 @@ public abstract class DataBaseAdapter {
         void addComment(Comment comment);
     }
 
-    private static Map<String, Object> mapEventDocument(String id, String name, String location, boolean allDay, String date, String time) {
+    private static Map<String, Object> mapEventDocument(String name, String location, boolean allDay, String date, String startTime, String endTime) {
         Map<String, Object> g = new HashMap<>();
-        g.put("id", id);
         g.put("name", name);
         g.put("location", location);
         g.put("all day", allDay);
         g.put("date", date);
-        g.put("time", time);
+        g.put("start time", startTime);
+        g.put("end time", endTime);
         return g;
     }
 
-    public static void createEvent(String eventId, String name, String location, boolean allDay, String date, String time) {
+    public static void createEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime) {
         DocumentReference doc = db.collection("event").document(eventId);
-        doc.set(mapEventDocument(eventId, name, location, allDay, date, time))
+        doc.set(mapEventDocument(name, location, allDay, date, startTime, endTime))
                 .addOnSuccessListener(documentReference -> {
                     loadEvents();
                 });
 
     }
 
+    public static void subscribeEventsObserver(EventInterface i) {
+        eventInterface = i;
+        loadEvents();
+    }
+
     private static void loadEvents() {
+        db.collection("events").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Event> events = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+                    events.add(new Event(document.getId(), (String) g.get("name"), (String) g.get("location"), (boolean) g.get("all day"), LocalDate.parse(((String) g.get("date")), formatter), LocalTime.parse((String) g.get("start time")), LocalTime.parse((String) g.get("end time"))));
+                }
+
+                eventInterface.update(events);
+
+            }
+        });
+    }
+
+    public interface EventInterface {
+        void update(ArrayList<Event> events);
     }
 
     public static void editEvent(String eventId, String name, String location, boolean allDay, LocalDate date, LocalTime time, Group group) {

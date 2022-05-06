@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.our_planner.R;
-import com.example.our_planner.model.Event;
 
 import java.time.LocalTime;
 
@@ -52,8 +51,8 @@ public class EditEventActivity extends AppCompatActivity {
 
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
-        Event newEvent = new Event("idTest", eventName, "location", false, CalendarUtils.selectedDate, time);
-        Event.eventsList.add(newEvent);
+        //    Event newEvent = new Event("idTest", eventName, "location", false, CalendarUtils.selectedDate, startTime, endTime);
+        //    Event.eventsList.add(newEvent);
         finish();
     }
 

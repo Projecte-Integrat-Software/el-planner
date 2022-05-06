@@ -11,18 +11,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
-import com.example.our_planner.model.Group;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class CreateEventActivity extends AppCompatActivity {
+    private CreateEventActivityViewModel viewModel;
+
     private EditText eventNameET;
-    private TextView eventDateTV, eventTimeTV, dateTV, startTimeTV, endTimeTV;
+    private TextView dateTV, startTimeTV, endTimeTV;
     private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, createBtn;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog startTimePickerDialog;
@@ -38,6 +40,7 @@ public class CreateEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
+        viewModel = new ViewModelProvider(this).get(CreateEventActivityViewModel.class);
         date = CalendarUtils.selectedDate;
         startTime = LocalTime.now();
         startTime = startTime.minusSeconds(startTime.getSecond());
@@ -54,8 +57,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private void initWidgets() {
         eventNameET = findViewById(R.id.txtEventTitle);
 
-        eventDateTV = findViewById(R.id.txtEventStart);
-        eventTimeTV = findViewById(R.id.txtEventEnd);
+
         dateTV = findViewById(R.id.dateTV);
         startTimeTV = findViewById(R.id.startTimeTV);
         endTimeTV = findViewById(R.id.endTimeTV);
@@ -69,8 +71,8 @@ public class CreateEventActivity extends AppCompatActivity {
         dateTV.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         startTimeTV.setText(CalendarUtils.formattedTime(startTime));
         endTimeTV.setText(CalendarUtils.formattedTime(endTime));
-        eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
-        eventTimeTV.setText("Time: " + CalendarUtils.formattedTime(startTime));
+       /* eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
+        eventTimeTV.setText("Time: " + CalendarUtils.formattedTime(startTime)); */
     }
 
     private void initDatePicker() {
@@ -138,12 +140,18 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
-        Group test = new Group(null, null, null, null, null, null);
-        Event newEvent = new Event("idTest1", eventName, "location", false, CalendarUtils.selectedDate, startTime);
-        test.addEvent(newEvent);
+        // TODO Implement IDs in events
+        LocalTime time1 = startTime;
+        LocalTime time2 = endTime;
+        LocalDate date = CalendarUtils.selectedDate;
+        Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2);
         Event.eventsList.add(newEvent);
-        DataBaseAdapter.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), "", "");
-        DataBaseAdapter.deleteEvent("idTest");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+
+
+        viewModel.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), date.format(formatter), newEvent.getStartTime().toString(), newEvent.getEndTime().toString());
+
 
         finish();
     }

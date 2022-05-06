@@ -1,9 +1,7 @@
 package com.example.our_planner.ui.calendar;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +16,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +33,7 @@ public class CalendarFragment extends Fragment {
     private Button commentEvent;
     private ImageButton calendarGroups;
     private ArrayList<Group> groups;
+    private EventsViewModel eventsViewModel;
 
 
 
@@ -41,6 +41,7 @@ public class CalendarFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        eventsViewModel = new ViewModelProvider(this).get(EventsViewModel.class);
         spinner = view.findViewById(R.id.calendarSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
                 R.array.calendarOptions, android.R.layout.simple_spinner_item);
@@ -59,7 +60,6 @@ public class CalendarFragment extends Fragment {
         calendarGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Arreglar la següent línia
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_calendar_groups, null, false), 600, 800, true);
                 //pw.showAtLocation(button, Gravity.CENTER, 0, 0);
@@ -81,6 +81,7 @@ public class CalendarFragment extends Fragment {
         insertNestedFragment();
         initListeners();
     }
+
 
     private void insertNestedFragment() {
         Fragment childFragment = new WeekCalendarFragment();
