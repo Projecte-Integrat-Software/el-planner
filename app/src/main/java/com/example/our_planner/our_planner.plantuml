@@ -519,6 +519,25 @@ title __OUR_PLANNER's Class Diagram__\n
 
   com.example.our_planner.ui.calendar.comments.CommentsActivity --> com.example.our_planner.ui.calendar.comments.CommentsViewModel
   com.example.our_planner.ui.calendar.comments.CommentsViewModel --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.calendar.CalendarFragment --> com.example.our_planner.ui.calendar.comments.CommentsActivity
+  com.example.our_planner.ui.calendar.CalendarViewModel --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.calendar.EventsViewModel --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.groups.AdapterGroups --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.groups.AdapterParticipants --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.groups.CreateGroupActivityViewModel --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.groups.EditGroupActivityViewModel --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.groups.GroupsViewModel --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.invitations.AdapterInvitations --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.invitations.InvitationsViewModel --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.settings.SettingsFragment --> com.example.our_planner.NavigationDrawer
+  com.example.our_planner.ui.settings.SettingsFragment --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.user.ForgotPasswordActivity --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.user.LoginActivity --> com.example.our_planner.NavigationDrawer
+  com.example.our_planner.ui.user.LoginActivityViewModel --> com.example.our_planner.DataBaseAdapter
+  com.example.our_planner.ui.user.RegisterActivity --> com.example.our_planner.NavigationDrawer
+  com.example.our_planner.ui.user.RegisterActivityViewModel --> com.example.our_planner.DataBaseAdapter
+
+
 
 right footer
 
