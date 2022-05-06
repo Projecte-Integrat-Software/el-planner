@@ -1,0 +1,306 @@
+@startuml
+
+title __CALENDAR's Class Diagram__\n
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.AdapterCalendarGroups {
+          - groups : ArrayList<Group>
+          + AdapterCalendarGroups()
+          + getItemCount()
+          + onBindViewHolder()
+          + onCreateViewHolder()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.AdapterCalendarGroups.ViewHolderCalendarGroups {
+          ~ group : TextView
+          + ViewHolderCalendarGroups()
+          + asignarCalendarGroups()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.CalendarAdapter {
+          - days : ArrayList<LocalDate>
+          + CalendarAdapter()
+          + getItemCount()
+          + onBindViewHolder()
+          + onCreateViewHolder()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      interface com.example.our_planner.ui.calendar.CalendarAdapter.OnItemListener {
+          {abstract} + onItemClick()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.CalendarFragment {
+          - calendarGroups : ImageButton
+          - commentEvent : Button
+          - groups : ArrayList<Group>
+          - spinner : Spinner
+          + onCreateView()
+          + onDestroyView()
+          + onViewCreated()
+          - initListeners()
+          - insertNestedFragment()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.CalendarGroupsFragment {
+          {static} ~ COLUMNS : int
+          - groups : ArrayList<Group>
+          - recyclerViewCalendarGroups : RecyclerView
+          + onCreateView()
+          + onDestroyView()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.CalendarUtils {
+          {static} + selectedDate : LocalDate
+          {static} + daysInMonthArray()
+          {static} + daysInWeekArray()
+          {static} + formattedDate()
+          {static} + formattedShortTime()
+          {static} + formattedTime()
+          {static} + monthDayFromDate()
+          {static} + monthYearFromDate()
+          {static} - sundayForDate()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.CalendarViewHolder {
+          + dayOfMonth : TextView
+          + parentView : View
+          - days : ArrayList<LocalDate>
+          + CalendarViewHolder()
+          + onClick()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.CalendarViewModel {
+          - mGroups : MutableLiveData<ArrayList<Group>>
+          + CalendarViewModel()
+          + getGroups()
+          + update()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.CreateEventActivity {
+          - createBtn : Button
+          - date : LocalDate
+          - datePickerDialog : DatePickerDialog
+          - dateTV : TextView
+          - endTime : LocalTime
+          - endTimePickerDialog : TimePickerDialog
+          - endTimeTV : TextView
+          - eventDateTV : TextView
+          - eventNameET : EditText
+          - eventTimeTV : TextView
+          - selectDateBtn : Button
+          - selectEndTimeBtn : Button
+          - selectStartTimeBtn : Button
+          - startTime : LocalTime
+          - startTimePickerDialog : TimePickerDialog
+          - startTimeTV : TextView
+          + openEndTimePicker()
+          + openStartTimePicker()
+          # onCreate()
+          - initDatePicker()
+          - initEndTimePicker()
+          - initListeners()
+          - initStartTimePicker()
+          - initWidgets()
+          - openDatePicker()
+          - saveEventAction()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.CreateEventActivityVIewModel {
+          + CreateEventActivityVIewModel()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.EditEventActivity {
+          - cancelBtn : Button
+          - eventDateTV : TextView
+          - eventNameET : EditText
+          - eventTimeTV : TextView
+          - saveBtn : Button
+          - time : LocalTime
+          # onCreate()
+          - initListeners()
+          - initWidgets()
+          - saveEventAction()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.EditEventActivityViewModel {
+          + EditEventActivityViewModel()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.EventAdapter {
+          - context : Context
+          - events : ArrayList<Event>
+          + EventAdapter()
+          + getItemCount()
+          + onBindViewHolder()
+          + onCreateViewHolder()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.EventAdapter.ViewHolderEvents {
+          - eventCellTV : TextView
+          + ViewHolderEvents()
+          + setData()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.MonthCalendarFragment {
+          - calendarRecyclerView : RecyclerView
+          - monthYearText : TextView
+          - nextMonthBtn : Button
+          - previousMonthBtn : Button
+          - view : View
+          + nextMonthAction()
+          + onCreateView()
+          + onItemClick()
+          + onViewCreated()
+          + previousMonthAction()
+          - initListeners()
+          - initWidgets()
+          - setMonthView()
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.ViewEventActivity {
+      }
+    }
+  }
+  
+
+  namespace com.example.our_planner {
+    namespace ui.calendar {
+      class com.example.our_planner.ui.calendar.WeekCalendarFragment {
+          - calendarRecyclerView : RecyclerView
+          - monthYearText : TextView
+          - newEventBtn : Button
+          - nextWeekBtn : Button
+          - previousWeekBtn : Button
+          - recyclerViewEvents : RecyclerView
+          - view : View
+          + newEventAction()
+          + nextWeekAction()
+          + onCreateView()
+          + onItemClick()
+          + onResume()
+          + onViewCreated()
+          + previousWeekAction()
+          - initListeners()
+          - initWidgets()
+          - setEventAdapter()
+          - setWeekView()
+      }
+    }
+  }
+  
+
+  com.example.our_planner.ui.calendar.AdapterCalendarGroups -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.example.our_planner.ui.calendar.AdapterCalendarGroups +-down- com.example.our_planner.ui.calendar.AdapterCalendarGroups.ViewHolderCalendarGroups
+  com.example.our_planner.ui.calendar.AdapterCalendarGroups.ViewHolderCalendarGroups -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.example.our_planner.ui.calendar.CalendarAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.example.our_planner.ui.calendar.CalendarAdapter o-- com.example.our_planner.ui.calendar.CalendarAdapter.OnItemListener : onItemListener
+  com.example.our_planner.ui.calendar.CalendarAdapter +-down- com.example.our_planner.ui.calendar.CalendarAdapter.OnItemListener
+  com.example.our_planner.ui.calendar.CalendarFragment -up-|> androidx.fragment.app.Fragment
+  com.example.our_planner.ui.calendar.CalendarGroupsFragment -up-|> androidx.fragment.app.Fragment
+  com.example.our_planner.ui.calendar.CalendarViewHolder .up.|> android.view.View.OnClickListener
+  com.example.our_planner.ui.calendar.CalendarViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.example.our_planner.ui.calendar.CalendarViewHolder o-- com.example.our_planner.ui.calendar.CalendarAdapter.OnItemListener : onItemListener
+  com.example.our_planner.ui.calendar.CalendarViewModel .up.|> com.example.our_planner.DataBaseAdapter.GroupInterface
+  com.example.our_planner.ui.calendar.CalendarViewModel -up-|> androidx.lifecycle.ViewModel
+  com.example.our_planner.ui.calendar.CreateEventActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.example.our_planner.ui.calendar.CreateEventActivityVIewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.example.our_planner.ui.calendar.EditEventActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.example.our_planner.ui.calendar.EditEventActivityViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.example.our_planner.ui.calendar.EventAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.example.our_planner.ui.calendar.EventAdapter +-down- com.example.our_planner.ui.calendar.EventAdapter.ViewHolderEvents
+  com.example.our_planner.ui.calendar.EventAdapter.ViewHolderEvents -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.example.our_planner.ui.calendar.MonthCalendarFragment .up.|> com.example.our_planner.ui.calendar.CalendarAdapter.OnItemListener
+  com.example.our_planner.ui.calendar.MonthCalendarFragment -up-|> androidx.fragment.app.Fragment
+  com.example.our_planner.ui.calendar.WeekCalendarFragment .up.|> com.example.our_planner.ui.calendar.CalendarAdapter.OnItemListener
+  com.example.our_planner.ui.calendar.WeekCalendarFragment -up-|> androidx.fragment.app.Fragment
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
