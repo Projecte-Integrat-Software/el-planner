@@ -1,6 +1,7 @@
 @startuml
 
 title __OUR_PLANNER's Class Diagram__\n
+left to right direction
 
   namespace com.example.our_planner {
     abstract class com.example.our_planner.DataBaseAdapter {
