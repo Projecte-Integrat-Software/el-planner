@@ -124,7 +124,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
 
     private void setEventAdapter() {
         ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
-        EventAdapterR adapter = new EventAdapterR(getContext(), dailyEvents);
+        EventAdapter adapter = new EventAdapter(getContext(), dailyEvents);
         recyclerViewEvents.setAdapter(adapter);
     }
 }
