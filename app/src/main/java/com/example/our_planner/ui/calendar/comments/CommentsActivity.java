@@ -27,6 +27,9 @@ public class CommentsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
@@ -34,7 +37,6 @@ public class CommentsActivity extends AppCompatActivity {
         recyclerViewComments.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         message = findViewById(R.id.message);
         sendBtn = findViewById(R.id.sendBtn);
-
 
         CommentsViewModel viewModel = new ViewModelProvider(this).get(CommentsViewModel.class);
         MutableLiveData<ArrayList<Comment>> comments = viewModel.getComments();
@@ -60,6 +62,4 @@ public class CommentsActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

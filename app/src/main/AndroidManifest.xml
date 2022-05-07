@@ -60,7 +60,8 @@
         <activity
             android:name=".ui.calendar.comments.CommentsActivity"
             android:exported="true"
-            android:label="Show Comments" />
+            android:label="Show Comments"
+            android:parentActivityName=".NavigationDrawer" />
     </application>
 
 </manifest>
