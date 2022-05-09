@@ -53,18 +53,18 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolderEv
 
     public static class ViewHolderEvents extends RecyclerView.ViewHolder {
 
-        private final TextView eventCellTV;
+        private final TextView eventNameTV;
         private final Button detailsBtn;
 
         public ViewHolderEvents(@NonNull View itemView) {
             super(itemView);
-            eventCellTV = itemView.findViewById(R.id.eventCellTV);
+            eventNameTV = itemView.findViewById(R.id.eventNameTV);
             detailsBtn = itemView.findViewById(R.id.detailsBtn);
         }
 
         public void setData(Event event) {
-            String eventTitle = event.getName() + " " + CalendarUtils.formattedTime(event.getStartTime());
-            eventCellTV.setText(eventTitle);
+            eventNameTV.setText(event.getName());
+            eventNameTV.setBackgroundResource(R.color.teal_700);
         }
     }
 }
