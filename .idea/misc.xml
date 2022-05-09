@@ -21,6 +21,7 @@
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.45" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_edit_event.xml" value="0.45" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/calendar_cell.xml" value="0.16894630192502533" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/event_cell.xml" value="0.38333333333333336" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_calendar.xml" value="0.17654508611955422" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_calendar_groups.xml" value="0.25271739130434784" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_calendar_groups.xml" value="0.25271739130434784" />
