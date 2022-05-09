@@ -4,12 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -34,6 +38,8 @@ public class CreateEventActivity extends AppCompatActivity {
     private LocalTime startTime;
     private LocalTime endTime;
 
+    private androidx.appcompat.app.AlertDialog alert;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +52,20 @@ public class CreateEventActivity extends AppCompatActivity {
         startTime = startTime.minusSeconds(startTime.getSecond());
         endTime = startTime.plusHours(1);
 
+        initAlarmDialog();
         initWidgets();
         initDatePicker();
         initStartTimePicker();
         initEndTimePicker();
         initListeners();
+    }
+
+    private void initAlarmDialog() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setMessage("");
+        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+        alert = builder.create();
+        alert.setTitle(R.string.help);
     }
 
     @SuppressLint("SetTextI18n")
@@ -156,5 +171,19 @@ public class CreateEventActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.help) {
+            alert.show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

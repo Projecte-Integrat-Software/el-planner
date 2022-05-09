@@ -1,10 +1,15 @@
 package com.example.our_planner.ui.calendar.comments;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -21,17 +26,23 @@ import java.util.ArrayList;
 
 public class CommentsActivity extends AppCompatActivity {
 
-    RecyclerView recyclerViewComments;
-    EditText message;
-    FloatingActionButton sendBtn;
+    private RecyclerView recyclerViewComments;
+    private EditText message;
+    private FloatingActionButton sendBtn;
+    private AlertDialog alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
+
+        AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setMessage("");
+        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+        alert = builder.create();
+        alert.setTitle(R.string.help);
 
         recyclerViewComments = findViewById(R.id.recyclerViewComments);
         recyclerViewComments.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -43,23 +54,30 @@ public class CommentsActivity extends AppCompatActivity {
         AdapterComments adapterComments = new AdapterComments(comments.getValue());
         recyclerViewComments.setAdapter(adapterComments);
 
-        comments.observe(this, new Observer<ArrayList<Comment>>(){
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChanged(ArrayList<Comment> comments) {
-                adapterComments.notifyDataSetChanged();
-            }
-        });
+        comments.observe(this, comments1 -> adapterComments.notifyDataSetChanged());
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String messageToPost = message.getText().toString();
-                if (!messageToPost.equals("")){
-                    DataBaseAdapter.postComment(messageToPost);
-                    message.setText("");
-                }
+        sendBtn.setOnClickListener(view -> {
+            String messageToPost = message.getText().toString();
+            if (!messageToPost.equals("")){
+                DataBaseAdapter.postComment(messageToPost);
+                message.setText("");
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.help) {
+            alert.show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
