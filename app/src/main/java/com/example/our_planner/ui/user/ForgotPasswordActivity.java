@@ -25,9 +25,6 @@ public class ForgotPasswordActivity extends AppCompatActivity implements DataBas
         emailET = findViewById(R.id.emailET);
         receiveRecoveryEmailB = findViewById(R.id.receiveRecoveryEmailB);
         goBackB = findViewById(R.id.goBackB);
-
-        //TODO: Connect with ViewModel to check if the username exists, and it it does send the
-        // recovery email.
         receiveRecoveryEmailB.setOnClickListener(view -> {
             String email = emailET.getText().toString();
             if (!email.equals("")) DataBaseAdapter.forgotPassword(this,email);

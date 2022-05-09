@@ -110,14 +110,13 @@ public class EditGroupActivity extends AppCompatActivity {
                 });
             });
         } else {
-            txtTitle.setFocusable(b);
-            txtDetails.setFocusable(b);
-            btnParticipant.setOnClickListener(view -> Toast.makeText(this, "Cannot invite users to the group without being an admin!", Toast.LENGTH_SHORT).show());
+            txtTitle.setFocusable(false);
+            txtDetails.setFocusable(false);
+            btnParticipant.setVisibility(View.INVISIBLE);
         }
 
         Button btnEdit = findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(view -> {
-            //TODO: Invite participants checking if already invited, if so notify by a toast!
             String title = txtTitle.getText().toString();
             String details = txtDetails.getText().toString();
             if (title.isEmpty()) {

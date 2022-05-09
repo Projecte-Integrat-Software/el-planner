@@ -73,7 +73,7 @@ public class AdapterParticipants extends RecyclerView.Adapter<AdapterParticipant
             });
         } else {
             holder.adminCheckBox.setClickable(false);
-            holder.expelParticipantBtn.setOnClickListener(view -> Toast.makeText(view.getContext(), "Cannot expel users from the group without being an admin!", Toast.LENGTH_SHORT).show());
+            holder.expelParticipantBtn.setVisibility(View.INVISIBLE);
         }
     }
 

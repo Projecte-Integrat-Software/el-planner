@@ -1,10 +1,14 @@
 @startuml
 hide empty members
 
+
+title __OUR_PLANNER's Model Domain__\n
+left to right direction
+
 class "Usuari" as Usuari {
   String : Nom
-  String : Mail
-  String : Contrassenya
+  String : Email
+  String : Contrasenya
   Image : Foto de Perfil
 }
 
@@ -15,11 +19,18 @@ class "Event" as Event {
   LocalTime : Hora d'Inici
   LocalTime : Hora de Final
 }
+
+class "Color" as Color {
+  int : Transparència
+  int : R
+  int : G
+  int : B
+}
+
 class "Grup" as Grup {
+  String : Identificador
   String : Nom
   String : Detalls
-  Int : Color
-  Int : Identificador
 }
 
 class "Admin" as Admin {
@@ -27,6 +38,13 @@ class "Admin" as Admin {
 
 class "Invitació" as Invitació {
 }
+
+Usuari  "*" -- "*" Color : Escull >
+
+note "Cada usuari escull un únic color per grup al que està inscrit" as nota
+nota .- Color
+
+Color "*" -- "*" Grup : Referent a >
 
 Usuari "1...*" -- "*" Event : Té >
 
@@ -38,14 +56,14 @@ Usuari "1" -- "*" Invitació : Rep >
 
 Admin "1" -- "*" Invitació : Envia >
 
-Admin "1" -- "*" Grup : Crea
+Admin "1" -- "1..*" Grup : Gestiona >
 
-Admin "1" -- "*" Event : Crea >
+Admin "1" -- "*" Event : Gestiona >
 
-Admin "1" -- "1" Usuari : Fa Admin >
+Admin "*" -- "*" Usuari : Gestiona >
 
-Grup "1" -- "*" Invitació : Té Grup >
+Grup "1" -- "*" Invitació : Associada A <
 
-Usuari --> Admin: (Herència)
+Usuari <|-- Admin
 
 @enduml
