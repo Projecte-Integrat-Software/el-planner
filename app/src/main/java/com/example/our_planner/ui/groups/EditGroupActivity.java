@@ -1,9 +1,12 @@
 package com.example.our_planner.ui.groups;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,6 +15,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -35,12 +40,19 @@ public class EditGroupActivity extends AppCompatActivity {
     private int currentColour;
     private RecyclerView recyclerViewParticipants;
     private EditGroupActivityViewModel viewModel;
+    private AlertDialog alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_group);
         viewModel = new ViewModelProvider(this).get(EditGroupActivityViewModel.class);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("");
+        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+        alert = builder.create();
+        alert.setTitle(R.string.help);
 
         txtTitle = findViewById(R.id.txtGroupTitle);
         txtDetails = findViewById(R.id.txtGroupDetails);
@@ -110,14 +122,13 @@ public class EditGroupActivity extends AppCompatActivity {
                 });
             });
         } else {
-            txtTitle.setFocusable(b);
-            txtDetails.setFocusable(b);
-            btnParticipant.setOnClickListener(view -> Toast.makeText(this, "Cannot invite users to the group without being an admin!", Toast.LENGTH_SHORT).show());
+            txtTitle.setFocusable(false);
+            txtDetails.setFocusable(false);
+            btnParticipant.setVisibility(View.INVISIBLE);
         }
 
         Button btnEdit = findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(view -> {
-            //TODO: Invite participants checking if already invited, if so notify by a toast!
             String title = txtTitle.getText().toString();
             String details = txtDetails.getText().toString();
             if (title.isEmpty()) {
@@ -156,5 +167,21 @@ public class EditGroupActivity extends AppCompatActivity {
     private void setColour(int colour) {
         currentColour = colour;
         colourView.setBackgroundColor(colour);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.help) {
+            alert.show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

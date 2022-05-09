@@ -5,11 +5,14 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -18,6 +21,7 @@ import com.example.our_planner.model.Event;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class CreateEventActivity extends AppCompatActivity {
     private CreateEventActivityViewModel viewModel;
@@ -33,6 +37,8 @@ public class CreateEventActivity extends AppCompatActivity {
     private LocalTime startTime;
     private LocalTime endTime;
 
+    private androidx.appcompat.app.AlertDialog alert;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +51,20 @@ public class CreateEventActivity extends AppCompatActivity {
         startTime = startTime.minusSeconds(startTime.getSecond());
         endTime = startTime.plusHours(1);
 
+        initAlarmDialog();
         initWidgets();
         initDatePicker();
         initStartTimePicker();
         initEndTimePicker();
         initListeners();
+    }
+
+    private void initAlarmDialog() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setMessage("");
+        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+        alert = builder.create();
+        alert.setTitle(R.string.help);
     }
 
     @SuppressLint("SetTextI18n")
@@ -140,19 +155,32 @@ public class CreateEventActivity extends AppCompatActivity {
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
         // TODO Implement IDs in events
-
         LocalTime time1 = startTime;
         LocalTime time2 = endTime;
         LocalDate date = CalendarUtils.selectedDate;
         Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2);
         Event.eventsList.add(newEvent);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
 
-        viewModel.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), date.toString(), newEvent.getStartTime().toString(), newEvent.getEndTime().toString());
-
+        viewModel.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), date.format(formatter), newEvent.getStartTime().toString(), newEvent.getEndTime().toString());
 
         finish();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.help) {
+            alert.show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

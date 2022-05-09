@@ -2,6 +2,7 @@ package com.example.our_planner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -45,6 +47,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     private Toolbar toolbar;
     private NavController navController;
     private ImageView profilePictureND;
+    private String helpMessage;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -74,6 +77,8 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         email.setText(DataBaseAdapter.getEmail());
         profilePictureND = headerView.findViewById(R.id.profilePictureND);
         updateProfilePicture();
+
+        helpMessage = "Do you need help?";
 
         /*
         //Start specific fragment if wanted
@@ -114,6 +119,21 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.navigation_drawer, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.help) {
+            //Crear Popup amb l'ajuda d'aquesta activity
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(helpMessage);
+            builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+            AlertDialog alert = builder.create();
+            alert.setTitle(R.string.help);
+            alert.show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressLint("ResourceType")

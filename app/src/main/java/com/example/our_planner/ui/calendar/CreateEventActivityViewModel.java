@@ -5,8 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.example.our_planner.DataBaseAdapter;
-
 public class CreateEventActivityViewModel extends AndroidViewModel {
 
     public CreateEventActivityViewModel(@NonNull Application application) {
@@ -14,7 +12,7 @@ public class CreateEventActivityViewModel extends AndroidViewModel {
     }
 
     public void createEvent(String id, String name, String location, boolean allDay, String date, String startTime, String endTime) {
-        DataBaseAdapter.createEvent(id, name, location, allDay, date, startTime, endTime);
+        //DataBaseAdapter.createEvent(id, name, location, allDay, date, startTime, endTime);
     }
 
     public void editEvent() {

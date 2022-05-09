@@ -24,6 +24,9 @@
             android:name=".ui.calendar.CreateEventActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.calendar.ViewEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.calendar.EditEventActivity"
             android:exported="false" />
         <activity
