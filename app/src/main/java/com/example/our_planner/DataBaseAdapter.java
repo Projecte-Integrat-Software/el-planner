@@ -424,12 +424,12 @@ public abstract class DataBaseAdapter {
     }
 
     private static void loadEvents() {
-        db.collection("events").get().addOnCompleteListener(task -> {
+        db.collection("event").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<Event> events = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> g = document.getData();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     events.add(new Event(document.getId(), (String) g.get("name"), (String) g.get("location"), (boolean) g.get("all day"), LocalDate.parse(((String) g.get("date")), formatter), LocalTime.parse((String) g.get("start time")), LocalTime.parse((String) g.get("end time"))));
                 }
 

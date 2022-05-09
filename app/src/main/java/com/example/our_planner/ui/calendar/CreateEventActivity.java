@@ -18,7 +18,6 @@ import com.example.our_planner.model.Event;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class CreateEventActivity extends AppCompatActivity {
     private CreateEventActivityViewModel viewModel;
@@ -141,16 +140,15 @@ public class CreateEventActivity extends AppCompatActivity {
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
         // TODO Implement IDs in events
+
         LocalTime time1 = startTime;
         LocalTime time2 = endTime;
         LocalDate date = CalendarUtils.selectedDate;
         Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2);
         Event.eventsList.add(newEvent);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
 
-
-        viewModel.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), date.format(formatter), newEvent.getStartTime().toString(), newEvent.getEndTime().toString());
+        viewModel.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), date.toString(), newEvent.getStartTime().toString(), newEvent.getEndTime().toString());
 
 
         finish();
