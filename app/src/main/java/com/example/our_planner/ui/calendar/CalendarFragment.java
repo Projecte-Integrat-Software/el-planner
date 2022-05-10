@@ -26,7 +26,7 @@ import com.example.our_planner.model.Group;
 import com.example.our_planner.ui.calendar.comments.CommentsActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CalendarFragment extends Fragment {
 
@@ -44,6 +44,7 @@ public class CalendarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         eventsViewModel = new ViewModelProvider(this).get(EventsViewModel.class);
+        calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
         spinner = view.findViewById(R.id.calendarSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
                 R.array.calendarOptions, android.R.layout.simple_spinner_item);
@@ -51,12 +52,18 @@ public class CalendarFragment extends Fragment {
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        //      AdapterCalendarGroups adapterGroups = new AdapterCalendarGroups(new ArrayList<Group>());
+        //      recyclerCalendarGroups.setAdapter(adapterGroups);
+
+
         groups = new ArrayList<>();
-        HashMap m = new HashMap();
+        AtomicReference<AdapterCalendarGroups> adapterGroups = new AtomicReference<>(new AdapterCalendarGroups(groups));
+
+/*        HashMap m = new HashMap();
         groups.add(new Group("", "PIS", "Theory", m, m, m));
         groups.add(new Group("", "Geometry", "Problems", m, m, m));
         groups.add(new Group("", "PAE", "Labs", m, m, m));
-
+*/
         commentEvent = view.findViewById(R.id.commentEvent);
         calendarGroups = view.findViewById(R.id.btnCalendarGroups);
         calendarGroups.setOnClickListener(new View.OnClickListener() {
@@ -70,17 +77,17 @@ public class CalendarFragment extends Fragment {
                 recyclerCalendarGroups = pw.getContentView().findViewById(R.id.recyclerViewCalendarGroups);
                 recyclerCalendarGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-                AdapterCalendarGroups adapter = new AdapterCalendarGroups(groups);
-                recyclerCalendarGroups.setAdapter(adapter);
+                recyclerCalendarGroups.setAdapter(adapterGroups.get());
             }
 
 
         });
 
-        final Observer<ArrayList<Group>> observerGroups = i -> {
-            AdapterCalendarGroups newAdapter = new AdapterCalendarGroups(i);
-            recyclerCalendarGroups.swapAdapter(newAdapter, false);
-            newAdapter.notifyDataSetChanged();
+        Observer<ArrayList<Group>> observerGroups = i -> {
+            //        AdapterCalendarGroups newAdapter = new AdapterCalendarGroups(i);
+            //        recyclerCalendarGroups.swapAdapter(newAdapter, false);
+            //        newAdapter.notifyDataSetChanged();
+            adapterGroups.set(new AdapterCalendarGroups(i));
         };
         calendarViewModel.getGroups().observe(getActivity(), observerGroups);
 

@@ -1,6 +1,5 @@
 package com.example.our_planner.ui.calendar;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -15,9 +14,9 @@ public class CalendarViewModel extends ViewModel implements DataBaseAdapter.Grou
     //private final MutableLiveData<String> mToast;
 
     public CalendarViewModel() {
-        mGroups = new MutableLiveData<>();
-        /*mToast = new MutableLiveData<>();
-        mToast.setValue("This is calendar fragment");*/
+        super();
+        mGroups = new MutableLiveData<>(new ArrayList<>());
+        DataBaseAdapter.subscribeGroupObserver(this);
     }
 
     public MutableLiveData<ArrayList<Group>> getGroups() {
