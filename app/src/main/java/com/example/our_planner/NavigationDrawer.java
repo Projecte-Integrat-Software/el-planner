@@ -2,7 +2,6 @@ package com.example.our_planner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -48,6 +48,9 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     private NavController navController;
     private ImageView profilePictureND;
     private String helpMessage;
+    private FragmentManager fragmentManager;
+    private Menu menu;
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -58,6 +61,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+        fragmentManager = getSupportFragmentManager();
 
         setSupportActionBar(toolbar);
         appBarConfiguration = new AppBarConfiguration.Builder(
@@ -80,49 +84,51 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
 
         helpMessage = "Do you need help?";
 
-        /*
         //Start specific fragment if wanted
-        String s = getIntent().getStringExtra("fragment");
+        String s = getIntent().getStringExtra("fragmentToLoad");
         if (s != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             switch (s) {
                 case "Calendar": {
                     navigationView.getMenu().getItem(0).setChecked(true);
-                    fragmentTransaction.replace(R.id.fragment_container, new CalendarFragment()).commit();
+                    changeFragment(new CalendarFragment(), true);
                     break;
                 }
                 case "Groups": {
+                    System.out.println("hello");
                     navigationView.getMenu().getItem(1).setChecked(true);
-                    fragmentTransaction.replace(R.id.fragment_container, new GroupsFragment()).commit();
+                    changeFragment(new GroupsFragment(), true);
                     break;
                 }
                 case "Invitations": {
                     navigationView.getMenu().getItem(2).setChecked(true);
-                    fragmentTransaction.replace(R.id.fragment_container, new InvitationsFragment()).commit();
+                    changeFragment(new InvitationsFragment(), true);
                     break;
                 }
                 case "Settings": {
                     navigationView.getMenu().getItem(3).setChecked(true);
-                    fragmentTransaction.replace(R.id.fragment_container, new SettingsFragment()).commit();
+                    changeFragment(new SettingsFragment(), true);
                     break;
                 }
             }
             getSupportActionBar().setTitle(s);
             drawerLayout.closeDrawer(GravityCompat.START);
         }
-        */
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.navigation_drawer, menu);
+        this.menu = menu;
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         if (item.getItemId() == R.id.help) {
             //Crear Popup amb l'ajuda d'aquesta activity
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -149,20 +155,20 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (item.getItemId()) {
-            case R.id.navCalendar:{
-                fragmentTransaction.replace(R.id.fragment_container, new CalendarFragment()).commit();
+            case R.id.navCalendar: {
+                changeFragment(new CalendarFragment(), true);
                 break;
             }
-            case R.id.navGroups:{
-                fragmentTransaction.replace(R.id.fragment_container, new GroupsFragment()).commit();
+            case R.id.navGroups: {
+                changeFragment(new GroupsFragment(), true);
                 break;
             }
             case R.id.navInvitations: {
-                fragmentTransaction.replace(R.id.fragment_container, new InvitationsFragment()).commit();
+                changeFragment(new InvitationsFragment(), true);
                 break;
             }
             case R.id.navSettings: {
-                fragmentTransaction.replace(R.id.fragment_container, new SettingsFragment()).commit();
+                changeFragment(new SettingsFragment(), true);
                 break;
             }
             case R.id.navLogOut: {
@@ -179,7 +185,6 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                     pw.dismiss();
                     startActivity(new Intent(NavigationDrawer.this, LoginActivity.class));
                 });
-
                 return true;
             }
         }
@@ -195,4 +200,18 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
             profilePictureND.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
         });
     }
+
+    public void changeFragment(Fragment fragment, boolean compulsory) {
+        //System.out.println(fragment);
+        //System.out.println(PrevFragment.getPrevFragment());
+        //if (!compulsory) fragment = PrevFragment.getPrevFragment();
+        //PrevFragment.setPrevFragment(fragment);
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+
 }

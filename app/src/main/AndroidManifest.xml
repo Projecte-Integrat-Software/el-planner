@@ -22,18 +22,22 @@
         android:theme="@style/Theme.Ourplanner">
         <activity
             android:name=".ui.calendar.CreateEventActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".NavigationDrawer" />
         <activity
             android:name=".ui.calendar.EditEventActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".NavigationDrawer" />
         <activity
             android:name=".ui.user.ForgotPasswordActivity"
             android:exported="false"
-            android:label="@string/title_activity_forgot_password" />
+            android:label="@string/title_activity_forgot_password"
+            android:parentActivityName=".ui.user.LoginActivity" />
         <activity
             android:name=".ui.user.RegisterActivity"
             android:exported="false"
-            android:label="@string/title_activity_register" />
+            android:label="@string/title_activity_register"
+            android:parentActivityName=".ui.user.LoginActivity" />
         <activity
             android:name=".NavigationDrawer"
             android:exported="true"

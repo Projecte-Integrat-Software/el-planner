@@ -27,6 +27,7 @@ public class EditEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_event);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initWidgets();
         time = LocalTime.now();
         eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));

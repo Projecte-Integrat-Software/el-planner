@@ -27,6 +27,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements DataBas
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         builder.setMessage("");

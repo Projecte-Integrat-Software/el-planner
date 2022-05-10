@@ -1,6 +1,5 @@
 package com.example.our_planner.ui.user;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         viewModel = new ViewModelProvider(this).get(RegisterActivityViewModel.class);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         builder.setMessage("");

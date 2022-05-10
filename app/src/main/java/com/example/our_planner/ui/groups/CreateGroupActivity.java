@@ -1,7 +1,7 @@
 package com.example.our_planner.ui.groups;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -42,6 +43,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         viewModel = new ViewModelProvider(this).get(CreateGroupActivityViewModel.class);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("");
@@ -149,8 +151,12 @@ public class CreateGroupActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.help) {
             alert.show();
+        } else if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(CreateGroupActivity.this, NavigationDrawer.class);
+            intent.putExtra("fragmentToLoad", "Groups");
+            startActivity(intent);
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
