@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +35,8 @@ public class CalendarFragment extends Fragment {
     private ImageButton calendarGroups;
     private ArrayList<Group> groups;
     private EventsViewModel eventsViewModel;
-
+    private RecyclerView recyclerCalendarGroups;
+    private CalendarViewModel calendarViewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -65,13 +67,22 @@ public class CalendarFragment extends Fragment {
                 //pw.showAtLocation(button, Gravity.CENTER, 0, 0);
                 pw.showAsDropDown(calendarGroups, 0, 0);
 
-                RecyclerView recyclerView = pw.getContentView().findViewById(R.id.recyclerViewCalendarGroups);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false));
+                recyclerCalendarGroups = pw.getContentView().findViewById(R.id.recyclerViewCalendarGroups);
+                recyclerCalendarGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
                 AdapterCalendarGroups adapter = new AdapterCalendarGroups(groups);
-                recyclerView.setAdapter(adapter);
+                recyclerCalendarGroups.setAdapter(adapter);
             }
+
+
         });
+
+        final Observer<ArrayList<Group>> observerGroups = i -> {
+            AdapterCalendarGroups newAdapter = new AdapterCalendarGroups(i);
+            recyclerCalendarGroups.swapAdapter(newAdapter, false);
+            newAdapter.notifyDataSetChanged();
+        };
+        calendarViewModel.getGroups().observe(getActivity(), observerGroups);
 
         return view;
     }

@@ -3,6 +3,7 @@ package com.example.our_planner.ui.calendar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,10 +42,12 @@ public class AdapterCalendarGroups extends RecyclerView.Adapter<AdapterCalendarG
 
     public class ViewHolderCalendarGroups extends RecyclerView.ViewHolder {
         TextView group;
+        CheckBox selected;
 
         public ViewHolderCalendarGroups(@NonNull View itemView) {
             super(itemView);
-            group=itemView.findViewById(R.id.nameGroup);
+            group = itemView.findViewById(R.id.nameGroup);
+            selected = itemView.findViewById(R.id.selectedCalendarGroup);
         }
 
         public void asignarCalendarGroups(Group group) {

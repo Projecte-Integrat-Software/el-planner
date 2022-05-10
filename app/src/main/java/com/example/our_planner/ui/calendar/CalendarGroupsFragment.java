@@ -1,4 +1,4 @@
-package com.example.our_planner.ui.calendar;
+/*package com.example.our_planner.ui.calendar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -48,3 +48,4 @@ public class CalendarGroupsFragment extends Fragment {
         super.onDestroyView();
     }
 }
+*/
