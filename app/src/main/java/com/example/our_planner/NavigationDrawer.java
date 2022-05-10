@@ -96,7 +96,6 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                     break;
                 }
                 case "Groups": {
-                    System.out.println("hello");
                     navigationView.getMenu().getItem(1).setChecked(true);
                     changeFragment(new GroupsFragment(), true);
                     break;
