@@ -1,9 +1,11 @@
 package com.example.our_planner.ui.calendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolderEv
     public void onBindViewHolder(@NonNull ViewHolderEvents holder, int position) {
         Event e = events.get(position);
         holder.setData(e);
+
+        holder.detailsBtn.setOnClickListener(view -> {
+            Context c = view.getContext();
+            Intent i = new Intent(c, ViewEventActivity.class);
+            i.putExtra("event", e);
+            c.startActivity(i);
+        });
     }
 
     @Override
@@ -44,16 +53,18 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolderEv
 
     public static class ViewHolderEvents extends RecyclerView.ViewHolder {
 
-        private final TextView eventCellTV;
+        private final TextView eventNameTV;
+        private final Button detailsBtn;
 
         public ViewHolderEvents(@NonNull View itemView) {
             super(itemView);
-            eventCellTV = itemView.findViewById(R.id.eventCellTV);
+            eventNameTV = itemView.findViewById(R.id.eventNameTV);
+            detailsBtn = itemView.findViewById(R.id.detailsBtn);
         }
 
         public void setData(Event event) {
-            String eventTitle = event.getName() + " " + CalendarUtils.formattedTime(event.getStartTime());
-            eventCellTV.setText(eventTitle);
+            eventNameTV.setText(event.getName());
+            eventNameTV.setBackgroundResource(R.color.teal_700);
         }
     }
 }

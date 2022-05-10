@@ -25,6 +25,9 @@
             android:exported="false"
             android:parentActivityName=".NavigationDrawer" />
         <activity
+            android:name=".ui.calendar.ViewEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.calendar.EditEventActivity"
             android:exported="false"
             android:parentActivityName=".NavigationDrawer" />

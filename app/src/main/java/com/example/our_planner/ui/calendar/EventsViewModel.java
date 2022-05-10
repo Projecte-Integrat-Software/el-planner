@@ -25,7 +25,9 @@ public class EventsViewModel extends ViewModel implements DataBaseAdapter.EventI
 
     @Override
     public void update(ArrayList<Event> events) {
-        //   Event.eventsList = events;
+        ArrayList<Event> temp = new ArrayList<>(events);
+
+        Event.updateEventsList(temp);
         this.events.setValue(events);
     }
 }
