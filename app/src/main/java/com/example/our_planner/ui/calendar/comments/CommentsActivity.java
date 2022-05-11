@@ -39,7 +39,7 @@ public class CommentsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comments);
 
         AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setMessage("");
+        builder.setMessage(R.string.help_comments);
         builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
         alert = builder.create();
         alert.setTitle(R.string.help);

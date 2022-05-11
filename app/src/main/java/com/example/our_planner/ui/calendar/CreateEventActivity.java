@@ -62,7 +62,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void initAlarmDialog() {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setMessage("");
+        builder.setMessage(R.string.help_create_event);
         builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
         alert = builder.create();
         alert.setTitle(R.string.help);

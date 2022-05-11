@@ -8,6 +8,18 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="help">Help</string>
+    <string name="help_comments">You can comment something about the event and the other members of its group will be able to see it.</string>
+    <string name="help_login">Write the email you signed up with and your password. If you do not remember your password, click the button to send a recovery email.</string>
+    <string name="help_register">Write an email to identify your account, a username (which will be visible by other users) and a password.</string>
+    <string name="help_forgot_password">We will send to the email you signed up with an email to change the password.</string>
+    <string name="help_calendar">TO BE DONE WHEN CALENDAR IS COMPLETE</string>
+    <string name="help_groups">In this screen you can see the groups you belong to. You can create new ones (you will be the admin), leave them and/or edit them.</string>
+    <string name="help_create_group">Write a title for the group (details are unrequired), choose a color for its events in your calendar and invite the users you want (they must give you their email).</string>
+    <string name="help_edit_group_admin">You can change the information of the group, choose a color for its events in your calendar, invite new users (they must give you their email), expel them or change their permissions.</string>
+    <string name="help_edit_group">You are not an admin of this group. You can only choose the group color (for its events in your calendar).</string>
+    <string name="help_create_event">TO BE DONE WHEN CREATE EVENT IS COMPLETE</string>
+    <string name="help_invitations">In this screen you can see your invitations to groups. You can accept them (you will join to the group) or refuse them.</string>
+    <string name="help_settings">You can change your profile photo. It can be done directly with the camera of the device or, if not, choosing one from your gallery.</string>
 
     <string name="show_calendar">Show Calendar</string>
     <string name="show_groups">Show Groups</string>

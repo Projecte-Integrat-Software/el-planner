@@ -30,7 +30,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements DataBas
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setMessage("");
+        builder.setMessage(R.string.help_forgot_password);
         builder.setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

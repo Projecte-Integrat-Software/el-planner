@@ -46,7 +46,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("");
+        builder.setMessage(R.string.help_create_group);
         builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
         alert = builder.create();
         alert.setTitle(R.string.help);

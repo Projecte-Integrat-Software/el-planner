@@ -50,12 +50,6 @@ public class EditGroupActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(EditGroupActivityViewModel.class);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("");
-        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
-        alert = builder.create();
-        alert.setTitle(R.string.help);
-
         txtTitle = findViewById(R.id.txtGroupTitle);
         txtDetails = findViewById(R.id.txtGroupDetails);
         colourView = findViewById(R.id.selected_colour);
@@ -72,6 +66,12 @@ public class EditGroupActivity extends AppCompatActivity {
         boolean b = admins.get(viewModel.getEmail());
         CheckBox cb = findViewById(R.id.cbUserAdmin);
         cb.setChecked(b);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(b ? R.string.help_edit_group_admin : R.string.help_edit_group);
+        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+        alert = builder.create();
+        alert.setTitle(R.string.help);
 
         recyclerViewParticipants = findViewById(R.id.recyclerViewParticipants);
         recyclerViewParticipants.setLayoutManager(new LinearLayoutManager(this));

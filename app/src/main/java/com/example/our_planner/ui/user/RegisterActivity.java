@@ -36,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setMessage("");
+        builder.setMessage(R.string.help_register);
         builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
         alert = builder.create();
         alert.setTitle(R.string.help);

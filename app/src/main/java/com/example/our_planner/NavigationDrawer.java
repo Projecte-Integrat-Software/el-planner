@@ -82,7 +82,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         profilePictureND = headerView.findViewById(R.id.profilePictureND);
         updateProfilePicture();
 
-        helpMessage = "Do you need help?";
+        helpMessage = getResources().getString(R.string.help_calendar);
 
         //Start specific fragment if wanted
         String s = getIntent().getStringExtra("fragmentToLoad");
@@ -93,21 +93,25 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 case "Calendar": {
                     navigationView.getMenu().getItem(0).setChecked(true);
                     changeFragment(new CalendarFragment(), true);
+                    helpMessage = getResources().getString(R.string.help_calendar);
                     break;
                 }
                 case "Groups": {
                     navigationView.getMenu().getItem(1).setChecked(true);
                     changeFragment(new GroupsFragment(), true);
+                    helpMessage = getResources().getString(R.string.help_groups);
                     break;
                 }
                 case "Invitations": {
                     navigationView.getMenu().getItem(2).setChecked(true);
                     changeFragment(new InvitationsFragment(), true);
+                    helpMessage = getResources().getString(R.string.help_invitations);
                     break;
                 }
                 case "Settings": {
                     navigationView.getMenu().getItem(3).setChecked(true);
                     changeFragment(new SettingsFragment(), true);
+                    helpMessage = getResources().getString(R.string.help_settings);
                     break;
                 }
             }
@@ -156,18 +160,22 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         switch (item.getItemId()) {
             case R.id.navCalendar: {
                 changeFragment(new CalendarFragment(), true);
+                helpMessage = getResources().getString(R.string.help_calendar);
                 break;
             }
             case R.id.navGroups: {
                 changeFragment(new GroupsFragment(), true);
+                helpMessage = getResources().getString(R.string.help_groups);
                 break;
             }
             case R.id.navInvitations: {
                 changeFragment(new InvitationsFragment(), true);
+                helpMessage = getResources().getString(R.string.help_invitations);
                 break;
             }
             case R.id.navSettings: {
                 changeFragment(new SettingsFragment(), true);
+                helpMessage = getResources().getString(R.string.help_settings);
                 break;
             }
             case R.id.navLogOut: {
