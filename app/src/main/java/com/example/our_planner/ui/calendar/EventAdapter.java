@@ -1,7 +1,9 @@
 package com.example.our_planner.ui.calendar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,16 +57,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolderEv
 
         private final TextView eventNameTV;
         private final Button detailsBtn;
+        private final View groupColourView;
 
         public ViewHolderEvents(@NonNull View itemView) {
             super(itemView);
             eventNameTV = itemView.findViewById(R.id.eventNameTV);
             detailsBtn = itemView.findViewById(R.id.detailsBtn);
+            groupColourView = itemView.findViewById(R.id.groupColourView);
         }
 
+        @SuppressLint("ResourceAsColor")
         public void setData(Event event) {
             eventNameTV.setText(event.getName());
-            eventNameTV.setBackgroundResource(R.color.teal_700);
+            groupColourView.setBackgroundColor(Color.BLACK);
         }
     }
 }

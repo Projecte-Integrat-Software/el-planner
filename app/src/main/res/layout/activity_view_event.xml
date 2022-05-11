@@ -178,8 +178,16 @@
         </LinearLayout>
 
 
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/editEventBtn"
+        android:layout_width="194dp"
+        android:layout_height="48dp"
+        android:text="@string/edit_event"
+        app:layout_constraintBottom_toTopOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnBack"

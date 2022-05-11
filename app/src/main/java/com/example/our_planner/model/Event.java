@@ -36,7 +36,6 @@ public class Event implements Serializable {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-
     }
 
     public Event(String id, String name, String location, Boolean allDay, LocalDate date) {
