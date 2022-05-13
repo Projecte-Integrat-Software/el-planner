@@ -58,4 +58,9 @@ public class Group implements Serializable {
     public void removeEvent(Event e) {
         events.remove(e);
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }

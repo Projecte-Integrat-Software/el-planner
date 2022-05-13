@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class DataBaseAdapter {
 
@@ -398,7 +399,7 @@ public abstract class DataBaseAdapter {
         void addComment(Comment comment);
     }
 
-    private static Map<String, Object> mapEventDocument(String name, String location, boolean allDay, String date, String startTime, String endTime) {
+    private static Map<String, Object> mapEventDocument(String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
         Map<String, Object> g = new HashMap<>();
         g.put("name", name);
         g.put("location", location);
@@ -406,12 +407,13 @@ public abstract class DataBaseAdapter {
         g.put("date", date);
         g.put("start time", startTime);
         g.put("end time", endTime);
+        g.put("group", groupId);
         return g;
     }
 
-    public static void createEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime) {
+    public static void createEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
         DocumentReference doc = db.collection("events").document(eventId);
-        doc.set(mapEventDocument(name, location, allDay, date, startTime, endTime))
+        doc.set(mapEventDocument(name, location, allDay, date, startTime, endTime, groupId))
                 .addOnSuccessListener(documentReference -> {
                     loadEvents();
                 });
@@ -430,7 +432,7 @@ public abstract class DataBaseAdapter {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> g = document.getData();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    events.add(new Event(document.getId(), (String) g.get("name"), (String) g.get("location"), (boolean) g.get("all day"), LocalDate.parse(((String) g.get("date")), formatter), LocalTime.parse((String) g.get("start time")), LocalTime.parse((String) g.get("end time"))));
+                    events.add(new Event(document.getId(), (String) g.get("name"), (String) g.get("location"), (boolean) g.get("all day"), LocalDate.parse(((String) g.get("date")), formatter), LocalTime.parse((String) g.get("start time")), LocalTime.parse((String) g.get("end time")), (String) g.get("group")));
                 }
 
                 eventInterface.update(events);
@@ -445,7 +447,7 @@ public abstract class DataBaseAdapter {
 
     public static void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime) {
         deleteEvent(eventId);
-        createEvent(eventId, name, location, allDay, date, startTime, endTime);
+        //  createEvent(eventId, name, location, allDay, date, startTime, endTime);
 
 
     }
@@ -455,5 +457,80 @@ public abstract class DataBaseAdapter {
         doc.delete().addOnSuccessListener(documentReference -> {
             loadEvents();
         });
+    }
+
+    public static ArrayList<Group> getGroups() {
+        ArrayList<Group> groups = new ArrayList<>();
+        db.collection("groups").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
+                    if (participants.containsKey(getEmail())) {
+                        Map<String, String> colours = (HashMap<String, String>) g.get("colours");
+                        Map<String, Integer> coloursGroup = new HashMap<>();
+                        Map<String, User> participantsGroup = new HashMap<>();
+                        for (String k : colours.keySet()) {
+                            coloursGroup.put(k, Integer.parseInt(colours.get(k)));
+                            participantsGroup.put(k, new User(participants.get(k)));
+                        }
+                        groups.add(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, (Map<String, Boolean>) g.get("admins")));
+                    }
+                }
+
+
+            }
+        });
+
+        return groups;
+    }
+
+    public static ArrayList<String> getGroupsNames() {
+        ArrayList<String> groups = new ArrayList<>();
+        db.collection("groups").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    //  if (participants.containsKey(getEmail())) {
+                    groups.add((String) g.get("title"));
+                    //  }
+                }
+
+
+            }
+        });
+
+        return groups;
+    }
+
+    public static Group getGroup(String groupName) {
+        AtomicReference<Group> group = new AtomicReference<>(null);
+        db.collection("groups").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
+                    if (participants.containsKey(getEmail())) {
+                        if (((String) g.get("title")).equals(groupName)) {
+                            Map<String, String> colours = (HashMap<String, String>) g.get("colours");
+                            Map<String, Integer> coloursGroup = new HashMap<>();
+                            Map<String, User> participantsGroup = new HashMap<>();
+                            for (String k : colours.keySet()) {
+                                coloursGroup.put(k, Integer.parseInt(colours.get(k)));
+                                participantsGroup.put(k, new User(participants.get(k)));
+
+                            }
+                            group.set(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, (Map<String, Boolean>) g.get("admins")));
+                            break;
+
+                        }
+                    }
+
+
+                }
+            }
+        });
+
+        return group.get();
     }
 }

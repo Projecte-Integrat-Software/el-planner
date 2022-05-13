@@ -7,6 +7,9 @@
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.168" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/drawable/side_nav_bar.xml" value="0.168" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/activity_comments.xml" value="0.12681159420289856" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.1796875" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/activity_create_group.xml" value="0.1796875" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/activity_edit_event.xml" value="0.1796875" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/activity_main.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/activity_navigation_drawer.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/app_bar_navigation_drawer.xml" value="0.14130434782608695" />
@@ -16,25 +19,45 @@
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_invitations.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_planner.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/nav_header_navigation_drawer.xml" value="0.1" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/nd_app_bar.xml" value="0.1" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/nd_content.xml" value="0.1" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/nd_nav_header.xml" value="0.1" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/activity_navigation_drawer_drawer.xml" value="0.1796875" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/drawer_menu.xml" value="0.1796875" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/navigation_drawer.xml" value="0.1796875" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.25" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_group.xml" value="0.254981884057971" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_edit_event.xml" value="0.335" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_view_event.xml" value="0.25407608695652173" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/toolbar.xml" value="0.1796875" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.45" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_edit_event.xml" value="0.45" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/calendar_cell.xml" value="0.16894630192502533" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/event_cell.xml" value="0.375" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/event_cell.xml" value="0.38333333333333336" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_calendar.xml" value="0.17654508611955422" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_calendar_groups.xml" value="0.25271739130434784" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_groups.xml" value="0.31145833333333334" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_calendar_groups.xml" value="0.25271739130434784" />
-        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.17552083333333332" />
-        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_view_event.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/.gradle/caches/transforms-3/4cbcb2a139875109bde94b7e730430f9/transformed/appcompat-1.4.1/res/layout/support_simple_spinner_dropdown_item.xml" value="0.1" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.1" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_edit_event.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_view_event.xml" value="0.1" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_calendar.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_invitations.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/groups_spinner.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_calendar_groups.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_comments.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_groups.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_invitations.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_participants.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_participants_invite.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_calendar_groups.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_expel_user.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_invite_participants.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_leave_group.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_log_out.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_profile_picture.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_receive_invitation.xml" value="0.17552083333333332" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

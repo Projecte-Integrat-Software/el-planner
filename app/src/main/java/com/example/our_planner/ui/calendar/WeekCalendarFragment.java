@@ -21,9 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
+import com.example.our_planner.model.Group;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class WeekCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener{
@@ -124,7 +126,28 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
 
     private void setEventAdapter() {
         ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
-        EventAdapter adapter = new EventAdapter(getContext(), dailyEvents);
+        ArrayList<Event> events = new ArrayList<>();
+        // Now we check the events from the groups selected
+        // First we need to get the groups selected
+        ArrayList<Group> groups = new ArrayList<>();
+        groups.add(new Group("3UJ98vjspiEL4LYugkX8", "", "", null, null, null));
+
+        Iterator<Group> iterGroups;
+        Iterator<Event> iterEvents = dailyEvents.iterator();
+        Event event;
+        while (iterEvents.hasNext()) {
+            event = (Event) iterEvents.next();
+            iterGroups = groups.iterator();
+            while (iterGroups.hasNext()) {
+                if (event.getGroup().equals(((Group) iterGroups.next()).getId())) {
+                    events.add(event);
+                    break;
+                }
+
+            }
+        }
+
+        EventAdapter adapter = new EventAdapter(getContext(), events);
         recyclerViewEvents.setAdapter(adapter);
     }
 }

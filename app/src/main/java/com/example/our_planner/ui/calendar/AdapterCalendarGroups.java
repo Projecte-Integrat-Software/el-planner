@@ -31,7 +31,7 @@ public class AdapterCalendarGroups extends RecyclerView.Adapter<AdapterCalendarG
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderCalendarGroups holder, int position) {
-        holder.asignarCalendarGroups(groups.get(position));
+        holder.assignCalendarGroups(groups.get(position));
 
     }
 
@@ -41,17 +41,25 @@ public class AdapterCalendarGroups extends RecyclerView.Adapter<AdapterCalendarG
     }
 
     public class ViewHolderCalendarGroups extends RecyclerView.ViewHolder {
-        TextView group;
+        Group group;
+        TextView groupTV;
         CheckBox selected;
+        View itemView;
 
         public ViewHolderCalendarGroups(@NonNull View itemView) {
             super(itemView);
-            group = itemView.findViewById(R.id.nameGroup);
+            this.itemView = itemView;
+            groupTV = itemView.findViewById(R.id.nameGroup);
             selected = itemView.findViewById(R.id.selectedCalendarGroup);
         }
 
-        public void asignarCalendarGroups(Group group) {
-            this.group.setText(group.getTitle());
+        public void assignCalendarGroups(Group group) {
+            this.group = group;
+            this.groupTV.setText(group.getTitle());
+        }
+
+        public void setOnClickListener(View.OnClickListener onClickListener) {
+            itemView.setOnClickListener(onClickListener);
         }
     }
 }

@@ -164,7 +164,7 @@ public class EditEventActivity extends AppCompatActivity {
         LocalTime time1 = startTime;
         LocalTime time2 = endTime;
         LocalDate date = CalendarUtils.selectedDate;
-        Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2);
+        Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2, null);
         Event.eventsList.add(newEvent);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");

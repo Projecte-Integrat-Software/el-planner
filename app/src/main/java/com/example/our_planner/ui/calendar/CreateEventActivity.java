@@ -8,20 +8,28 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
+import com.example.our_planner.model.Group;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class CreateEventActivity extends AppCompatActivity {
     private CreateEventActivityViewModel viewModel;
@@ -32,6 +40,9 @@ public class CreateEventActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
+    private Spinner selectGroup;
+
+    private Group group;
 
     private LocalDate date;
     private LocalTime startTime;
@@ -58,6 +69,43 @@ public class CreateEventActivity extends AppCompatActivity {
         initStartTimePicker();
         initEndTimePicker();
         initListeners();
+
+        selectGroup = findViewById(R.id.selectGroupSpinner);
+
+
+        Observer<ArrayList<Group>> observerGroups = i -> {
+            //        AdapterCalendarGroups newAdapter = new AdapterCalendarGroups(i);
+            //        recyclerCalendarGroups.swapAdapter(newAdapter, false);
+            //        newAdapter.notifyDataSetChanged();
+            Iterator<Group> it = i.iterator();
+            List<String> groups2 = new ArrayList<>();
+
+
+            while (it.hasNext()) {
+                String temp = ((Group) it.next()).getTitle();
+                groups2.add(temp);
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, groups2);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            selectGroup.setAdapter(adapter);
+        };
+        viewModel.getGroups().observe(this, observerGroups);
+
+
+        selectGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //   String groupName = (String) parent.getSelectedItem();
+                //    group = viewModel.getGroup(groupName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
     }
 
     private void initAlarmDialog() {
@@ -76,6 +124,16 @@ public class CreateEventActivity extends AppCompatActivity {
         dateTV = findViewById(R.id.dateTV);
         startTimeTV = findViewById(R.id.startTimeTV);
         endTimeTV = findViewById(R.id.endTimeTV);
+
+
+        //       ArrayAdapter groupAdapter = new ArrayAdapter(this, R.layout.groups_spinner, groups);
+
+        //     selectGroup.setAdapter(groupAdapter);
+
+
+        //      adapter.setDropDownViewResource(
+        //              androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+
 
         selectDateBtn = findViewById(R.id.selectDateBtn);
         selectStartTimeBtn = findViewById(R.id.selectStartTimeBtn);
@@ -139,6 +197,8 @@ public class CreateEventActivity extends AppCompatActivity {
         selectStartTimeBtn.setOnClickListener(this::openStartTimePicker);
         selectEndTimeBtn.setOnClickListener(this::openEndTimePicker);
         createBtn.setOnClickListener(this::saveEventAction);
+
+
     }
 
     private void openDatePicker(View view) {
@@ -155,16 +215,19 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
-        // TODO Implement IDs in events
+        // TODO Fix spinner and get group from there
+        group = new Group("3UJ98vjspiEL4LYugkX8", "", "", null, null, null);
+        // Delete line above and uncomment line below when spinner fixed
+        //group = (Group) selectGroup.getSelectedItem();
         LocalTime time1 = startTime;
         LocalTime time2 = endTime;
         LocalDate date = CalendarUtils.selectedDate;
-        Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2);
+        Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2, group.getId());
         Event.eventsList.add(newEvent);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        viewModel.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), date.format(formatter), newEvent.getStartTime().toString(), newEvent.getEndTime().toString());
+        viewModel.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), date.format(formatter), newEvent.getStartTime().toString(), newEvent.getEndTime().toString(), newEvent.getGroup());
 
         finish();
     }

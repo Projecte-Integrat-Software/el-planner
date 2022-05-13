@@ -27,8 +27,9 @@ public class Event implements Serializable {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
+    private String group;
 
-    public Event(String id, String name, String location, Boolean allDay, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    public Event(String id, String name, String location, Boolean allDay, LocalDate date, LocalTime startTime, LocalTime endTime, String group) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -36,6 +37,8 @@ public class Event implements Serializable {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.group = group;
+
     }
 
     public Event(String id, String name, String location, Boolean allDay, LocalDate date) {
@@ -100,5 +103,9 @@ public class Event implements Serializable {
 
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
+    }
+
+    public String getGroup() {
+        return group;
     }
 }
