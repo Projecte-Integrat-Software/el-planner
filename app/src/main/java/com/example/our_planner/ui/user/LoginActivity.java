@@ -38,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
         }
 
+        setTitle(R.string.title_activity_sign_in);
+
         AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         builder.setMessage(R.string.help_login);
         builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
