@@ -21,6 +21,10 @@ public class EditEventActivityViewModel extends AndroidViewModel {
         return event;
     }
 
+    public void editEvent() {
+        //  DataBaseAdapter.editEvent();
+    }
+
     public void setEvent(Event event) {
         this.event = event;
     }

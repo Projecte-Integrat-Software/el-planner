@@ -412,7 +412,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static void createEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
-        DocumentReference doc = db.collection("event").document(eventId);
+        DocumentReference doc = db.collection("eventProv").document(eventId);
         doc.set(mapEventDocument(name, location, allDay, date, startTime, endTime, groupId))
                 .addOnSuccessListener(documentReference -> {
                     loadEvents();
@@ -426,7 +426,7 @@ public abstract class DataBaseAdapter {
     }
 
     private static void loadEvents() {
-        db.collection("event").get().addOnCompleteListener(task -> {
+        db.collection("eventProv").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<Event> events = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -445,15 +445,16 @@ public abstract class DataBaseAdapter {
         void update(ArrayList<Event> events);
     }
 
-    public static void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime) {
+    public static void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String group) {
         deleteEvent(eventId);
-        //  createEvent(eventId, name, location, allDay, date, startTime, endTime);
+        createEvent(eventId, name, location, allDay, date, startTime, endTime, group);
+        loadEvents();
 
 
     }
 
     public static void deleteEvent(String eventId) {
-        DocumentReference doc = db.collection("event").document(eventId);
+        DocumentReference doc = db.collection("eventProv").document(eventId);
         doc.delete().addOnSuccessListener(documentReference -> {
             loadEvents();
         });

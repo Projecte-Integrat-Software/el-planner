@@ -13,13 +13,23 @@ import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class AdapterCalendarGroups extends RecyclerView.Adapter<AdapterCalendarGroups.ViewHolderCalendarGroups> {
 
     private final ArrayList<Group> groups;
+    private final Map<Group, Boolean> selections;
 
     public AdapterCalendarGroups(ArrayList<Group> groups) {
         this.groups = groups;
+        selections = new HashMap<>();
+        Iterator<Group> it = groups.iterator();
+        while (it.hasNext()) {
+            selections.put((Group) it.next(), true);
+        }
+
     }
 
     @NonNull
@@ -56,10 +66,9 @@ public class AdapterCalendarGroups extends RecyclerView.Adapter<AdapterCalendarG
         public void assignCalendarGroups(Group group) {
             this.group = group;
             this.groupTV.setText(group.getTitle());
+            this.selected.setChecked(selections.get(group));
         }
 
-        public void setOnClickListener(View.OnClickListener onClickListener) {
-            itemView.setOnClickListener(onClickListener);
-        }
+
     }
 }
