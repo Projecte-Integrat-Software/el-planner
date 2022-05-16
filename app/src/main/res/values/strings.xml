@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">our-planner</string>
+    <string name="app_name">OurPlanner</string>
     <string name="title_activity_navigation_drawer">Navigation Drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -24,6 +24,7 @@
     <string name="show_calendar">Show Calendar</string>
     <string name="show_groups">Show Groups</string>
     <string name="show_invitations">Show Invitations</string>
+    <string name="show_comments">Show Comments</string>
 
     <string name="title_activity_register">Register</string>
     <string name="title_activity_forgot_password">Forgot Password</string>

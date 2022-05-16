@@ -4,6 +4,7 @@
     package="com.example.our_planner">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -49,10 +50,9 @@
         <activity
             android:name=".ui.user.LoginActivity"
             android:exported="true"
-            android:label="@string/title_activity_sign_in">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -67,7 +67,7 @@
         <activity
             android:name=".ui.calendar.comments.CommentsActivity"
             android:exported="true"
-            android:label="Show Comments"
+            android:label="@string/show_comments"
             android:parentActivityName=".NavigationDrawer" />
     </application>
 
