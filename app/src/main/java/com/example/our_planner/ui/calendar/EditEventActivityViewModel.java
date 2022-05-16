@@ -11,10 +11,8 @@ public class EditEventActivityViewModel extends AndroidViewModel {
 
     private Event event;
 
-    public EditEventActivityViewModel(@NonNull Application application, Event event) {
+    public EditEventActivityViewModel(@NonNull Application application) {
         super(application);
-
-        this.event = event;
     }
 
     public Event getEvent() {

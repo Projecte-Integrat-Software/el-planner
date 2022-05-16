@@ -3,6 +3,7 @@ package com.example.our_planner.ui.calendar;
 import static com.example.our_planner.ui.calendar.CalendarUtils.daysInWeekArray;
 import static com.example.our_planner.ui.calendar.CalendarUtils.monthYearFromDate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 
-public class WeekCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener{
+public class WeekCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener, EventAdapter.OnNoteListener {
 
     private View view;
     private TextView monthYearText;
@@ -145,7 +146,15 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
             }
         }
 */
-        EventAdapter adapter = new EventAdapter(getContext(), dailyEvents);
+        EventAdapter adapter = new EventAdapter(getContext(), dailyEvents, this);
         recyclerViewEvents.setAdapter(adapter);
+    }
+
+    @Override
+    public void onNoteClick(int position, Event event) {
+        Context c = view.getContext();
+        Intent i = new Intent(c, EditEventActivity.class);
+        i.putExtra("event", event);
+        c.startActivity(i);
     }
 }
