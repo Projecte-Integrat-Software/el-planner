@@ -1,14 +1,12 @@
 package com.example.our_planner.ui.calendar;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -23,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
-import com.example.our_planner.ui.calendar.comments.CommentsActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +30,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CalendarFragment extends Fragment implements AdapterCalendarGroups.OnGroupListener {
 
     private Spinner spinner;
-    private Button commentEvent;
     private ImageButton calendarGroups;
     private ArrayList<Group> groups;
     private EventsViewModel eventsViewModel;
@@ -72,7 +68,6 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
         groups.add(new Group("", "Geometry", "Problems", m, m, m));
         groups.add(new Group("", "PAE", "Labs", m, m, m));
 */
-        commentEvent = view.findViewById(R.id.commentEvent);
         calendarGroups = view.findViewById(R.id.btnCalendarGroups);
         calendarGroups.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,9 +139,6 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
 
             }
         });
-
-        commentEvent.setOnClickListener(view -> startActivity(new Intent(view.getContext(),
-                CommentsActivity.class)));
     }
 
     @Override

@@ -48,13 +48,6 @@
             app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
             app:layout_constraintTop_toTopOf="@+id/bottomAppBar" />
 
-        <Button
-            android:id="@+id/commentEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="comment Event" />
-
     </com.google.android.material.bottomappbar.BottomAppBar>
 
 
