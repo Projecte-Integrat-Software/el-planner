@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
+import com.example.our_planner.ui.calendar.comments.CommentsActivity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -29,7 +31,7 @@ public class EditEventActivity extends AppCompatActivity {
 
     private EditText eventNameET;
     private TextView dateTV, startTimeTV, endTimeTV;
-    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, createBtn;
+    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, createBtn, commentEventBtn;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
@@ -40,7 +42,7 @@ public class EditEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event);
+        setContentView(R.layout.activity_edit_event);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         viewModel = new ViewModelProvider(this).get(EditEventActivityViewModel.class);
@@ -81,7 +83,7 @@ public class EditEventActivity extends AppCompatActivity {
         selectStartTimeBtn = findViewById(R.id.selectStartTimeBtn);
         selectEndTimeBtn = findViewById(R.id.selectEndTimeBtn);
         createBtn = findViewById(R.id.btnCreate);
-
+        commentEventBtn = findViewById(R.id.btnCommentEvent);
 
         dateTV.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         startTimeTV.setText(CalendarUtils.formattedTime(viewModel.getStartTime()));
@@ -137,6 +139,13 @@ public class EditEventActivity extends AppCompatActivity {
         selectStartTimeBtn.setOnClickListener(this::openStartTimePicker);
         selectEndTimeBtn.setOnClickListener(this::openEndTimePicker);
         createBtn.setOnClickListener(this::saveEventAction);
+        commentEventBtn.setOnClickListener(this::commentEventAction);
+    }
+
+    private void commentEventAction(View view) {
+        Intent intent = new Intent(view.getContext(), CommentsActivity.class);
+        intent.putExtra("idEvent", viewModel.getEvent().getId());
+        startActivity(intent);
     }
 
     private void openDatePicker(View view) {

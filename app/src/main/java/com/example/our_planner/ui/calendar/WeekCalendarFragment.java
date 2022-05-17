@@ -22,12 +22,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
+import com.example.our_planner.model.Group;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class WeekCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener, EventAdapter.OnNoteListener {
+public class WeekCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener, EventAdapter.OnNoteListener, AdapterCalendarGroups.OnGroupListener {
 
     private View view;
     private TextView monthYearText;
@@ -38,13 +41,16 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     private Button nextWeekBtn;
     private Button newEventBtn;
 
+
+    private Map<Group, Boolean> selections;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_week_calendar, container, false);
-
+        selections = new HashMap<>();
         initWidgets();
 
         CalendarUtils.selectedDate = LocalDate.now();
@@ -156,5 +162,10 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         Intent i = new Intent(c, EditEventActivity.class);
         i.putExtra("event", event);
         c.startActivity(i);
+    }
+
+    @Override
+    public void onGroupSelect(Map<Group, Boolean> selections) {
+        setEventAdapter();
     }
 }

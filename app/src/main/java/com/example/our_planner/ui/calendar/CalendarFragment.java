@@ -1,14 +1,12 @@
 package com.example.our_planner.ui.calendar;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -23,25 +21,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
-import com.example.our_planner.ui.calendar.comments.CommentsActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements AdapterCalendarGroups.OnGroupListener {
 
     private Spinner spinner;
-    private Button commentEvent;
     private ImageButton calendarGroups;
     private ArrayList<Group> groups;
     private EventsViewModel eventsViewModel;
     private RecyclerView recyclerCalendarGroups;
     private CalendarViewModel calendarViewModel;
 
+    private static final String TAG = "CalendarFragment";
+
+    private Map<Group, Boolean> groupsSelected;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        groupsSelected = new HashMap<>();
 
         eventsViewModel = new ViewModelProvider(this).get(EventsViewModel.class);
         calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
@@ -57,14 +61,13 @@ public class CalendarFragment extends Fragment {
 
 
         groups = new ArrayList<>();
-        AtomicReference<AdapterCalendarGroups> adapterGroups = new AtomicReference<>(new AdapterCalendarGroups(groups));
+        AtomicReference<AdapterCalendarGroups> adapterGroups = new AtomicReference<>(new AdapterCalendarGroups(groups, this, groupsSelected));
 
 /*        HashMap m = new HashMap();
         groups.add(new Group("", "PIS", "Theory", m, m, m));
         groups.add(new Group("", "Geometry", "Problems", m, m, m));
         groups.add(new Group("", "PAE", "Labs", m, m, m));
 */
-        commentEvent = view.findViewById(R.id.commentEvent);
         calendarGroups = view.findViewById(R.id.btnCalendarGroups);
         calendarGroups.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +90,7 @@ public class CalendarFragment extends Fragment {
             //        AdapterCalendarGroups newAdapter = new AdapterCalendarGroups(i);
             //        recyclerCalendarGroups.swapAdapter(newAdapter, false);
             //        newAdapter.notifyDataSetChanged();
-            adapterGroups.set(new AdapterCalendarGroups(i));
+            adapterGroups.set(new AdapterCalendarGroups(i, this, groupsSelected));
         };
         calendarViewModel.getGroups().observe(getActivity(), observerGroups);
 
@@ -136,13 +139,16 @@ public class CalendarFragment extends Fragment {
 
             }
         });
-
-        commentEvent.setOnClickListener(view -> startActivity(new Intent(view.getContext(),
-                CommentsActivity.class)));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onGroupSelect(Map<Group, Boolean> selections) {
+        groupsSelected = selections;
+
     }
 }

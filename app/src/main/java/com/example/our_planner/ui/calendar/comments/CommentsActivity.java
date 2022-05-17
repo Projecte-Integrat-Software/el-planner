@@ -1,23 +1,18 @@
 package com.example.our_planner.ui.calendar.comments;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Comment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,6 +45,7 @@ public class CommentsActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtn);
 
         CommentsViewModel viewModel = new ViewModelProvider(this).get(CommentsViewModel.class);
+        viewModel.setIdEvent(getIntent().getExtras().getString("idEvent"));
         MutableLiveData<ArrayList<Comment>> comments = viewModel.getComments();
         AdapterComments adapterComments = new AdapterComments(comments.getValue());
         recyclerViewComments.setAdapter(adapterComments);
@@ -59,7 +55,7 @@ public class CommentsActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(view -> {
             String messageToPost = message.getText().toString();
             if (!messageToPost.equals("")){
-                DataBaseAdapter.postComment(messageToPost);
+                viewModel.postComment(messageToPost);
                 message.setText("");
             }
         });
