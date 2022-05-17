@@ -34,10 +34,6 @@ public class EditEventActivity extends AppCompatActivity {
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
 
-    private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
-
     private androidx.appcompat.app.AlertDialog alert;
 
     @SuppressLint("SetTextI18n")
@@ -48,10 +44,10 @@ public class EditEventActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         viewModel = new ViewModelProvider(this).get(EditEventActivityViewModel.class);
-        date = CalendarUtils.selectedDate;
-        startTime = LocalTime.now();
-        startTime = startTime.minusSeconds(startTime.getSecond());
-        endTime = startTime.plusHours(1);
+        viewModel.setDate(CalendarUtils.selectedDate);
+        LocalTime startTime = LocalTime.now();
+        viewModel.setStartTime(startTime.minusSeconds(startTime.getSecond()));
+        viewModel.setEndTime(startTime.plusHours(1));
 
         initAlarmDialog();
         initWidgets();
@@ -77,7 +73,6 @@ public class EditEventActivity extends AppCompatActivity {
     private void initWidgets() {
         eventNameET = findViewById(R.id.txtEventTitle);
 
-
         dateTV = findViewById(R.id.dateTV);
         startTimeTV = findViewById(R.id.startTimeTV);
         endTimeTV = findViewById(R.id.endTimeTV);
@@ -89,22 +84,20 @@ public class EditEventActivity extends AppCompatActivity {
 
 
         dateTV.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
-        startTimeTV.setText(CalendarUtils.formattedTime(startTime));
-        endTimeTV.setText(CalendarUtils.formattedTime(endTime));
-       /* eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
-        eventTimeTV.setText("Time: " + CalendarUtils.formattedTime(startTime)); */
+        startTimeTV.setText(CalendarUtils.formattedTime(viewModel.getStartTime()));
+        endTimeTV.setText(CalendarUtils.formattedTime(viewModel.getEndTime()));
     }
 
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
             month = month + 1;
-            date = LocalDate.of(year, month, day);
-            dateTV.setText(CalendarUtils.formattedDate(date));
+            viewModel.setDate(LocalDate.of(year, month, day));
+            dateTV.setText(CalendarUtils.formattedDate(viewModel.getDate()));
         };
 
-        int year = date.getYear();
-        int month = date.getMonthValue();
-        int day = date.getDayOfMonth();
+        int year = viewModel.getDate().getYear();
+        int month = viewModel.getDate().getMonthValue();
+        int day = viewModel.getDate().getDayOfMonth();
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
@@ -113,12 +106,12 @@ public class EditEventActivity extends AppCompatActivity {
 
     private void initStartTimePicker() {
         TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, selectedHour, selectedMinute) -> {
-            startTime = LocalTime.of(selectedHour, selectedMinute);
-            startTimeTV.setText(CalendarUtils.formattedTime(startTime));
+            viewModel.setStartTime(LocalTime.of(selectedHour, selectedMinute));
+            startTimeTV.setText(CalendarUtils.formattedTime(viewModel.getStartTime()));
         };
 
-        int hour = startTime.getHour();
-        int minute = startTime.getMinute();
+        int hour = viewModel.getStartTime().getHour();
+        int minute = viewModel.getStartTime().getHour();
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
@@ -127,12 +120,12 @@ public class EditEventActivity extends AppCompatActivity {
 
     private void initEndTimePicker() {
         TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, selectedHour, selectedMinute) -> {
-            endTime = LocalTime.of(selectedHour, selectedMinute);
-            endTimeTV.setText(CalendarUtils.formattedTime(endTime));
+            viewModel.setEndTime(LocalTime.of(selectedHour, selectedMinute));
+            endTimeTV.setText(CalendarUtils.formattedTime(viewModel.getEndTime()));
         };
 
-        int hour = endTime.getHour();
-        int minute = endTime.getMinute();
+        int hour = viewModel.getEndTime().getHour();
+        int minute = viewModel.getEndTime().getMinute();
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
@@ -161,8 +154,8 @@ public class EditEventActivity extends AppCompatActivity {
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
         // TODO Implement IDs in events
-        LocalTime time1 = startTime;
-        LocalTime time2 = endTime;
+        LocalTime time1 = viewModel.getStartTime();
+        LocalTime time2 = viewModel.getEndTime();
         LocalDate date = CalendarUtils.selectedDate;
         Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2, null);
         Event.eventsList.add(newEvent);
@@ -190,68 +183,3 @@ public class EditEventActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-
-
-
-
-/*package com.example.our_planner.ui.calendar;
-
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.our_planner.R;
-
-import java.time.LocalTime;
-
-public class EditEventActivity extends AppCompatActivity {
-
-    private EditText eventNameET;
-    private TextView eventDateTV, eventTimeTV;
-    private Button saveBtn;
-    private Button cancelBtn;
-
-    private LocalTime time;
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_event);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initWidgets();
-        time = LocalTime.now();
-        eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
-        eventTimeTV.setText("Time: " + CalendarUtils.formattedTime(time));
-
-        initListeners();
-    }
-
-    private void initWidgets() {
-        eventNameET = findViewById(R.id.txtEventTitle);
-        eventDateTV = findViewById(R.id.txtEventStart);
-        eventTimeTV = findViewById(R.id.txtEventEnd);
-        saveBtn = findViewById(R.id.btnEdit);
-        cancelBtn = findViewById(R.id.btnCancel);
-
-        cancelBtn.setOnClickListener(view -> finish());
-    }
-
-    private void initListeners() {
-        saveBtn.setOnClickListener(this::saveEventAction);
-    }
-
-    private void saveEventAction(View view) {
-        String eventName = eventNameET.getText().toString();
-        //    Event newEvent = new Event("idTest", eventName, "location", false, CalendarUtils.selectedDate, startTime, endTime);
-        //    Event.eventsList.add(newEvent);
-        finish();
-    }
-
-}*/
