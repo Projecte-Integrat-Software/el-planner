@@ -138,4 +138,6 @@
     <string name="details_eventcell">Details</string>
     <string name="starting_time">Starting Time</string>
     <string name="comment_event">Comment Event</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="event_name">Event Name</string>
 </resources>

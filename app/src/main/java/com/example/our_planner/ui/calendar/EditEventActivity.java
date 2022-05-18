@@ -9,32 +9,44 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
+import com.example.our_planner.model.Group;
 import com.example.our_planner.ui.calendar.comments.CommentsActivity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 public class EditEventActivity extends AppCompatActivity {
     private EditEventActivityViewModel viewModel;
 
-    private EditText eventNameET;
+    private EditText eventNameET, eventLocationET;
     private TextView dateTV, startTimeTV, endTimeTV;
-    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, createBtn, commentEventBtn;
+    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, saveChangesBtn, commentEventBtn;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
+    private Spinner selectGroup;
+
+    private Group group;
+    private ArrayList<Group> groups;
 
     private androidx.appcompat.app.AlertDialog alert;
 
@@ -58,9 +70,53 @@ public class EditEventActivity extends AppCompatActivity {
         initEndTimePicker();
         initListeners();
 
+        selectGroup = findViewById(R.id.selectGroupSpinner);
+
+        Observer<ArrayList<Group>> observerGroups = i -> {
+            //        AdapterCalendarGroups newAdapter = new AdapterCalendarGroups(i);
+            //        recyclerCalendarGroups.swapAdapter(newAdapter, false);
+            //        newAdapter.notifyDataSetChanged();
+            Iterator<Group> it = i.iterator();
+            List<String> groups2 = new ArrayList<>();
+
+
+            while (it.hasNext()) {
+                String temp = it.next().getTitle();
+                groups2.add(temp);
+            }
+
+            groups = i;
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, groups2);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            selectGroup.setAdapter(adapter);
+        };
+        viewModel.getGroups().observe(this, observerGroups);
+
+        selectGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int index = parent.getSelectedItemPosition();
+                group = groups.get(index);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         viewModel.setEvent((Event) getIntent().getSerializableExtra("event"));
-        dateTV.setText(viewModel.getEvent().getName());
+        fillData();
+    }
+
+    private void fillData() {
+        eventNameET.setText(viewModel.getEvent().getName());
+        viewModel.updateData();
+        dateTV.setText(CalendarUtils.formattedDate(viewModel.getDate()));
+        startTimeTV.setText(CalendarUtils.formattedTime(viewModel.getStartTime()));
+        endTimeTV.setText(CalendarUtils.formattedTime(viewModel.getEndTime()));
+        eventLocationET.setText(viewModel.getLocation());
     }
 
     private void initAlarmDialog() {
@@ -74,6 +130,7 @@ public class EditEventActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void initWidgets() {
         eventNameET = findViewById(R.id.txtEventTitle);
+        eventLocationET = findViewById(R.id.eventLocationET);
 
         dateTV = findViewById(R.id.dateTV);
         startTimeTV = findViewById(R.id.startTimeTV);
@@ -82,12 +139,8 @@ public class EditEventActivity extends AppCompatActivity {
         selectDateBtn = findViewById(R.id.selectDateBtn);
         selectStartTimeBtn = findViewById(R.id.selectStartTimeBtn);
         selectEndTimeBtn = findViewById(R.id.selectEndTimeBtn);
-        createBtn = findViewById(R.id.btnCreate);
+        saveChangesBtn = findViewById(R.id.saveChangesBtn);
         commentEventBtn = findViewById(R.id.btnCommentEvent);
-
-        dateTV.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
-        startTimeTV.setText(CalendarUtils.formattedTime(viewModel.getStartTime()));
-        endTimeTV.setText(CalendarUtils.formattedTime(viewModel.getEndTime()));
     }
 
     private void initDatePicker() {
@@ -131,14 +184,15 @@ public class EditEventActivity extends AppCompatActivity {
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
-        endTimePickerDialog = new TimePickerDialog(this, style, onTimeSetListener, hour, minute, true);
+        endTimePickerDialog = new TimePickerDialog(this, style, onTimeSetListener, hour,
+                minute, true);
     }
 
     private void initListeners() {
         selectDateBtn.setOnClickListener(this::openDatePicker);
         selectStartTimeBtn.setOnClickListener(this::openStartTimePicker);
         selectEndTimeBtn.setOnClickListener(this::openEndTimePicker);
-        createBtn.setOnClickListener(this::saveEventAction);
+        saveChangesBtn.setOnClickListener(this::saveChangesAction);
         commentEventBtn.setOnClickListener(this::commentEventAction);
     }
 
@@ -160,19 +214,19 @@ public class EditEventActivity extends AppCompatActivity {
         endTimePickerDialog.show();
     }
 
-    private void saveEventAction(View view) {
+    private void saveChangesAction(View view) {
         String eventName = eventNameET.getText().toString();
+        String location = eventLocationET.getText().toString();
         // TODO Implement IDs in events
-        LocalTime time1 = viewModel.getStartTime();
-        LocalTime time2 = viewModel.getEndTime();
+        LocalTime startTime = viewModel.getStartTime();
+        LocalTime endTime = viewModel.getEndTime();
         LocalDate date = CalendarUtils.selectedDate;
-        Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2, null);
-        Event.eventsList.add(newEvent);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-//        viewModel.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), date.format(formatter), newEvent.getStartTime().toString(), newEvent.getEndTime().toString());
-
+        // TODO: El parse de les hores no estan be
+        viewModel.editEvent(viewModel.getId(), eventName, location, false,
+                date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
         finish();
     }
 

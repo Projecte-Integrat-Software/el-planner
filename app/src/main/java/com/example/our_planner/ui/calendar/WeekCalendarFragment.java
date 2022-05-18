@@ -28,7 +28,6 @@ import com.example.our_planner.model.Event;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 
@@ -58,8 +57,11 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
         initWidgets();
 
+
         CalendarUtils.selectedDate = LocalDate.now();
         setWeekView();
+        setEventAdapter();
+
 
         Observer<Map<String, Boolean>> observerSelections = i -> {
             selections = i;
@@ -81,6 +83,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         initListeners();
+        setEventAdapter();
     }
 
     private void initWidgets()
@@ -151,8 +154,6 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
 
         ArrayList<Event> events = new ArrayList<>();
-
-        Iterator<Event> iterEvent = dailyEvents.iterator();
 
         for (Event e : dailyEvents) {
             if (selections.containsKey(e.getGroup())) {

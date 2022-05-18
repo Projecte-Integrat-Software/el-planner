@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:background="@null"
-                android:hint="@string/group_title"
+                android:hint="@string/event_name"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:minHeight="48dp"
@@ -170,7 +170,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/txtEventLocation"
+                android:id="@+id/eventLocationET"
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
