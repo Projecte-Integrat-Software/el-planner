@@ -14,7 +14,6 @@
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/activity_navigation_drawer.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/app_bar_navigation_drawer.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/content_navigation_drawer.xml" value="0.14130434782608695" />
-        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_calendar.xml" value="0.1796875" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_gallery.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_groups.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_invitations.xml" value="0.14130434782608695" />
@@ -35,8 +34,10 @@
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_calendar_groups.xml" value="0.25271739130434784" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/item_list_groups.xml" value="0.31145833333333334" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/popup_calendar_groups.xml" value="0.25271739130434784" />
-        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.17552083333333332" />
-        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_view_event.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/.gradle/caches/transforms-3/4cbcb2a139875109bde94b7e730430f9/transformed/appcompat-1.4.1/res/layout/support_simple_spinner_dropdown_item.xml" value="0.1" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.1" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_edit_event.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_view_event.xml" value="0.1" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_calendar.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_invitations.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/groups_spinner.xml" value="0.17552083333333332" />
@@ -56,7 +57,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
