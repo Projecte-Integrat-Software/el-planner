@@ -1,45 +1,3 @@
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:orientation="horizontal"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="60dp">-->
-
-<!--&lt;!&ndash;    <TextView&ndash;&gt;-->
-<!--&lt;!&ndash;        android:id="@+id/startTimeTV"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_width="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_height="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:text="@string/start"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:textColor="@color/black"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:textSize="20sp" />&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <TextView&ndash;&gt;-->
-<!--&lt;!&ndash;        android:id="@+id/endTimeTV"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_width="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_height="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:text="@string/end"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:textColor="@color/black"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:textSize="20sp" />&ndash;&gt;-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/eventNameTV"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:textSize="20sp"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:text="@string/event" />-->
-
-<!--    <Space-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_weight="1" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/detailsBtn"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/details" />-->
-
-<!--</LinearLayout><?xml version="1.0" encoding="utf-8"?>-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -80,22 +38,25 @@
                 android:gravity="center"
                 android:text="@string/eventNameHint"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/detailsBtn"
+                app:layout_constraintEnd_toStartOf="@+id/startTimeTV"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/groupColourView"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <Button
-                android:id="@+id/detailsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/startTimeTV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginEnd="10dp"
-                android:text="@string/details_eventcell"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:gravity="center"
+                android:text="@string/starting_time"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/eventNameTV"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

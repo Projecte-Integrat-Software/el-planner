@@ -198,14 +198,6 @@ left to right direction
 
   namespace com.example.our_planner {
     namespace ui.calendar {
-      class com.example.our_planner.ui.calendar.ViewEventActivity {
-      }
-    }
-  }
-
-
-  namespace com.example.our_planner {
-    namespace ui.calendar {
       class com.example.our_planner.ui.calendar.WeekCalendarFragment {
 
       }

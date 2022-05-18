@@ -238,14 +238,6 @@ title __CALENDAR's Class Diagram__\n
 
   namespace com.example.our_planner {
     namespace ui.calendar {
-      class com.example.our_planner.ui.calendar.ViewEventActivity {
-      }
-    }
-  }
-  
-
-  namespace com.example.our_planner {
-    namespace ui.calendar {
       class com.example.our_planner.ui.calendar.WeekCalendarFragment {
           - calendarRecyclerView : RecyclerView
           - monthYearText : TextView

@@ -7,10 +7,13 @@ import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.model.Group;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CalendarViewModel extends ViewModel implements DataBaseAdapter.GroupInterface{
 
     private final MutableLiveData<ArrayList<Group>> mGroups;
+    public static final MutableLiveData<Map<String, Boolean>> mSelections = new MutableLiveData<>(new HashMap<>());
     //private final MutableLiveData<String> mToast;
 
     public CalendarViewModel() {
@@ -21,6 +24,10 @@ public class CalendarViewModel extends ViewModel implements DataBaseAdapter.Grou
 
     public MutableLiveData<ArrayList<Group>> getGroups() {
         return mGroups;
+    }
+
+    public MutableLiveData<Map<String, Boolean>> getSelections() {
+        return mSelections;
     }
 
     /*
@@ -36,5 +43,9 @@ public class CalendarViewModel extends ViewModel implements DataBaseAdapter.Grou
     @Override
     public void update(ArrayList<Group> groups) {
         mGroups.setValue(groups);
+    }
+
+    public void setSelections(Map<String, Boolean> selections) {
+        mSelections.setValue(selections);
     }
 }

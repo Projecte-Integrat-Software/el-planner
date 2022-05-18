@@ -34,7 +34,7 @@ import java.util.List;
 public class CreateEventActivity extends AppCompatActivity {
     private CreateEventActivityViewModel viewModel;
 
-    private EditText eventNameET;
+    private EditText eventNameET, eventLocationET;
     private TextView dateTV, startTimeTV, endTimeTV;
     private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, createBtn;
     private DatePickerDialog datePickerDialog;
@@ -43,6 +43,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private Spinner selectGroup;
 
     private Group group;
+    private ArrayList<Group> groups;
 
     private LocalDate date;
     private LocalTime startTime;
@@ -82,9 +83,11 @@ public class CreateEventActivity extends AppCompatActivity {
 
 
             while (it.hasNext()) {
-                String temp = ((Group) it.next()).getTitle();
+                String temp = it.next().getTitle();
                 groups2.add(temp);
             }
+
+            groups = i;
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, groups2);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -97,8 +100,8 @@ public class CreateEventActivity extends AppCompatActivity {
         selectGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //   String groupName = (String) parent.getSelectedItem();
-                //    group = viewModel.getGroup(groupName);
+                int index = parent.getSelectedItemPosition();
+                group = groups.get(index);
             }
 
             @Override
@@ -119,7 +122,7 @@ public class CreateEventActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void initWidgets() {
         eventNameET = findViewById(R.id.txtEventTitle);
-
+        eventLocationET = findViewById(R.id.eventLocationET);
 
         dateTV = findViewById(R.id.dateTV);
         startTimeTV = findViewById(R.id.startTimeTV);
@@ -215,14 +218,14 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
+        String location = eventLocationET.getText().toString();
         // TODO Fix spinner and get group from there
-        group = new Group("3UJ98vjspiEL4LYugkX8", "", "", null, null, null);
         // Delete line above and uncomment line below when spinner fixed
         //group = (Group) selectGroup.getSelectedItem();
         LocalTime time1 = startTime;
         LocalTime time2 = endTime;
         LocalDate date = CalendarUtils.selectedDate;
-        Event newEvent = new Event(eventName, eventName, "location", false, date, time1, time2, group.getId());
+        Event newEvent = new Event(eventName, eventName, location, false, date, time1, time2, group.getId());
         Event.eventsList.add(newEvent);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

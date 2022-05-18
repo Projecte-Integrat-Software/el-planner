@@ -56,10 +56,10 @@ public abstract class DataBaseAdapter {
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private static byte[] byteArray = new byte[]{};
-    private static List<GroupInterface> groupInterfaces = new ArrayList<>();
+    private static final List<GroupInterface> groupInterfaces = new ArrayList<>();
     private static EventInterface eventInterface;
     private static InvitationInterface invitationInterface;
-    private static boolean registrationCompleted = true;
+    private static final boolean registrationCompleted = true;
 
     public static void login(DBInterface i, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -328,11 +328,11 @@ public abstract class DataBaseAdapter {
         mAuth.signOut();
     }
 
-    public static void postComment(String message){
-        rtdb.getReference().child("comments").push().setValue(new Comment(message));
+    public static void postComment(String idEvent, String message) {
+        rtdb.getReference().child("comments").child(idEvent).push().setValue(new Comment(message));
     }
 
-    public static void forgotPassword(DBInterface i, String email){
+    public static void forgotPassword(DBInterface i, String email) {
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -343,15 +343,17 @@ public abstract class DataBaseAdapter {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                if (e instanceof FirebaseAuthInvalidCredentialsException) i.setToast("Email address is not valid");
-                if (e instanceof FirebaseAuthInvalidUserException) i.setToast("No user corresponding to this email address");
+                if (e instanceof FirebaseAuthInvalidCredentialsException)
+                    i.setToast("Email address is not valid");
+                if (e instanceof FirebaseAuthInvalidUserException)
+                    i.setToast("No user corresponding to this email address");
                 else i.setToast("Failed to send reset email!\n" + e.getClass().getSimpleName());
             }
         });
     }
 
-    public static void loadComments(CommentInterface i){
-        DatabaseReference ref = rtdb.getReference().child("comments");
+    public static void loadComments(CommentInterface i, String idEvent) {
+        DatabaseReference ref = rtdb.getReference().child("comments").child(idEvent);
         ref.addChildEventListener(new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -433,7 +435,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static void createEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
-        DocumentReference doc = db.collection("event").document(eventId);
+        DocumentReference doc = db.collection("eventProv").document(eventId);
         doc.set(mapEventDocument(name, location, allDay, date, startTime, endTime, groupId))
                 .addOnSuccessListener(documentReference -> {
                     loadEvents();
@@ -447,7 +449,7 @@ public abstract class DataBaseAdapter {
     }
 
     private static void loadEvents() {
-        db.collection("event").get().addOnCompleteListener(task -> {
+        db.collection("eventProv").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<Event> events = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -466,15 +468,16 @@ public abstract class DataBaseAdapter {
         void update(ArrayList<Event> events);
     }
 
-    public static void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime) {
+    public static void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String group) {
         deleteEvent(eventId);
-        //  createEvent(eventId, name, location, allDay, date, startTime, endTime);
+        createEvent(eventId, name, location, allDay, date, startTime, endTime, group);
+        loadEvents();
 
 
     }
 
     public static void deleteEvent(String eventId) {
-        DocumentReference doc = db.collection("event").document(eventId);
+        DocumentReference doc = db.collection("eventProv").document(eventId);
         doc.delete().addOnSuccessListener(documentReference -> {
             loadEvents();
         });

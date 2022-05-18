@@ -26,12 +26,9 @@
             android:exported="false"
             android:parentActivityName=".NavigationDrawer" />
         <activity
-            android:name=".ui.calendar.ViewEventActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.calendar.EditEventActivity"
             android:exported="false"
-            android:parentActivityName=".ui.calendar.ViewEventActivity" />
+            android:parentActivityName=".NavigationDrawer" />
         <activity
             android:name=".ui.user.ForgotPasswordActivity"
             android:exported="false"
@@ -66,6 +63,7 @@
             android:label="@string/edit_group" />
         <activity
             android:name=".ui.calendar.comments.CommentsActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:label="@string/show_comments"
             android:parentActivityName=".NavigationDrawer" />
