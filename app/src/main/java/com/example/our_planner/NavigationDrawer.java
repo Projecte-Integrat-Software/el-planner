@@ -130,6 +130,12 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        DataBaseAdapter.checkInvitations(this);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if (item.getItemId() == R.id.help) {

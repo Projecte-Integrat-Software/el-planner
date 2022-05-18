@@ -1,6 +1,7 @@
 package com.example.our_planner;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -28,7 +29,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -139,6 +142,23 @@ public abstract class DataBaseAdapter {
         return g;
     }
 
+    public static void checkInvitations(Context c) {
+        db.collection("invitations").get().addOnSuccessListener(task -> {
+            String email = getEmail();
+            for (DocumentSnapshot document : task.getDocuments()) {
+                Map<String, Object> g = document.getData();
+                if (g.get("user").equals(email)) {
+                    //Send notification if you have just been invited
+                    if (!(Boolean)g.get("notified")) {
+                        g.replace("notified", true);
+                        Notifier.sendNotification(c, g.get("author") + " invited you to " + g.get("title") + "!");
+                        document.getReference().set(g);
+                    }
+                }
+            }
+        });
+    }
+
     public static void subscribeInvitationObserver(InvitationInterface i) {
         invitationInterface = i;
         loadInvitations();
@@ -174,6 +194,7 @@ public abstract class DataBaseAdapter {
                     invitation.put("group", groupId);
                     invitation.put("author", getEmail());
                     invitation.put("title", title);
+                    invitation.put("notified", false);
                     doc.set(invitation);
                 }
             }

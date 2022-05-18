@@ -1,7 +1,14 @@
 package com.example.our_planner.ui.user;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,10 +19,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.NavigationDrawer;
+import com.example.our_planner.Notifier;
 import com.example.our_planner.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -35,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
 
         //If user already logged in, we omit the activity
         if (viewModel.isUserLogged()) {
+            //TODO: PUT IT IN NAVIGATION DRAWER AND TEST AFTER MARTI
+            DataBaseAdapter.checkInvitations(this);
             startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
         }
 
