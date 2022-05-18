@@ -66,6 +66,7 @@
             android:label="@string/edit_group" />
         <activity
             android:name=".ui.calendar.comments.CommentsActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:label="@string/show_comments"
             android:parentActivityName=".NavigationDrawer" />

@@ -137,4 +137,5 @@
     <string name="edit_event">Edit Event</string>
     <string name="details_eventcell">Details</string>
     <string name="starting_time">Starting Time</string>
+    <string name="comment_event">Comment Event</string>
 </resources>
