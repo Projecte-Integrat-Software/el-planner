@@ -21,7 +21,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.our_planner.R;
-import com.example.our_planner.model.Event;
 import com.example.our_planner.model.Group;
 
 import java.time.LocalDate;
@@ -225,12 +224,10 @@ public class CreateEventActivity extends AppCompatActivity {
         LocalTime time1 = startTime;
         LocalTime time2 = endTime;
         LocalDate date = CalendarUtils.selectedDate;
-        Event newEvent = new Event(eventName, eventName, location, false, date, time1, time2, group.getId());
-        Event.eventsList.add(newEvent);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        viewModel.createEvent(newEvent.getId(), newEvent.getName(), newEvent.getLocation(), newEvent.isAllDay(), date.format(formatter), newEvent.getStartTime().toString(), newEvent.getEndTime().toString(), newEvent.getGroup());
+        viewModel.createEvent(eventName, location, false, date.format(formatter), time1.toString(), time2.toString(), group.getId());
 
         finish();
     }

@@ -27,8 +27,8 @@ public class CreateEventActivityViewModel extends AndroidViewModel implements Da
     }
 
 
-    public void createEvent(String id, String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
-        DataBaseAdapter.createEvent(id, name, location, allDay, date, startTime, endTime, groupId);
+    public void createEvent(String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
+        DataBaseAdapter.createEvent(name, location, allDay, date, startTime, endTime, groupId);
     }
 
     public void editEvent() {
