@@ -31,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -434,9 +433,8 @@ public abstract class DataBaseAdapter {
         return g;
     }
 
-    public static void createEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
-        DocumentReference doc = db.collection("eventProv").document(eventId);
-        doc.set(mapEventDocument(name, location, allDay, date, startTime, endTime, groupId))
+    public static void createEvent(String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
+        db.collection("eventProv").add(mapEventDocument(name, location, allDay, date, startTime, endTime, groupId))
                 .addOnSuccessListener(documentReference -> {
                     loadEvents();
                 });
@@ -455,7 +453,8 @@ public abstract class DataBaseAdapter {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> g = document.getData();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    events.add(new Event(document.getId(), (String) g.get("name"), (String) g.get("location"), (boolean) g.get("all day"), LocalDate.parse(((String) g.get("date")), formatter), LocalTime.parse((String) g.get("start time")), LocalTime.parse((String) g.get("end time")), (String) g.get("group")));
+                    events.add(new Event(document.getId(), (String) g.get("name"), (String) g.get("location"), (boolean) g.get("all day"), LocalDate.parse(((String) g.get("date")),
+                            formatter), LocalTime.parse((String) g.get("start time")), LocalTime.parse((String) g.get("end time")), (String) g.get("group")));
                 }
 
                 eventInterface.update(events);
@@ -470,7 +469,7 @@ public abstract class DataBaseAdapter {
 
     public static void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String group) {
         deleteEvent(eventId);
-        createEvent(eventId, name, location, allDay, date, startTime, endTime, group);
+        createEvent(name, location, allDay, date, startTime, endTime, group);
         loadEvents();
 
 

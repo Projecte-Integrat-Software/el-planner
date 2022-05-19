@@ -147,7 +147,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     @Override
     public void onResume() {
         super.onResume();
-        setEventAdapter();
+        setWeekView();
     }
 
     private void setEventAdapter() {
@@ -156,13 +156,13 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         ArrayList<Event> events = new ArrayList<>();
 
         for (Event e : dailyEvents) {
-            if (selections.containsKey(e.getGroup())) {
-                if (selections.get(e.getGroup()))
+            if (selections.containsKey(e.getGroupId())) {
+                if (selections.get(e.getGroupId()))
                     events.add(e);
             }
         }
 
-        EventAdapter adapter = new EventAdapter(getContext(), events, this);
+        EventAdapter adapter = new EventAdapter(getContext(), events, this, calendarViewModel.getGroups());
         recyclerViewEvents.setAdapter(adapter);
 
    /*     ArrayList<Event> events = new ArrayList<>();
