@@ -192,6 +192,29 @@
             android:minHeight="32dp"
             tools:ignore="SpeakableTextPresentCheck" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fileList"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_weight="5">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/addFilesBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Add Files" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
@@ -203,21 +226,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCommentEvent" />
+        app:layout_constraintTop_toBottomOf="@+id/commentEventBtn" />
 
     <Button
-        android:id="@+id/btnCommentEvent"
+        android:id="@+id/commentEventBtn"
         android:layout_width="194dp"
         android:layout_height="48dp"
         android:layout_marginBottom="64dp"
         android:text="@string/comment_event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.875" />
-
+        app:layout_constraintVertical_bias="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

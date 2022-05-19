@@ -1,10 +1,14 @@
 package com.example.our_planner;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.OpenableColumns;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +20,7 @@ import com.example.our_planner.model.Invitation;
 import com.example.our_planner.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -31,6 +36,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -56,7 +62,13 @@ public abstract class DataBaseAdapter {
     private static final List<GroupInterface> groupInterfaces = new ArrayList<>();
     private static EventInterface eventInterface;
     private static InvitationInterface invitationInterface;
+    private static UriInterface uriInterface;
     private static final boolean registrationCompleted = true;
+    private static ArrayList<Uri> uris;
+
+    public static ArrayList<Uri> getUris() {
+        return uris;
+    }
 
     public static void login(DBInterface i, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -363,10 +375,58 @@ public abstract class DataBaseAdapter {
         });
     }
 
+    public static void loadFiles(String eventId) {
+        uris = new ArrayList<>();
+        StorageReference storageRef = storage.getReference().child("Files").child(eventId);
+        Task task = storageRef.listAll();
+        task.addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for (StorageReference fileRef : listResult.getItems()) {
+                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            uris.add(uri);
+                            uriInterface.updateUris(uris);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public static void uploadFile(Uri uri, Context context, String eventId) {
+        StorageReference storageRef = storage.getReference().child("Files").child(eventId).child(getFileName(uri, context));
+        storageRef.putFile(uri);
+    }
+
+    @SuppressLint("Range")
+    public static String getFileName(Uri uri, Context context) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
     public static Task<byte[]> updateProfilePicture() {
         Task<byte[]> byteArrayTask = storage.getReference().child(Objects.requireNonNull(user.getEmail())).getBytes(1024 * 1024);
         byteArrayTask.addOnSuccessListener(o -> {
-            byteArray = (byte[]) byteArrayTask.getResult();
+            byteArray = byteArrayTask.getResult();
         });
         return byteArrayTask;
     }
@@ -379,6 +439,11 @@ public abstract class DataBaseAdapter {
 
     public static boolean isRegistrationCompleted() {
         return registrationCompleted;
+    }
+
+    public static void subscribeUriObserver(UriInterface i, String eventId) {
+        uriInterface = i;
+        loadFiles(eventId);
     }
 
     public interface DBInterface {
@@ -395,6 +460,37 @@ public abstract class DataBaseAdapter {
 
     public interface InvitationInterface extends DBInterface {
         void update(ArrayList<Invitation> invitations);
+    }
+
+    public static Group getGroup(String groupName) {
+        AtomicReference<Group> group = new AtomicReference<>(null);
+        db.collection("groups").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
+                    if (participants.containsKey(getEmail())) {
+                        if (g.get("title").equals(groupName)) {
+                            Map<String, String> colours = (HashMap<String, String>) g.get("colours");
+                            Map<String, Integer> coloursGroup = new HashMap<>();
+                            Map<String, User> participantsGroup = new HashMap<>();
+                            for (String k : colours.keySet()) {
+                                coloursGroup.put(k, Integer.parseInt(colours.get(k)));
+                                participantsGroup.put(k, new User(participants.get(k)));
+
+                            }
+                            group.set(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, (Map<String, Boolean>) g.get("admins")));
+                            break;
+
+                        }
+                    }
+
+
+                }
+            }
+        });
+
+        return group.get();
     }
 
     public interface CommentInterface {
@@ -506,34 +602,7 @@ public abstract class DataBaseAdapter {
         return groups;
     }
 
-    public static Group getGroup(String groupName) {
-        AtomicReference<Group> group = new AtomicReference<>(null);
-        db.collection("groups").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Map<String, Object> g = document.getData();
-                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
-                    if (participants.containsKey(getEmail())) {
-                        if (((String) g.get("title")).equals(groupName)) {
-                            Map<String, String> colours = (HashMap<String, String>) g.get("colours");
-                            Map<String, Integer> coloursGroup = new HashMap<>();
-                            Map<String, User> participantsGroup = new HashMap<>();
-                            for (String k : colours.keySet()) {
-                                coloursGroup.put(k, Integer.parseInt(colours.get(k)));
-                                participantsGroup.put(k, new User(participants.get(k)));
-
-                            }
-                            group.set(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, (Map<String, Boolean>) g.get("admins")));
-                            break;
-
-                        }
-                    }
-
-
-                }
-            }
-        });
-
-        return group.get();
+    public interface UriInterface {
+        void updateUris(ArrayList<Uri> uris);
     }
 }
