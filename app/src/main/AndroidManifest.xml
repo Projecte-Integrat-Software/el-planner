@@ -24,29 +24,37 @@
         <activity
             android:name=".ui.calendar.CreateEventActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_create_event"
             android:parentActivityName=".NavigationDrawer" />
         <activity
             android:name=".ui.calendar.EditEventActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_edit_event"
             android:parentActivityName=".NavigationDrawer" />
         <activity
             android:name=".ui.user.ForgotPasswordActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_forgot_password"
             android:parentActivityName=".ui.user.LoginActivity" />
         <activity
             android:name=".ui.user.RegisterActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_register"
             android:parentActivityName=".ui.user.LoginActivity" />
         <activity
             android:name=".NavigationDrawer"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_navigation_drawer"
             android:theme="@style/Theme.Ourplanner.NoActionBar" />
         <activity
             android:name=".ui.user.LoginActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,15 +64,18 @@
         <activity
             android:name=".ui.groups.CreateGroupActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="@string/create_group" />
         <activity
             android:name=".ui.groups.EditGroupActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="@string/edit_group" />
         <activity
             android:name=".ui.calendar.comments.CommentsActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="@string/show_comments"
             android:parentActivityName=".NavigationDrawer" />
     </application>
