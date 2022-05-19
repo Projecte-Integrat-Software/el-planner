@@ -18,7 +18,6 @@ import com.example.our_planner.model.Event;
 import com.example.our_planner.model.Group;
 import com.example.our_planner.model.Invitation;
 import com.example.our_planner.model.User;
-import com.google.android.gms.common.api.internal.ListenerHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -162,7 +161,7 @@ public abstract class DataBaseAdapter {
                     //Send notification if you have just been invited
                     if (!(Boolean)g.get("notified")) {
                         g.replace("notified", true);
-                        ListenerHolder.Notifier.sendNotification(c, g.get("author") + " invited you to " + g.get("title") + "!");
+                        Notifier.sendNotification(c, g.get("author") + " invited you to " + g.get("title") + "!");
                         document.getReference().set(g);
                     }
                 }
