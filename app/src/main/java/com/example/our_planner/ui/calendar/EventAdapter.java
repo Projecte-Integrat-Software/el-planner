@@ -2,17 +2,19 @@ package com.example.our_planner.ui.calendar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
+import com.example.our_planner.model.Group;
 
 import java.util.ArrayList;
 
@@ -21,11 +23,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolderEv
     private final ArrayList<Event> events;
     private final Context context;
     private final OnNoteListener mOnNoteListener;
+    private final MutableLiveData<ArrayList<Group>> groups;
 
-    public EventAdapter(Context context, ArrayList<Event> events, OnNoteListener onNoteListener) {
+    public EventAdapter(Context context, ArrayList<Event> events, OnNoteListener onNoteListener, MutableLiveData<ArrayList<Group>> groups) {
         this.context = context;
         this.events = events;
         this.mOnNoteListener = onNoteListener;
+        this.groups = groups;
     }
 
     @NonNull
@@ -39,7 +43,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolderEv
     public void onBindViewHolder(@NonNull ViewHolderEvents holder, int position) {
         Event e = events.get(position);
         holder.setEvent(e);
-        holder.setData(e);
+        holder.setData(e, groups);
     }
 
     @Override
@@ -74,10 +78,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolderEv
         }
 
         @SuppressLint("ResourceAsColor")
-        public void setData(Event event) {
+        public void setData(Event event, MutableLiveData<ArrayList<Group>> groups) {
             eventNameTV.setText(event.getName());
             startTimeTV.setText(CalendarUtils.formattedTime(event.getStartTime()));
-            groupColourView.setBackgroundColor(Color.BLACK);
+            String groupId = event.getGroupId();
+            for (Group group : groups.getValue()) {
+                if (group.getId().equals(groupId)) {
+                    groupColourView.setBackgroundColor(group.getColours().get(DataBaseAdapter.getEmail()));
+                }
+            }
         }
 
         @Override

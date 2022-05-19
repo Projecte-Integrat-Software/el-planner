@@ -46,7 +46,6 @@ public class CreateEventActivityViewModel extends AndroidViewModel implements Da
     @Override
     public void update(ArrayList<Group> groups) {
         this.mGroups.setValue(groups);
-
     }
 
     public List<Group> getGroupsList() {
