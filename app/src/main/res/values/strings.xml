@@ -29,6 +29,10 @@
     <string name="title_activity_register">Register</string>
     <string name="title_activity_forgot_password">Forgot Password</string>
     <string name="title_activity_sign_in">Sign In</string>
+    <string name="title_activity_create_event">Create Event</string>
+    <string name="title_activity_view_event">View Event</string>
+    <string name="title_activity_edit_event">Edit Event</string>
+
     <string name="welcome">Welcome to OurPlanner!</string>
     <string name="sign_in_register">Sign up or register to continue.</string>
     <string name="username">Username</string>
