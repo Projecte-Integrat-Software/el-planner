@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,12 +16,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
 import com.example.our_planner.model.Group;
@@ -39,16 +44,19 @@ public class EditEventActivity extends AppCompatActivity {
 
     private EditText eventNameET, eventLocationET;
     private TextView dateTV, startTimeTV, endTimeTV;
-    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, saveChangesBtn, commentEventBtn;
+    private static final int FILE_SELECT_CODE = 0;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
     private Spinner selectGroup;
+    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, saveChangesBtn, commentEventBtn, addFilesBtn;
 
     private Group group;
     private ArrayList<Group> groups;
+    private RecyclerView fileList;
 
     private androidx.appcompat.app.AlertDialog alert;
+    private ArrayList<Uri> uris;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -62,12 +70,15 @@ public class EditEventActivity extends AppCompatActivity {
         LocalTime startTime = LocalTime.now();
         viewModel.setStartTime(startTime.minusSeconds(startTime.getSecond()));
         viewModel.setEndTime(startTime.plusHours(1));
+        viewModel.setEvent((Event) getIntent().getSerializableExtra("event"));
 
         initAlarmDialog();
         initWidgets();
         initDatePicker();
         initStartTimePicker();
         initEndTimePicker();
+        fillData();
+        initFilesList();
         initListeners();
 
         selectGroup = findViewById(R.id.selectGroupSpinner);
@@ -105,9 +116,6 @@ public class EditEventActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        viewModel.setEvent((Event) getIntent().getSerializableExtra("event"));
-        fillData();
     }
 
     private void fillData() {
@@ -127,20 +135,18 @@ public class EditEventActivity extends AppCompatActivity {
         alert.setTitle(R.string.help);
     }
 
-    @SuppressLint("SetTextI18n")
-    private void initWidgets() {
-        eventNameET = findViewById(R.id.txtEventTitle);
-        eventLocationET = findViewById(R.id.eventLocationET);
-
-        dateTV = findViewById(R.id.dateTV);
-        startTimeTV = findViewById(R.id.startTimeTV);
-        endTimeTV = findViewById(R.id.endTimeTV);
-
-        selectDateBtn = findViewById(R.id.selectDateBtn);
-        selectStartTimeBtn = findViewById(R.id.selectStartTimeBtn);
-        selectEndTimeBtn = findViewById(R.id.selectEndTimeBtn);
-        saveChangesBtn = findViewById(R.id.saveChangesBtn);
-        commentEventBtn = findViewById(R.id.btnCommentEvent);
+    private void initFilesList() {
+        viewModel.subscribeUriObserver();
+        fileList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        uris = new ArrayList<>();
+        Observer<ArrayList<Uri>> observerUris = urisNew -> {
+            uris = new ArrayList<>(urisNew);
+            AdapterCalendarFiles adapter = new AdapterCalendarFiles(uris, fileList);
+            fileList.setAdapter(adapter);
+        };
+        viewModel.getUris().observe(this, observerUris);
+        AdapterCalendarFiles adapter = new AdapterCalendarFiles(uris, fileList);
+        fileList.setAdapter(adapter);
     }
 
     private void initDatePicker() {
@@ -188,12 +194,56 @@ public class EditEventActivity extends AppCompatActivity {
                 minute, true);
     }
 
+    @SuppressLint("SetTextI18n")
+    private void initWidgets() {
+        eventNameET = findViewById(R.id.txtEventTitle);
+        eventLocationET = findViewById(R.id.eventLocationET);
+
+        dateTV = findViewById(R.id.dateTV);
+        startTimeTV = findViewById(R.id.startTimeTV);
+        endTimeTV = findViewById(R.id.endTimeTV);
+
+        selectDateBtn = findViewById(R.id.selectDateBtn);
+        selectStartTimeBtn = findViewById(R.id.selectStartTimeBtn);
+        selectEndTimeBtn = findViewById(R.id.selectEndTimeBtn);
+        saveChangesBtn = findViewById(R.id.saveChangesBtn);
+        commentEventBtn = findViewById(R.id.commentEventBtn);
+        addFilesBtn = findViewById(R.id.addFilesBtn);
+
+        fileList = findViewById(R.id.fileList);
+    }
+
     private void initListeners() {
         selectDateBtn.setOnClickListener(this::openDatePicker);
         selectStartTimeBtn.setOnClickListener(this::openStartTimePicker);
         selectEndTimeBtn.setOnClickListener(this::openEndTimePicker);
         saveChangesBtn.setOnClickListener(this::saveChangesAction);
         commentEventBtn.setOnClickListener(this::commentEventAction);
+        addFilesBtn.setOnClickListener(this::addFilesAction);
+    }
+
+    private void addFilesAction(View view) {
+        showFileChooser();
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "Please install a File Manager", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILE_SELECT_CODE && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            DataBaseAdapter.uploadFile(uri, getApplicationContext(), viewModel.getEvent().getId());
+        }
     }
 
     private void commentEventAction(View view) {

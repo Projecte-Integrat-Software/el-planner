@@ -1,6 +1,7 @@
 package com.example.our_planner.ui.calendar;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -14,9 +15,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class EditEventActivityViewModel extends AndroidViewModel implements DataBaseAdapter.GroupInterface {
+public class EditEventActivityViewModel extends AndroidViewModel implements DataBaseAdapter.GroupInterface, DataBaseAdapter.UriInterface {
 
     private final MutableLiveData<ArrayList<Group>> mGroups;
+    private final MutableLiveData<ArrayList<Uri>> mUris;
 
     private Event event;
 
@@ -29,7 +31,12 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
     public EditEventActivityViewModel(@NonNull Application application) {
         super(application);
         mGroups = new MutableLiveData<>(new ArrayList<>());
+        mUris = new MutableLiveData<>(new ArrayList<>());
         DataBaseAdapter.subscribeGroupObserver(this);
+    }
+
+    public void subscribeUriObserver() {
+        DataBaseAdapter.subscribeUriObserver(this, event.getId());
     }
 
     public MutableLiveData<ArrayList<Group>> getGroups() {
@@ -94,5 +101,14 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
     @Override
     public void update(ArrayList<Group> groups) {
         this.mGroups.setValue(groups);
+    }
+
+    @Override
+    public void updateUris(ArrayList<Uri> uris) {
+        this.mUris.setValue(uris);
+    }
+
+    public MutableLiveData<ArrayList<Uri>> getUris() {
+        return mUris;
     }
 }

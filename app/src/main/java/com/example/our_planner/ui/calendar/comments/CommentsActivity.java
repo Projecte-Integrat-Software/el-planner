@@ -50,7 +50,7 @@ public class CommentsActivity extends AppCompatActivity {
         AdapterComments adapterComments = new AdapterComments(comments.getValue());
         recyclerViewComments.setAdapter(adapterComments);
 
-        comments.observe(this, comments1 -> adapterComments.notifyDataSetChanged());
+        comments.observe(this, commentsNew -> adapterComments.notifyDataSetChanged());
 
         sendBtn.setOnClickListener(view -> {
             String messageToPost = message.getText().toString();
