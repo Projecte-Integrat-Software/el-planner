@@ -465,6 +465,10 @@ public abstract class DataBaseAdapter {
         loadFiles(eventId);
     }
 
+    public static Task<byte[]> getImage(String author) {
+        return storage.getReference().child(author).getBytes(1024 * 1024);
+    }
+
     public interface DBInterface {
         void setToast(String s);
     }
