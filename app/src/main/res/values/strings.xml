@@ -48,9 +48,14 @@
     <string name="email_empty">Email field is empty!</string>
     <string name="password_empty">Password field is empty!</string>
     <string name="username_empty">Username field is empty!</string>
+    <string name="title_empty">Title field is empty!</string>
     <string name="passwords_different">Passwords are not the same!</string>
     <string name="registration_successful">Registered successfully</string>
     <string name="instructions_sent">We have sent you instructions to reset your password!</string>
+    <string name="no_user_registered">There is no user registered with this email</string>
+    <string name="user_invited">User already selected to be invited!</string>
+    <string name="invite_yourself">You cannot invite yourself!</string>
+    <string name="user_already_group">This user is already in the group!</string>
 
     <string name="create_account">Create your Our Planner account:</string>
     <string name="fill_fields">All fields must be filled</string>
@@ -87,6 +92,7 @@
     <string name="leave_group_description">Leave group</string>
     <string name="confirmation_leaving">Are you sure you want to leave?\nThis action is unchangeable.</string>
     <string name="expel_participant_description">Expel user</string>
+    <string name="you">You</string>
     <string name="confirmation_expelling">Are you sure you want to expel this user?\nOnce the group is edited, this action will be unchangeable.</string>
     <string name="admin_description">Change participant permission</string>
     <string name="invite_participants">Invite participants</string>

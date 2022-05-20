@@ -49,9 +49,14 @@
     <string name="email_empty">Campo de correo vacío!</string>
     <string name="password_empty">Campo de contraseña vacío!</string>
     <string name="username_empty">Campo de nombre de usuario vacío!</string>
+    <string name="title_empty">Campo de título vacío!</string>
     <string name="passwords_different">Las contraseñas no coinciden!</string>
     <string name="registration_successful">Registro con éxito</string>
     <string name="instructions_sent">Te hemos enviado instrucciones para cambiar tu contraseña!</string>
+    <string name="no_user_registered">No hay ningún usuario registrado con este correo electrónico</string>
+    <string name="user_invited">Usuario ya seleccionado para ser invitado!</string>
+    <string name="invite_yourself">No puedes invitarte a ti mismo!</string>
+    <string name="user_already_group">Este usuario ya está en el grupo!</string>
 
     <string name="create_account">Crea tu cuenta de Our Planner:</string>
     <string name="fill_fields">Todos los campos deben ser rellenados</string>
@@ -88,6 +93,7 @@
     <string name="leave_group_description">Salir del grupo</string>
     <string name="confirmation_leaving">Estás seguro/a que quieres salir?\nEsta acción es irrevocable.</string>
     <string name="expel_participant_description">Expulsar usuario/a</string>
+    <string name="you">Tú</string>
     <string name="confirmation_expelling">Estás seguro/a que quieres expulsar este usuario/a?\nLa acción será irrevocable cuando se modifique el grupo.</string>
     <string name="admin_description">Cambiar permiso del participante</string>
     <string name="invite_participants">Invitar participantes</string>

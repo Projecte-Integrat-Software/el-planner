@@ -2,6 +2,7 @@ package com.example.our_planner.ui.groups;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,13 +24,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
-import com.example.our_planner.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.Map;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -42,6 +41,11 @@ public class EditGroupActivity extends AppCompatActivity {
     private RecyclerView recyclerViewParticipants;
     private EditGroupActivityViewModel viewModel;
     private AlertDialog alert;
+    private boolean admin;
+    private TextView txtUser, groupTitle, groupDetails, groupColour, groupParticipants;
+    private Button btnEdit;
+    private FloatingActionButton btnParticipant;
+    private Group group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,94 +58,26 @@ public class EditGroupActivity extends AppCompatActivity {
         txtDetails = findViewById(R.id.txtGroupDetails);
         colourView = findViewById(R.id.selected_colour);
         colourView.setOnClickListener(view -> chooseColour());
+        groupTitle = findViewById(R.id.labelGroupTitle);
+        groupDetails = findViewById(R.id.labelGroupDetails);
+        groupColour = findViewById(R.id.labelGroupColour);
+        groupParticipants = findViewById(R.id.labelGroupParticipants);
+        txtUser = findViewById(R.id.txtUser);
 
-        Group group = (Group) getIntent().getSerializableExtra("group");
+        group = (Group) getIntent().getSerializableExtra("group");
         txtTitle.setText(group.getTitle());
         txtDetails.setText(group.getDetails());
         setColour(viewModel.getColour(group));
-        TextView user = findViewById(R.id.txtUser);
-        user.setText(viewModel.getUserName() + " (You)");
-        Map<String, User> participants = group.getParticipants();
-        Map<String, Boolean> admins = group.getAdmins();
-        boolean b = admins.get(viewModel.getEmail());
+        admin = group.getAdmins().get(viewModel.getEmail());
         CheckBox cb = findViewById(R.id.cbUserAdmin);
-        cb.setChecked(b);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(b ? R.string.help_edit_group_admin : R.string.help_edit_group);
-        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
-        alert = builder.create();
-        alert.setTitle(R.string.help);
+        cb.setChecked(admin);
 
         recyclerViewParticipants = findViewById(R.id.recyclerViewParticipants);
         recyclerViewParticipants.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewParticipants.setAdapter(new AdapterParticipants(this, participants, admins));
+        recyclerViewParticipants.setAdapter(new AdapterParticipants(this, group.getParticipants(), group.getAdmins()));
 
-        //Allow inviting participants only if admin
-        FloatingActionButton btnParticipant = findViewById(R.id.btnParticipant);
-        if (b) {
-            btnParticipant.setOnClickListener(view -> {
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_invite_participants, null, false), 900, 1000, true);
-                pw.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-                EditText emailTxt = pw.getContentView().findViewById(R.id.txtParticipantEmail);
-                RecyclerView recyclerView = pw.getContentView().findViewById(R.id.recycleViewParticipantsToInvite);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                recyclerView.setAdapter(new AdapterParticipantsInvite(viewModel.getInvitationEmails()));
-                pw.getContentView().findViewById(R.id.addEmailBtn).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String email = emailTxt.getText().toString();
-                        final Observer<Boolean> observerRegistered = b -> addEmail(email, b);
-                        viewModel.resetRegistered();
-                        viewModel.getRegistered().observe(EditGroupActivity.this, observerRegistered);
-                        if (email.isEmpty()) {
-                            Toast.makeText(EditGroupActivity.this, "Email field is empty!", Toast.LENGTH_SHORT).show();
-                        } else if (email.equals(viewModel.getEmail())) {
-                            Toast.makeText(EditGroupActivity.this, "You cannot invite yourself!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            viewModel.checkRegistered(email);
-                        }
-                    }
-
-                    private void addEmail(String email, boolean b) {
-                        if (b) {
-                            if (participants.containsKey(email)) {
-                                Toast.makeText(EditGroupActivity.this, "This user is already in the group!", Toast.LENGTH_SHORT).show();
-                            } else if (!((AdapterParticipantsInvite) recyclerView.getAdapter()).addElement(email)) {
-                                Toast.makeText(EditGroupActivity.this, "User already selected to be invited!", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(EditGroupActivity.this, "There is no user registered with this email", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                pw.getContentView().findViewById(R.id.cancelBtn).setOnClickListener(view1 -> pw.dismiss());
-                pw.getContentView().findViewById(R.id.saveInvitationsBtn).setOnClickListener(view1 -> {
-                    viewModel.saveInvitationEmails(((AdapterParticipantsInvite) recyclerView.getAdapter()).getParticipantEmails());
-                    pw.dismiss();
-                });
-            });
-        } else {
-            txtTitle.setFocusable(false);
-            txtDetails.setFocusable(false);
-            btnParticipant.setVisibility(View.INVISIBLE);
-        }
-
-        Button btnEdit = findViewById(R.id.btnEdit);
-        btnEdit.setOnClickListener(view -> {
-            String title = txtTitle.getText().toString();
-            String details = txtDetails.getText().toString();
-            if (title.isEmpty()) {
-                Toast.makeText(this, "Title field is empty!", Toast.LENGTH_SHORT).show();
-            } else {
-                System.out.println(participants);
-                System.out.println(admins);
-                viewModel.editGroup(group.getId(), title, details, currentColour, participants, admins, group.getEvents());
-                finish();
-            }
-        });
+        btnParticipant = findViewById(R.id.btnParticipant);
+        btnEdit = findViewById(R.id.btnEdit);
 
         final Observer<String> observerToast = t -> Toast.makeText(EditGroupActivity.this, t, Toast.LENGTH_SHORT).show();
         viewModel.getToast().observe(this, observerToast);
@@ -164,6 +100,12 @@ public class EditGroupActivity extends AppCompatActivity {
                     }
                 });
         colourPicker.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeLanguage();
     }
 
     private void setColour(int colour) {
@@ -190,5 +132,98 @@ public class EditGroupActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void changeLanguage() {
+        Resources r = LocaleLanguage.getLocale(this).getResources();
+
+        setTitle(r.getString(R.string.edit_group));
+        txtUser.setText(viewModel.getUserName() + " (" + r.getString(R.string.you) + ")");
+        txtTitle.setHint(r.getString(R.string.group_title));
+        txtDetails.setHint(r.getString(R.string.group_details));
+        groupTitle.setText(r.getString(R.string.title));
+        groupDetails.setText(r.getString(R.string.details));
+        groupColour.setText(r.getString(R.string.colour));
+        groupParticipants.setText(r.getString(R.string.participants));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(admin ? r.getString(R.string.help_edit_group_admin) : r.getString(R.string.help_edit_group));
+        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+        alert = builder.create();
+        alert.setTitle(R.string.help);
+
+        if (admin) {
+            btnParticipant.setOnClickListener(view -> {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_invite_participants, null, false), 900, 1000, true);
+                pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                ((TextView) pw.getContentView().findViewById(R.id.txtInviteParticipants)).setText(r.getString(R.string.invite_participants));
+                ((TextView) pw.getContentView().findViewById(R.id.txtParticipantsInvite)).setText(r.getString(R.string.participants_to_invite));
+
+                EditText emailTxt = pw.getContentView().findViewById(R.id.txtParticipantEmail);
+                emailTxt.setHint(r.getString(R.string.email));
+                RecyclerView recyclerView = pw.getContentView().findViewById(R.id.recycleViewParticipantsToInvite);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerView.setAdapter(new AdapterParticipantsInvite(viewModel.getInvitationEmails()));
+
+                Button addBtn = pw.getContentView().findViewById(R.id.addEmailBtn);
+                addBtn.setText(r.getString(R.string.add));
+                addBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String email = emailTxt.getText().toString();
+                        final Observer<Boolean> observerRegistered = b -> addEmail(email, b);
+                        viewModel.resetRegistered();
+                        viewModel.getRegistered().observe(EditGroupActivity.this, observerRegistered);
+                        if (email.isEmpty()) {
+                            Toast.makeText(EditGroupActivity.this, r.getString(R.string.email_empty), Toast.LENGTH_SHORT).show();
+                        } else if (email.equals(viewModel.getEmail())) {
+                            Toast.makeText(EditGroupActivity.this, r.getString(R.string.invite_yourself), Toast.LENGTH_SHORT).show();
+                        } else {
+                            viewModel.checkRegistered(email);
+                        }
+                    }
+
+                    private void addEmail(String email, boolean b) {
+                        if (b) {
+                            if (group.getParticipants().containsKey(email)) {
+                                Toast.makeText(EditGroupActivity.this, r.getString(R.string.user_already_group), Toast.LENGTH_SHORT).show();
+                            } else if (!((AdapterParticipantsInvite) recyclerView.getAdapter()).addElement(email)) {
+                                Toast.makeText(EditGroupActivity.this, r.getString(R.string.user_invited), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(EditGroupActivity.this, r.getString(R.string.no_user_registered), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                Button btnCancel = pw.getContentView().findViewById(R.id.cancelBtn);
+                btnCancel.setOnClickListener(view1 -> pw.dismiss());
+                btnCancel.setText(r.getString(R.string.cancel));
+
+                Button btnInvite = pw.getContentView().findViewById(R.id.saveInvitationsBtn);
+                btnInvite.setText(r.getString(R.string.save));
+                btnInvite.setOnClickListener(view1 -> {
+                    viewModel.saveInvitationEmails(((AdapterParticipantsInvite) recyclerView.getAdapter()).getParticipantEmails());
+                    pw.dismiss();
+                });
+            });
+        } else {
+            txtTitle.setFocusable(false);
+            txtDetails.setFocusable(false);
+            btnParticipant.setVisibility(View.INVISIBLE);
+        }
+
+        btnEdit.setText(r.getString(R.string.edit));
+        btnEdit.setOnClickListener(view -> {
+            String title = txtTitle.getText().toString();
+            String details = txtDetails.getText().toString();
+            if (title.isEmpty()) {
+                Toast.makeText(this, r.getString(R.string.title_empty), Toast.LENGTH_SHORT).show();
+            } else {
+                viewModel.editGroup(group.getId(), title, details, currentColour, group.getParticipants(), group.getAdmins(), group.getEvents());
+                finish();
+            }
+        });
     }
 }
