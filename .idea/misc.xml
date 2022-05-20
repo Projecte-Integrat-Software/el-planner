@@ -19,6 +19,8 @@
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_invitations.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/fragment_planner.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/item_list_file.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/item_list_files.xml" value="0.28" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/item_list_invitations.xml" value="0.1" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/nav_header_navigation_drawer.xml" value="0.1" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/nd_app_bar.xml" value="0.1" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/layout/nd_content.xml" value="0.1" />
@@ -27,6 +29,7 @@
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/drawer_menu.xml" value="0.1796875" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/navigation_drawer.xml" value="0.1796875" />
         <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/menu/toolbar.xml" value="0.1796875" />
+        <entry key="..\:/Users/Miquel/Documents/GitHub/our-planner/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1105" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.375" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_edit_event.xml" value="0.335" />
         <entry key="..\:/Users/david/AndroidStudioProjects/our-planner/app/src/main/res/layout/calendar_cell.xml" value="0.16894630192502533" />

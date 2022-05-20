@@ -417,6 +417,8 @@ public abstract class DataBaseAdapter {
     public static void uploadFile(Uri uri, Context context, String eventId) {
         StorageReference storageRef = storage.getReference().child("Files").child(eventId).child(getFileName(uri, context));
         storageRef.putFile(uri);
+        uris.add(uri);
+        uriInterface.updateUris(uris);
     }
 
     @SuppressLint("Range")
