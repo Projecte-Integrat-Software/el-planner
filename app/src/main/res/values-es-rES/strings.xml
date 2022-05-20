@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OurPlanner</string>
-    <string name="selected_language">English</string>
+    <string name="selected_language">Castellano</string>
     <string name="title_activity_navigation_drawer">Navigation Drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

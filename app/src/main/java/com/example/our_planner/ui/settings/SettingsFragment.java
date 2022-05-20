@@ -44,7 +44,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         SettingsViewModel settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-
+        //TODO: ADD CHANGE LANGUAGE, LISTENERS TO THE BUTTONS AND SELECT THE LANGUAGE SELECTED
         notificationsAlertSpinner = view.findViewById(R.id.notificationsAlertSpinner);
         ArrayAdapter<String> adapterNotificationsAlert = new ArrayAdapter<>(SettingsFragment.this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.notificationsAlterOptions));
         adapterNotificationsAlert.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
