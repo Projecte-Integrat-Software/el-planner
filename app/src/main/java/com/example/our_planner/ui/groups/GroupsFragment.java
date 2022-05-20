@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
+import com.example.our_planner.ui.invitations.AdapterInvitations;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -34,11 +35,7 @@ public class GroupsFragment extends Fragment {
         recyclerViewGroups = view.findViewById(R.id.recyclerViewGroups);
         recyclerViewGroups.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        final Observer<ArrayList<Group>> observerGroups = g -> {
-            AdapterGroups newAdapter = new AdapterGroups(parentContext, g);
-            recyclerViewGroups.swapAdapter(newAdapter, false);
-            newAdapter.notifyDataSetChanged();
-        };
+        final Observer<ArrayList<Group>> observerGroups = g -> changeAdapter(g);
         final Observer<String> observerToast = t -> Toast.makeText(getContext(), t, Toast.LENGTH_SHORT).show();
         viewModel.getGroups().observe(getActivity(), observerGroups);
         viewModel.getToast().observe(getActivity(), observerToast);
@@ -50,7 +47,19 @@ public class GroupsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        changeAdapter(viewModel.getGroups().getValue());
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    private void changeAdapter(ArrayList<Group> g) {
+        AdapterGroups newAdapter = new AdapterGroups(parentContext, g);
+        recyclerViewGroups.swapAdapter(newAdapter, false);
+        newAdapter.notifyDataSetChanged();
     }
 }

@@ -1,7 +1,11 @@
 package com.example.our_planner.ui.settings;
 
+import static com.example.our_planner.LocaleLanguage.getLocale;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -17,13 +21,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.our_planner.DataBaseAdapter;
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,64 +43,47 @@ import java.io.IOException;
 
 public class SettingsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    private Spinner notificationsAlertSpinner, themeSpinner;
+    private Spinner themeSpinner;
     private final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     private final int PICK_PHOTO_CODE = 1046;
     private Button changeProfilePictureBtn;
-    private ImageView profilePicture;
+    private ImageView profilePicture, esPicture, enPicture;
+    private TextView themeTxt, languageTxt;
+    private PopupWindow pw;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         SettingsViewModel settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        //TODO: ADD CHANGE LANGUAGE, LISTENERS TO THE BUTTONS AND SELECT THE LANGUAGE SELECTED
-        notificationsAlertSpinner = view.findViewById(R.id.notificationsAlertSpinner);
-        ArrayAdapter<String> adapterNotificationsAlert = new ArrayAdapter<>(SettingsFragment.this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.notificationsAlterOptions));
-        adapterNotificationsAlert.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        notificationsAlertSpinner.setAdapter(adapterNotificationsAlert);
-        notificationsAlertSpinner.setSelection(0, false);
-        notificationsAlertSpinner.setOnItemSelectedListener(this);
 
         themeSpinner = view.findViewById(R.id.themeSpinner);
-        ArrayAdapter<String> adapterTheme = new ArrayAdapter<>(SettingsFragment.this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.themeOptions));
-        adapterTheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        themeSpinner.setAdapter(adapterTheme);
-        themeSpinner.setSelection(0, false);
-        themeSpinner.setOnItemSelectedListener(this);
 
         profilePicture = view.findViewById(R.id.profilePicture);
         byte[] byteArray = DataBaseAdapter.getByteArray();
         profilePicture.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
 
         changeProfilePictureBtn = view.findViewById(R.id.changeProfilePictureBtn);
-        changeProfilePictureBtn.setOnClickListener(new View.OnClickListener() {
+        pw = new PopupWindow(inflater.inflate(R.layout.popup_profile_picture, null, false), 900, 400, true);
+
+        themeTxt = view.findViewById(R.id.theme);
+        languageTxt = view.findViewById(R.id.languageTxt);
+
+        esPicture = view.findViewById(R.id.spanishImage);
+        esPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_profile_picture, null, false), 900, 400, true);
-                pw.showAtLocation(view.findViewById(R.id.changeProfilePictureBtn), Gravity.CENTER, 0, 0);
-
-                Button cameraBtn = pw.getContentView().findViewById(R.id.cameraBtn);
-                cameraBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent,
-                                CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                        pw.dismiss();
-                    }
-                });
-
-                Button galleryBtn = pw.getContentView().findViewById(R.id.galleryBtn);
-                galleryBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, PICK_PHOTO_CODE);
-                        pw.dismiss();
-                    }
-                });
+                setLanguage("es");
+                changeLanguage();
             }
         });
+        enPicture = view.findViewById(R.id.englishImage);
+        enPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setLanguage("en");
+                changeLanguage();
+            }
+        });
+
         return view;
     }
 
@@ -138,11 +129,71 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeLanguage();
+    }
+
+    private void changeLanguage() {
+        Resources r = LocaleLanguage.getLocale(getContext()).getResources();
+
+        NavigationDrawer n = (NavigationDrawer) getActivity();
+        n.getSupportActionBar().setTitle(r.getString(R.string.settings));
+        n.changeLanguage();
+
+        changeProfilePictureBtn.setText(r.getString(R.string.change_profile_picture));
+        themeTxt.setText(r.getString(R.string.theme));
+        languageTxt.setText(r.getString(R.string.language));
+        ArrayAdapter<String> adapterTheme = new ArrayAdapter<>(SettingsFragment.this.getActivity(), android.R.layout.simple_spinner_item, r.getStringArray(R.array.themeOptions));
+        adapterTheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        themeSpinner.setAdapter(adapterTheme);
+        themeSpinner.setSelection(0, false);
+        themeSpinner.setOnItemSelectedListener(this);
+
+        changeProfilePictureBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pw.showAtLocation(view.findViewById(R.id.changeProfilePictureBtn), Gravity.CENTER, 0, 0);
+
+                ((TextView)pw.getContentView().findViewById(R.id.txtProfilePicture)).setText(r.getString(R.string.change_profile_picture));
+                ((TextView)pw.getContentView().findViewById(R.id.txtPictureSource)).setText(r.getString(R.string.select_the_picture_source));
+
+                Button cameraBtn = pw.getContentView().findViewById(R.id.cameraBtn);
+                cameraBtn.setText(r.getString(R.string.camera));
+                cameraBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent,
+                                CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                        pw.dismiss();
+                    }
+                });
+
+                Button galleryBtn = pw.getContentView().findViewById(R.id.galleryBtn);
+                galleryBtn.setText(r.getString(R.string.gallery));
+                galleryBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, PICK_PHOTO_CODE);
+                        pw.dismiss();
+                    }
+                });
+            }
+        });
+    }
+
+    private void setLanguage(String language) {
+        LocaleLanguage.setLocale(getContext(), language);
     }
 }

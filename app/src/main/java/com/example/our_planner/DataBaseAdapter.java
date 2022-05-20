@@ -75,7 +75,7 @@ public abstract class DataBaseAdapter {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
-                i.setToast("Logged as " + getUserName());
+                i.setToast(" " + getUserName());
             } else {
                 i.setToast(task.getException().getMessage());
             }
@@ -96,7 +96,7 @@ public abstract class DataBaseAdapter {
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     Task setProfilePictureTask = setProfilePicture(stream.toByteArray());
                     setProfilePictureTask.addOnCompleteListener(task1 -> {
-                        i.setToast("Registered successfully");
+                        i.setToast("-");
                     });
                 });
             } else {
@@ -347,7 +347,7 @@ public abstract class DataBaseAdapter {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    i.setToast("We have sent you instructions to reset your password!");
+                    i.setToast("-");
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

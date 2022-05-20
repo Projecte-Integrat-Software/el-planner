@@ -1,63 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OurPlanner</string>
-    <string name="selected_language">Castellano</string>
     <string name="title_activity_navigation_drawer">Navigation Drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="help">Help</string>
-    <string name="help_comments">You can comment something about the event and the other members of its group will be able to see it.</string>
-    <string name="help_login">Write the email you signed up with and your password. If you do not remember your password, click the button to send a recovery email.</string>
-    <string name="help_register">Write an email to identify your account, a username (which will be visible by other users) and a password.</string>
-    <string name="help_forgot_password">We will send to the email you signed up with an email to change the password.</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="help">Ayuda</string>
+    <string name="help_comments">Puedes comentar algo sobre el evento y los otros miembros del grupo podrán verlo.</string>
+    <string name="help_login">Escribe el correo electrónico con el que te registraste y la contraseña. Si no la recuerdas, pulsa el botón de recuperarla.</string>
+    <string name="help_register">Escribe un correo electrónico para identificar tu cuenta, un nombre de usuario (que será visible por otros usuarios) y una contraseña.</string>
+    <string name="help_forgot_password">Te enviaremos al correo electrónico con el que te registraste un mensaje para cambiar tu contraseña.</string>
     <string name="help_calendar">TO BE DONE WHEN CALENDAR IS COMPLETE</string>
-    <string name="help_groups">In this screen you can see the groups you belong to. You can create new ones (you will be the admin), leave them and/or edit them.</string>
-    <string name="help_create_group">Write a title for the group (details are unrequired), choose a color for its events in your calendar and invite the users you want (they must give you their email).</string>
-    <string name="help_edit_group_admin">You can change the information of the group, choose a color for its events in your calendar, invite new users (they must give you their email), expel them or change their permissions.</string>
-    <string name="help_edit_group">You are not an admin of this group. You can only choose the group color (for its events in your calendar).</string>
+    <string name="help_groups">En esta pantalla puedes ver los grupos a los que perteneces. Puedes crear nuevos (serás el administrador), salir de ellos y/o editarlos.</string>
+    <string name="help_create_group">Escribe un título para el grupo (no hacen falta detalles), escoge un color para los eventos en tu calendario e invita a los usuarios que quieras (deben darte su correo electrónico).</string>
+    <string name="help_edit_group_admin">Puedes cambiar la información del grupo, el color de los eventos en tu calendario, invitar nuevos usuarios (deben darte su correo electrónico), expulsarlos o cambiar sus permisos.</string>
+    <string name="help_edit_group">No eres un administrador del grupo. Solamente puedes cambiar el color del grupo (para los eventos en tu calendario).</string>
     <string name="help_create_event">TO BE DONE WHEN CREATE EVENT IS COMPLETE</string>
-    <string name="help_invitations">In this screen you can see your invitations to groups. You can accept them (you will join to the group) or refuse them.</string>
-    <string name="help_settings">You can change your profile photo. It can be done directly with the camera of the device or, if not, choosing one from your gallery.</string>
+    <string name="help_invitations">En esta pantalla puedes ver tus invitaciones a grupos. Puedes aceptarlas (te unirás al grupo) o rechazarlas.</string>
+    <string name="help_settings">Puedes cambiar tu foto de perfil. Puede hacerse directamente desde la cámara del dispositivo o, si no, seleccionando una de la galería.</string>
 
     <string name="show_calendar">Show Calendar</string>
     <string name="show_groups">Show Groups</string>
     <string name="show_invitations">Show Invitations</string>
     <string name="show_comments">Show Comments</string>
 
-    <string name="title_activity_register">Register</string>
-    <string name="title_activity_forgot_password">Forgot Password</string>
-    <string name="title_activity_sign_in">Sign In</string>
-    <string name="title_activity_create_event">Create Event</string>
-    <string name="title_activity_view_event">View Event</string>
-    <string name="title_activity_edit_event">Edit Event</string>
+    <string name="title_activity_register">Registrarse</string>
+    <string name="title_activity_forgot_password">Recuperar contraseña</string>
+    <string name="title_activity_sign_in">Iniciar sesión</string>
+    <string name="title_activity_create_event">Crear Evento</string>
+    <string name="title_activity_view_event">Ver Evento</string>
+    <string name="title_activity_edit_event">Editar Evento</string>
 
-    <string name="welcome">Welcome to OurPlanner!</string>
-    <string name="sign_in_register">Sign up or register to continue.</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="sign_in">SIGN IN</string>
-    <string name="forgot_password">FORGOT PASSWORD?</string>
-    <string name="register">REGISTER</string>
-    <string name="settings">Settings</string>
-    <string name="log_out">Log Out</string>
-    <string name="email">Email</string>
+    <string name="welcome">Bienvenido a OurPlanner!</string>
+    <string name="sign_in_register">Inicia sesión o regístrate para continuar.</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmación de contraseña</string>
+    <string name="sign_in">INICIAR SESIÓN</string>
+    <string name="forgot_password">RECUPERAR CONTRASEÑA</string>
+    <string name="register">REGISTRARSE</string>
+    <string name="settings">Ajustes</string>
+    <string name="log_out">Cerrar Sesión</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="logged_as">Sesión iniciada como</string>
+    <string name="email_empty">Campo de correo vacío!</string>
+    <string name="password_empty">Campo de contraseña vacío!</string>
+    <string name="username_empty">Campo de nombre de usuario vacío!</string>
+    <string name="passwords_different">Las contraseñas no coinciden!</string>
+    <string name="registration_successful">Registro con éxito</string>
+    <string name="instructions_sent">Te hemos enviado instrucciones para cambiar tu contraseña!</string>
 
-    <string name="create_account">Create your Our Planner account:</string>
-    <string name="fill_fields">All fields must be filled</string>
+    <string name="create_account">Crea tu cuenta de Our Planner:</string>
+    <string name="fill_fields">Todos los campos deben ser rellenados</string>
 
-    <string name="receive_recovery_email">Receive Recovery Email</string>
-    <string name="go_back">Go Back</string>
-    <string name="cancel">Cancel</string>
+    <string name="receive_recovery_email">Recibir Correo de Recuperación</string>
+    <string name="go_back">Retroceder</string>
+    <string name="cancel">Cancelar</string>
 
-    <string name="calendar">Calendar</string>
+    <string name="calendar">Calendario</string>
     <string-array name="calendarOptions">
-        <item>Week</item>
-        <item>Month</item>
+        <item>Semana</item>
+        <item>Mes</item>
     </string-array>
 
     <string-array name="notificationsAlterOptions">
@@ -69,55 +75,54 @@
     </string-array>
 
     <string-array name="themeOptions">
-        <item>Light</item>
-        <item>Dark</item>
+        <item>Luz</item>
+        <item>Oscuro</item>
     </string-array>
 
-    <string name="invitations">Invitations</string>
-    <string name="all_day">All day</string>
+    <string name="invitations">Invitaciones</string>
+    <string name="all_day">Todo el día</string>
 
-    <string name="groups">Groups</string>
-    <string name="edit">EDIT</string>
-    <string name="edit_group_description">Edit group</string>
-    <string name="leave_group_description">Leave group</string>
-    <string name="confirmation_leaving">Are you sure you want to leave?\nThis action is unchangeable.</string>
-    <string name="expel_participant_description">Expel user</string>
-    <string name="confirmation_expelling">Are you sure you want to expel this user?\nOnce the group is edited, this action will be unchangeable.</string>
-    <string name="admin_description">Change participant permission</string>
-    <string name="invite_participants">Invite participants</string>
-    <string name="add">Add</string>
-    <string name="participants_to_invite">Participants to invite:</string>
+    <string name="groups">Grupos</string>
+    <string name="edit">EDITAR</string>
+    <string name="edit_group_description">Editar grupo</string>
+    <string name="leave_group_description">Salir del grupo</string>
+    <string name="confirmation_leaving">Estás seguro/a que quieres salir?\nEsta acción es irrevocable.</string>
+    <string name="expel_participant_description">Expulsar usuario/a</string>
+    <string name="confirmation_expelling">Estás seguro/a que quieres expulsar este usuario/a?\nLa acción será irrevocable cuando se modifique el grupo.</string>
+    <string name="admin_description">Cambiar permiso del participante</string>
+    <string name="invite_participants">Invitar participantes</string>
+    <string name="add">Añadir</string>
+    <string name="participants_to_invite">Participantes a invitar:</string>
     <string name="remove_invitation_description">Delete user from the list of participants to invite.</string>
-    <string name="invitations_received">Invitations received</string>
-    <string name="new_invitations">You have been invited to new groups.\nDo you want to see your invitations?</string>
+    <string name="invitations_received">Invitaciones recibidas</string>
+    <string name="new_invitation">Nueva Invitación</string>
     <string name="see_them">See them</string>
-    <string name="close">Close</string>
-    <string name="add_group_description">Add new group</string>
+    <string name="close">Cerrar</string>
+    <string name="add_group_description">Añadir nuevo grupo</string>
 
-    <string name="start">Start</string>
-    <string name="end">End</string>
-    <string name="location">Location</string>
+    <string name="start">Inicio</string>
+    <string name="end">Final</string>
+    <string name="location">Localización</string>
 
-
-    <string name="create_group">Create Group</string>
-    <string name="edit_group">Edit Group</string>
-    <string name="create">CREATE</string>
-    <string name="title">Title:</string>
-    <string name="group_title">Group title</string>
-    <string name="details">Details:</string>
-    <string name="group_details">Group details</string>
-    <string name="colour">Colour:</string>
-    <string name="participants">Participants:</string>
+    <string name="create_group">Crear Grupo</string>
+    <string name="edit_group">Editar Grupo</string>
+    <string name="create">CREAR</string>
+    <string name="title">Título:</string>
+    <string name="group_title">Título del grupo</string>
+    <string name="details">Detalles:</string>
+    <string name="group_details">Detalles del grupo</string>
+    <string name="colour">Color:</string>
+    <string name="participants">Participantes:</string>
     <string name="notifications_alert">Notifications alert:</string>
-    <string name="theme">Theme:</string>
-    <string name="message">Message</string>
-    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
-    <string name="yes">Yes</string>
+    <string name="theme">Tema:</string>
+    <string name="message">Mensaje</string>
+    <string name="are_you_sure_you_want_to_log_out">Estás seguro/a que quieres cerrar sesión?</string>
+    <string name="yes">Sí</string>
 
     <!--String resources for calendar month view-->
     <string name="back"><![CDATA[<-]]></string>
     <string name="forward"><![CDATA[->]]></string>
-    <string name="monthYearExample">February 2022</string>
+    <string name="monthYearExample">Febrero 2022</string>
     <string name="mondayAbbreviation">DL</string>
     <string name="tuesdayAbbreviation">DT</string>
     <string name="wednesdayAbbreviation">DC</string>
@@ -125,26 +130,26 @@
     <string name="fridayAbbreviation">DV</string>
     <string name="saturdayAbbreviation">DS</string>
     <string name="sundayAbbreviation">DG</string>
-    <string name="newEvent">New Event</string>
+    <string name="newEvent">Nuevo Evento</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="name">Name:</string>
-    <string name="date">Date:</string>
-    <string name="time">Time:</string>
-    <string name="save">SAVE</string>
-    <string name="eventNameHint">Event Name</string>
-    <string name="event">Event</string>
-    <string name="select_the_picture_source">Select the picture source</string>
-    <string name="change_profile_picture">Change profile picture</string>
-    <string name="camera">Camera</string>
-    <string name="gallery">Gallery</string>
-    <string name="select_date">Select Date</string>
-    <string name="select_start_time">Select Start Time</string>
-    <string name="select_end_time">Select End Time</string>
-    <string name="edit_event">Edit Event</string>
-    <string name="details_eventcell">Details</string>
-    <string name="starting_time">Starting Time</string>
-    <string name="comment_event">Comment Event</string>
-    <string name="save_changes">Save Changes</string>
-    <string name="event_name">Event Name</string>
-    <string name="language">Language:</string>
+    <string name="name">Nombre:</string>
+    <string name="date">Fecha:</string>
+    <string name="time">Tiempo:</string>
+    <string name="save">GUARDAR</string>
+    <string name="eventNameHint">Nombre del Evento</string>
+    <string name="event">Evento</string>
+    <string name="select_the_picture_source">Selecciona la fuente de la imagen</string>
+    <string name="change_profile_picture">Cambiar foto de perfil</string>
+    <string name="camera">Cámara</string>
+    <string name="gallery">Galería</string>
+    <string name="select_date">Seleccionar Fecha</string>
+    <string name="select_start_time">Seleccionar Tiempo Inicial</string>
+    <string name="select_end_time">Seleccionar Tiempo Final</string>
+    <string name="edit_event">Editar Evento</string>
+    <string name="details_eventcell">Detalles</string>
+    <string name="starting_time">Tiempo Inicial</string>
+    <string name="comment_event">Comentar Evento</string>
+    <string name="save_changes">Guardar cambios</string>
+    <string name="event_name">Nombre del Evento</string>
+    <string name="language">Idioma:</string>
 </resources>

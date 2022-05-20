@@ -8,12 +8,14 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.our_planner.DataBaseAdapter;
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.Notifier;
 import com.example.our_planner.R;
@@ -37,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnRegister;
     private LoginActivityViewModel viewModel;
     private AlertDialog alert;
+    private TextView txtWelcome, txtSignInRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,47 +50,22 @@ public class LoginActivity extends AppCompatActivity {
 
         //If user already logged in, we omit the activity
         if (viewModel.isUserLogged()) {
-            //TODO: PUT IT IN NAVIGATION DRAWER AND TEST AFTER MARTI
-            DataBaseAdapter.checkInvitations(this);
             startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
         }
 
-        setTitle(R.string.title_activity_sign_in);
-
-        AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setMessage(R.string.help_login);
-        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
-        alert = builder.create();
-        alert.setTitle(R.string.help);
-
+        txtWelcome = findViewById(R.id.txtWelcome);
+        txtSignInRegister = findViewById(R.id.txtSignInRegister);
         txtEmail = findViewById(R.id.txtEmail);
         txtPassword = findViewById(R.id.txtPassword);
         btnSign = findViewById(R.id.btnSign);
-        btnSign.setOnClickListener(view -> {
-            String email = txtEmail.getText().toString();
-            String password = txtPassword.getText().toString();
-            if (email.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Email field is empty!", Toast.LENGTH_SHORT).show();
-            } else if (password.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Password field is empty!", Toast.LENGTH_SHORT).show();
-            } else {
-                viewModel.login(email, password);
-            }
-        });
-
         btnPassword = findViewById(R.id.btnPassword);
-        btnPassword.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class)));
         btnRegister = findViewById(R.id.btnRegister);
-        btnRegister.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+    }
 
-        final Observer<String> observerToast = t -> {
-            Toast.makeText(LoginActivity.this, t, Toast.LENGTH_SHORT).show();
-            if (t.startsWith("Logged as")) {
-                startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
-            }
-        };
-
-        viewModel.getToast().observe(this, observerToast);
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeLanguage();
     }
 
     @Override
@@ -103,5 +82,51 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void changeLanguage() {
+        Resources r = LocaleLanguage.getLocale(this).getResources();
+
+        setTitle(r.getString(R.string.title_activity_sign_in));
+        txtWelcome.setText(r.getString(R.string.welcome));
+        txtSignInRegister.setText(r.getString(R.string.sign_in_register));
+        txtEmail.setHint(r.getString(R.string.email));
+        txtPassword.setHint(r.getString(R.string.password));
+        btnSign.setText(r.getString(R.string.sign_in));
+        btnPassword.setText(r.getString(R.string.forgot_password));
+        btnRegister.setText(r.getString(R.string.register));
+
+        AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setMessage(r.getString(R.string.help_login));
+        builder.setNeutralButton(r.getString(R.string.close), (dialogInterface, i) -> dialogInterface.cancel());
+        alert = builder.create();
+        alert.setTitle(r.getString(R.string.help));
+
+        btnSign.setOnClickListener(view -> {
+            String email = txtEmail.getText().toString();
+            String password = txtPassword.getText().toString();
+            if (email.isEmpty()) {
+                Toast.makeText(LoginActivity.this, r.getString(R.string.email_empty), Toast.LENGTH_SHORT).show();
+            } else if (password.isEmpty()) {
+                Toast.makeText(LoginActivity.this, r.getString(R.string.password_empty), Toast.LENGTH_SHORT).show();
+            } else {
+                viewModel.login(email, password);
+            }
+        });
+
+        btnPassword.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class)));
+        btnRegister.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+
+        final Observer<String> observerToast = t -> {
+            if (t.startsWith(" ")) {
+                Toast.makeText(LoginActivity.this, r.getString(R.string.logged_as) + t, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
+            } else {
+                Toast.makeText(LoginActivity.this, t, Toast.LENGTH_SHORT).show();
+            }
+        };
+        
+        viewModel.getToast().removeObservers(this);
+        viewModel.getToast().observe(this, observerToast);
     }
 }

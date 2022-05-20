@@ -7,7 +7,7 @@
     android:background="@drawable/rounded_corners">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/logOutTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/logOutDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/are_you_sure_you_want_to_log_out"
@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/logOutTitle"
         app:layout_constraintVertical_bias="0" />
 
     <LinearLayout

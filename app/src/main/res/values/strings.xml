@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">OurPlanner</string>
-    <string name="selected_language">English</string>
     <string name="title_activity_navigation_drawer">Navigation Drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -45,6 +44,13 @@
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
     <string name="email">Email</string>
+    <string name="logged_as">Logged as</string>
+    <string name="email_empty">Email field is empty!</string>
+    <string name="password_empty">Password field is empty!</string>
+    <string name="username_empty">Username field is empty!</string>
+    <string name="passwords_different">Passwords are not the same!</string>
+    <string name="registration_successful">Registered successfully</string>
+    <string name="instructions_sent">We have sent you instructions to reset your password!</string>
 
     <string name="create_account">Create your Our Planner account:</string>
     <string name="fill_fields">All fields must be filled</string>
@@ -88,7 +94,7 @@
     <string name="participants_to_invite">Participants to invite:</string>
     <string name="remove_invitation_description">Delete user from the list of participants to invite.</string>
     <string name="invitations_received">Invitations received</string>
-    <string name="new_invitations">You have been invited to new groups.\nDo you want to see your invitations?</string>
+    <string name="new_invitation">New Invitation</string>
     <string name="see_them">See them</string>
     <string name="close">Close</string>
     <string name="add_group_description">Add new group</string>

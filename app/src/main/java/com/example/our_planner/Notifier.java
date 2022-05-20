@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
@@ -29,8 +30,10 @@ public abstract class Notifier {
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Resources r = LocaleLanguage.getLocale(c).getResources();
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(c, "My Notification").
-                setContentTitle("Invitation received").setContentText(s).setSmallIcon(R.drawable.ic_launcher).setLargeIcon(BitmapFactory. decodeResource (c.getResources() , R.drawable.ic_launcher)).
+                setContentTitle(r.getString(R.string.new_invitation)).setContentText(s).setSmallIcon(R.drawable.ic_launcher).setLargeIcon(BitmapFactory. decodeResource (c.getResources() , R.drawable.ic_launcher)).
                 setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}).setAutoCancel(true).setContentIntent(intent);
 
         NotificationManagerCompat manager = NotificationManagerCompat.from(c);
