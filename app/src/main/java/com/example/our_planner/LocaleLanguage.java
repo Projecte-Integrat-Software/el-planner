@@ -11,6 +11,7 @@ import java.util.Locale;
 
 public class LocaleLanguage {
     private static final String SELECTED_LANGUAGE = "Locale.Helper.Selected.Language";
+    private static String language;
 
     // the method is used to set the language at runtime
     public static void setLocale(Context context, String language) {
@@ -18,13 +19,13 @@ public class LocaleLanguage {
     }
 
     public static Context getLocale(Context context) {
-        String language = PreferenceManager.getDefaultSharedPreferences(context).getString(SELECTED_LANGUAGE, "");
+        language = PreferenceManager.getDefaultSharedPreferences(context).getString(SELECTED_LANGUAGE, "en");
         // updating the language for devices above android nougat
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return updateResources(context, language);
+            return updateResources(context, getLanguage());
         }
         // for devices having lower version of android os
-        return updateResourcesLegacy(context, language);
+        return updateResourcesLegacy(context, getLanguage());
     }
 
     private static void persist(Context context, String language) {
@@ -65,5 +66,9 @@ public class LocaleLanguage {
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
 
         return context;
+    }
+
+    public static String getLanguage() {
+        return language;
     }
 }
