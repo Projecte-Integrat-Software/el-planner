@@ -139,12 +139,13 @@ public class EditEventActivity extends AppCompatActivity {
         viewModel.subscribeUriObserver();
         fileList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         uris = new ArrayList<>();
-        Observer<ArrayList<Uri>> observerUris = urisNew -> {
-            uris = new ArrayList<>(urisNew);
-            AdapterCalendarFiles adapter = new AdapterCalendarFiles(uris, fileList);
-            fileList.setAdapter(adapter);
-        };
-        viewModel.getUris().observe(this, observerUris);
+        viewModel.getUris().observe(this, new Observer<ArrayList<Uri>>() {
+            @Override
+            public void onChanged(ArrayList<Uri> urisNew) {
+                uris = new ArrayList<>(urisNew);
+                fileList.swapAdapter(new AdapterCalendarFiles(uris, fileList), true);
+            }
+        });
         AdapterCalendarFiles adapter = new AdapterCalendarFiles(uris, fileList);
         fileList.setAdapter(adapter);
     }

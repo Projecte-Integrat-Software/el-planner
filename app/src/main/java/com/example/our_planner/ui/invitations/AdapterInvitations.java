@@ -1,5 +1,6 @@
 package com.example.our_planner.ui.invitations;
 
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Invitation;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -74,8 +77,13 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         public void setData(Invitation invitation) {
             titleInvitation.setText(invitation.getTitle());
             authorInvitation.setText(invitation.getAuthor());
-            //TODO: Connect to database to load author photo
-            //imageInvitation = invitation.getImage();
+            Task<byte[]> task = DataBaseAdapter.getImage(invitation.getAuthor());
+            task.addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    imageInvitation.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                }
+            });
         }
     }
 }
