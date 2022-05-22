@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
+import com.example.our_planner.model.Group;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -195,6 +196,13 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         Context c = view.getContext();
         Intent i = new Intent(c, EditEventActivity.class);
         i.putExtra("event", event);
+
+        //Trobem el grup al qual pertany l'event i el passem
+        for (Group g : calendarViewModel.getGroups().getValue()) {
+            if (g.getId().equals(event.getGroupId())) {
+                i.putExtra("group", g);
+            }
+        }
         c.startActivity(i);
     }
 

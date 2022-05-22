@@ -568,12 +568,10 @@ public abstract class DataBaseAdapter {
         void update(ArrayList<Event> events);
     }
 
-    public static void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String group) {
+    public static void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
         deleteEvent(eventId);
-        createEvent(name, location, allDay, date, startTime, endTime, group);
+        createEvent(name, location, allDay, date, startTime, endTime, groupId);
         loadEvents();
-
-
     }
 
     public static void deleteEvent(String eventId) {

@@ -21,6 +21,7 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
     private final MutableLiveData<ArrayList<Uri>> mUris;
 
     private Event event;
+    private Group group;
 
     private LocalDate date;
     private LocalTime startTime;
@@ -75,6 +76,14 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
         this.event = event;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -94,8 +103,8 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
         location = event.getLocation();
     }
 
-    public void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String group) {
-        DataBaseAdapter.editEvent(eventId, name, location, allDay, date, startTime, endTime, group);
+    public void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
+        DataBaseAdapter.editEvent(eventId, name, location, allDay, date, startTime, endTime, groupId);
     }
 
     @Override

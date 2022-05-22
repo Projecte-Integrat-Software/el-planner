@@ -53,10 +53,13 @@ public class EditEventActivity extends AppCompatActivity {
 
     private Group group;
     private ArrayList<Group> groups;
+    private boolean admin;
     private RecyclerView fileList;
 
     private androidx.appcompat.app.AlertDialog alert;
     private ArrayList<Uri> uris;
+
+    private boolean editing = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -71,6 +74,7 @@ public class EditEventActivity extends AppCompatActivity {
         viewModel.setStartTime(startTime.minusSeconds(startTime.getSecond()));
         viewModel.setEndTime(startTime.plusHours(1));
         viewModel.setEvent((Event) getIntent().getSerializableExtra("event"));
+        viewModel.setGroup((Group) getIntent().getSerializableExtra("group"));
 
         initAlarmDialog();
         initWidgets();
@@ -116,6 +120,10 @@ public class EditEventActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        //Esbrinem si som admin del grup i configurem l'activitat adientment
+        admin = viewModel.getGroup().getAdmins().get(DataBaseAdapter.getEmail());
+        configureVisibility();
     }
 
     private void fillData() {
@@ -150,6 +158,7 @@ public class EditEventActivity extends AppCompatActivity {
         fileList.setAdapter(adapter);
     }
 
+    //TODO the picker begins one month ahead
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
             month = month + 1;
@@ -271,11 +280,10 @@ public class EditEventActivity extends AppCompatActivity {
         // TODO Implement IDs in events
         LocalTime startTime = viewModel.getStartTime();
         LocalTime endTime = viewModel.getEndTime();
-        LocalDate date = CalendarUtils.selectedDate;
+        LocalDate date = viewModel.getDate();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // TODO: El parse de les hores no estan be
         viewModel.editEvent(viewModel.getId(), eventName, location, false,
                 date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
         finish();
@@ -284,16 +292,52 @@ public class EditEventActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.toolbar, menu);
+        getMenuInflater().inflate(R.menu.edit_event_toolbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.help) {
+        int id = item.getItemId();
+        if (id == R.id.help) {
             alert.show();
+        } else if (id == R.id.edit) {
+            if (admin) {
+                if (!editing) {
+                    eventNameET.setEnabled(true);
+                    eventLocationET.setEnabled(true);
+                    selectGroup.setEnabled(true);
+                    selectDateBtn.setVisibility(View.VISIBLE);
+                    selectStartTimeBtn.setVisibility(View.VISIBLE);
+                    selectEndTimeBtn.setVisibility(View.VISIBLE);
+                    saveChangesBtn.setVisibility(View.VISIBLE);
+                } else {
+                    eventNameET.setEnabled(false);
+                    eventLocationET.setEnabled(false);
+                    selectGroup.setEnabled(false);
+                    selectDateBtn.setVisibility(View.INVISIBLE);
+                    selectStartTimeBtn.setVisibility(View.INVISIBLE);
+                    selectEndTimeBtn.setVisibility(View.INVISIBLE);
+                    saveChangesBtn.setVisibility(View.INVISIBLE);
+                }
+                editing = !editing;
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void configureVisibility() {
+        eventNameET.setEnabled(false);
+        eventLocationET.setEnabled(false);
+        selectGroup.setEnabled(false);
+        selectDateBtn.setVisibility(View.INVISIBLE);
+        selectStartTimeBtn.setVisibility(View.INVISIBLE);
+        selectEndTimeBtn.setVisibility(View.INVISIBLE);
+        saveChangesBtn.setVisibility(View.INVISIBLE);
+
+        if (!admin) {
+            //Disable edit button
+        }
     }
 }
