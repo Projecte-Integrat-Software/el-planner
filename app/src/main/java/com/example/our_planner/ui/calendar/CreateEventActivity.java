@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,12 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
 
@@ -199,8 +202,6 @@ public class CreateEventActivity extends AppCompatActivity {
         selectStartTimeBtn.setOnClickListener(this::openStartTimePicker);
         selectEndTimeBtn.setOnClickListener(this::openEndTimePicker);
         createBtn.setOnClickListener(this::saveEventAction);
-
-
     }
 
     private void openDatePicker(View view) {
@@ -217,19 +218,25 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void saveEventAction(View view) {
         String eventName = eventNameET.getText().toString();
-        String location = eventLocationET.getText().toString();
-        // TODO Fix spinner and get group from there
-        // Delete line above and uncomment line below when spinner fixed
-        //group = (Group) selectGroup.getSelectedItem();
-        LocalTime time1 = startTime;
-        LocalTime time2 = endTime;
-        LocalDate date = CalendarUtils.selectedDate;
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if (eventName.equals("")) {
+            Resources r = LocaleLanguage.getLocale(this).getResources();
+            Toast.makeText(this, r.getString(R.string.title_empty), Toast.LENGTH_SHORT).show();
+        } else {
+            String location = eventLocationET.getText().toString();
+            // TODO Fix spinner and get group from there
+            // Delete line above and uncomment line below when spinner fixed
+            //group = (Group) selectGroup.getSelectedItem();
+            LocalTime time1 = startTime;
+            LocalTime time2 = endTime;
+            LocalDate date = CalendarUtils.selectedDate;
 
-        viewModel.createEvent(eventName, location, false, date.format(formatter), time1.toString(), time2.toString(), group.getId());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        finish();
+            viewModel.createEvent(eventName, location, false, date.format(formatter), time1.toString(), time2.toString(), group.getId());
+
+            finish();
+        }
     }
 
     @Override

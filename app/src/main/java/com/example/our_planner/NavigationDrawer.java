@@ -6,20 +6,17 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -286,5 +283,12 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         menu.getItem(2).setTitle(r.getString(R.string.invitations));
         menu.getItem(3).setTitle(r.getString(R.string.settings));
         menu.getItem(4).setTitle(r.getString(R.string.log_out));
+    }
+
+    //Fer que no es faci res quan s'apreta el back button que proporciona Android per defecte,
+    //abans et portava a la pantalla de login sense fer logoff.
+    @Override
+    public void onBackPressed() {
+
     }
 }
