@@ -2,13 +2,11 @@ package com.example.our_planner.ui.settings;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -31,6 +28,7 @@ import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.R;
+import com.example.our_planner.ThemeSwitcher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.UploadTask;
@@ -47,13 +45,15 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     private ImageView profilePicture, esPicture, enPicture;
     private TextView themeTxt, languageTxt;
     private PopupWindow pw;
-    private static final String SELECTED_THEME = "Theme";
+    private int selectedTheme;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         SettingsViewModel settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         themeSpinner = view.findViewById(R.id.themeSpinner);
+        selectedTheme = ThemeSwitcher.lightThemeSelected(getContext()) ? 0 : 1;
+        themeSpinner.setSelection(selectedTheme);
 
         profilePicture = view.findViewById(R.id.profilePicture);
         byte[] byteArray = DataBaseAdapter.getByteArray();
@@ -138,22 +138,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     public void onResume() {
         super.onResume();
         changeLanguage();
-        changeTheme();
     }
 
     private void changeLanguage() {
         Resources r = LocaleLanguage.getLocale(getContext()).getResources();
-/*
-        switch(LocaleLanguage.getLanguage()) {
-            case "es":
-                enPicture.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
-                esPicture.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-                break;
-            default:
-                enPicture.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-                esPicture.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
-                break;
-        }*/
+
         NavigationDrawer n = (NavigationDrawer) getActivity();
         n.getSupportActionBar().setTitle(r.getString(R.string.settings));
         n.changeLanguage();
@@ -164,11 +153,13 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         ArrayAdapter<String> adapterTheme = new ArrayAdapter<>(SettingsFragment.this.getActivity(), android.R.layout.simple_spinner_item, r.getStringArray(R.array.themeOptions));
         adapterTheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         themeSpinner.setAdapter(adapterTheme);
-        themeSpinner.setSelection(0, false);
         themeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setTheme(position == 0 ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
+                if (position != selectedTheme) {
+                    selectedTheme = position;
+                    setTheme(position == 0);
+                }
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -214,15 +205,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         LocaleLanguage.setLocale(getContext(), language);
     }
 
-    private void changeTheme() {
-        AppCompatDelegate.setDefaultNightMode(PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(SELECTED_THEME, 0));
-    }
-
-    private void setTheme(int mode) {
-        AppCompatDelegate.setDefaultNightMode(mode);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(SELECTED_THEME, mode);
-        editor.apply();
+    private void setTheme(boolean light) {
+        ThemeSwitcher.saveTheme(getContext(), light);
+        /*
+        Intent i = new Intent(getActivity(), NavigationDrawer.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        i.putExtra("fragmentToLoad", "Settings");
+        startActivity(i);*/
     }
 }

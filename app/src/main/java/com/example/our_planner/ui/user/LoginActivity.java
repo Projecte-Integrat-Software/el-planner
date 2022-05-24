@@ -1,15 +1,7 @@
 package com.example.our_planner.ui.user;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,16 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.NavigationDrawer;
-import com.example.our_planner.Notifier;
 import com.example.our_planner.R;
+import com.example.our_planner.ThemeSwitcher;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText txtEmail;
@@ -44,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeSwitcher.updateTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         viewModel = new ViewModelProvider(this).get(LoginActivityViewModel.class);

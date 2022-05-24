@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 
 import java.util.Locale;
 
-public class LocaleLanguage {
+public abstract class LocaleLanguage {
     private static final String SELECTED_LANGUAGE = "Locale.Helper.Selected.Language";
     private static String language;
 
