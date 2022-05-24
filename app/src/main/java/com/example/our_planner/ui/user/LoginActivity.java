@@ -33,14 +33,14 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeSwitcher.updateTheme(this);
+        ThemeSwitcher.updateTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         viewModel = new ViewModelProvider(this).get(LoginActivityViewModel.class);
 
         //If user already logged in, we omit the activity
         if (viewModel.isUserLogged()) {
-            startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
+            goToCalendar();
         }
 
         txtWelcome = findViewById(R.id.txtWelcome);
@@ -110,13 +110,24 @@ public class LoginActivity extends AppCompatActivity {
         final Observer<String> observerToast = t -> {
             if (t.startsWith(" ")) {
                 Toast.makeText(LoginActivity.this, r.getString(R.string.logged_as) + t, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LoginActivity.this, NavigationDrawer.class));
+                goToCalendar();
             } else {
                 Toast.makeText(LoginActivity.this, t, Toast.LENGTH_SHORT).show();
             }
         };
-        
+
         viewModel.getToast().removeObservers(this);
         viewModel.getToast().observe(this, observerToast);
+    }
+
+    private void goToCalendar() {
+        Intent i = new Intent(LoginActivity.this, NavigationDrawer.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

@@ -52,9 +52,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         themeSpinner = view.findViewById(R.id.themeSpinner);
-        selectedTheme = ThemeSwitcher.lightThemeSelected(getContext()) ? 0 : 1;
-        themeSpinner.setSelection(selectedTheme);
-
         profilePicture = view.findViewById(R.id.profilePicture);
         byte[] byteArray = DataBaseAdapter.getByteArray();
         profilePicture.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
@@ -150,9 +147,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         changeProfilePictureBtn.setText(r.getString(R.string.change_profile_picture));
         themeTxt.setText(r.getString(R.string.theme));
         languageTxt.setText(r.getString(R.string.language));
+
         ArrayAdapter<String> adapterTheme = new ArrayAdapter<>(SettingsFragment.this.getActivity(), android.R.layout.simple_spinner_item, r.getStringArray(R.array.themeOptions));
         adapterTheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         themeSpinner.setAdapter(adapterTheme);
+        selectedTheme = ThemeSwitcher.lightThemeSelected() ? 0 : 1;
+        themeSpinner.setSelection(selectedTheme);
         themeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -170,7 +170,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             @Override
             public void onClick(View view) {
                 pw.showAtLocation(view.findViewById(R.id.changeProfilePictureBtn), Gravity.CENTER, 0, 0);
-
+                pw.setBackgroundDrawable(getContext().getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.rounded_corners : R.drawable.rounded_corners_dark));
                 ((TextView) pw.getContentView().findViewById(R.id.txtProfilePicture)).setText(r.getString(R.string.change_profile_picture));
                 ((TextView) pw.getContentView().findViewById(R.id.txtPictureSource)).setText(r.getString(R.string.select_the_picture_source));
 
@@ -207,10 +207,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
     private void setTheme(boolean light) {
         ThemeSwitcher.saveTheme(getContext(), light);
-        /*
-        Intent i = new Intent(getActivity(), NavigationDrawer.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        i.putExtra("fragmentToLoad", "Settings");
-        startActivity(i);*/
+        Intent i = new Intent(getContext(), NavigationDrawer.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
     }
 }

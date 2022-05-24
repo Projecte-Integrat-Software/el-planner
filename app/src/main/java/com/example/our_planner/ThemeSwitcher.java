@@ -9,23 +9,21 @@ import androidx.appcompat.app.AppCompatDelegate;
 public abstract class ThemeSwitcher {
 
     private static final String LIGHT_THEME = "LightTheme";
+    private static boolean lightSelected;
 
-    public static boolean lightThemeSelected(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(LIGHT_THEME, true);
+    public static boolean lightThemeSelected() {
+        return lightSelected;
     }
 
     public static void saveTheme(Context context, boolean light) {
+        lightSelected = light;
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.putBoolean(LIGHT_THEME, light);
         editor.apply();
-        changeTheme(light);
+        updateTheme();
     }
 
-    private static void changeTheme(boolean light) {
-        AppCompatDelegate.setDefaultNightMode(light ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
-    }
-
-    public static void updateTheme(Context context) {
-        changeTheme(lightThemeSelected(context));
+    public static void updateTheme() {
+        AppCompatDelegate.setDefaultNightMode(lightSelected ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
     }
 }

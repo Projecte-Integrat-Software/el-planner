@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
+import com.example.our_planner.ThemeSwitcher;
 import com.example.our_planner.model.Group;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class AdapterGroups extends RecyclerView.Adapter<AdapterGroups.ViewHolder
         holder.leaveGroupBtn.setOnClickListener(view -> {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_leave_group, null, false), 900, 500, true);
+            pw.setBackgroundDrawable(context.getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.rounded_corners : R.drawable.rounded_corners_dark));
             pw.showAtLocation(view, Gravity.CENTER, 0, 0);
 
             ((TextView)pw.getContentView().findViewById(R.id.txtLeaveGroup)).setText(r.getString(R.string.leave_group_description));

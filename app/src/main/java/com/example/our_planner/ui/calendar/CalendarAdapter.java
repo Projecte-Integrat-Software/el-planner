@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.R;
+import com.example.our_planner.ThemeSwitcher;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
             holder.dayOfMonth.setText("");
         else {
             holder.dayOfMonth.setText(String.valueOf(date.getDayOfMonth()));
+            holder.dayOfMonth.setTextColor(ThemeSwitcher.lightThemeSelected() ? Color.BLACK : Color.WHITE);
             if (date.equals(CalendarUtils.selectedDate))
                 holder.parentView.setBackgroundColor(Color.LTGRAY);
         }

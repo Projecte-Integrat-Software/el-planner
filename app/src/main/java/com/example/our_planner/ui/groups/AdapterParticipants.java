@@ -1,6 +1,7 @@
 package com.example.our_planner.ui.groups;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +11,14 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.DataBaseAdapter;
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
+import com.example.our_planner.ThemeSwitcher;
 import com.example.our_planner.model.User;
 
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class AdapterParticipants extends RecyclerView.Adapter<AdapterParticipant
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderParticipants holder, int position) {
+        Resources r = LocaleLanguage.getLocale(context).getResources();
         String e = users.get(position);
         holder.setData(participants.get(e).getUsername(), admins.get(e));
         if (userAdmin) {
@@ -56,12 +59,18 @@ public class AdapterParticipants extends RecyclerView.Adapter<AdapterParticipant
             holder.expelParticipantBtn.setOnClickListener(view -> {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_expel_user, null, false), 900, 500, true);
+                pw.setBackgroundDrawable(context.getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.rounded_corners : R.drawable.rounded_corners_dark));
                 pw.showAtLocation(view, Gravity.CENTER, 0, 0);
 
+                ((TextView) pw.getContentView().findViewById(R.id.txtExpelUser)).setText(r.getString(R.string.expel_participant_description));
+                ((TextView) pw.getContentView().findViewById(R.id.textConfirmationExpelling)).setText(r.getString(R.string.confirmation_expelling));
+
                 Button cancelBtn = pw.getContentView().findViewById(R.id.cancelBtn);
+                cancelBtn.setText(r.getString(R.string.cancel));
                 cancelBtn.setOnClickListener(view1 -> pw.dismiss());
 
                 Button yesBtn = pw.getContentView().findViewById(R.id.yesBtn);
+                yesBtn.setText(r.getString(R.string.yes));
                 yesBtn.setOnClickListener(view1 -> {
                     users.remove(position);
                     notifyItemRemoved(position);

@@ -24,7 +24,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -85,8 +84,6 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         //Start specific fragment if wanted
         String s = getIntent().getStringExtra("fragmentToLoad");
         if (s != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             switch (s) {
                 case "Calendar": {
                     navigationView.getMenu().getItem(0).setChecked(true);
@@ -178,9 +175,6 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         Context c = LocaleLanguage.getLocale(this);
         Resources r = c.getResources();
         switch (item.getItemId()) {
@@ -207,6 +201,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
             case R.id.navLogOut: {
                 LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 @SuppressLint("InflateParams") PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_log_out, null, false), 900, 400, true);
+                pw.setBackgroundDrawable(getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.rounded_corners : R.drawable.rounded_corners_dark));
                 pw.showAtLocation(this.findViewById(R.id.fragment_container), Gravity.CENTER, 0, 0);
 
                 ((TextView)pw.getContentView().findViewById(R.id.logOutTitle)).setText(r.getString(R.string.log_out));
@@ -220,7 +215,9 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 yesBtn.setOnClickListener(view -> {
                     DataBaseAdapter.logOut();
                     pw.dismiss();
-                    startActivity(new Intent(NavigationDrawer.this, LoginActivity.class));
+                    Intent i = new Intent(NavigationDrawer.this, LoginActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
                 });
                 return true;
             }

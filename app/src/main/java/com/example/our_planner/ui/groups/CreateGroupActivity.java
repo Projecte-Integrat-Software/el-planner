@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.NavigationDrawer;
 import com.example.our_planner.R;
+import com.example.our_planner.ThemeSwitcher;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -137,6 +138,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         btnParticipant.setOnClickListener(view -> {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_invite_participants, null, false), 900, 1000, true);
+            pw.setBackgroundDrawable(getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.rounded_corners : R.drawable.rounded_corners_dark));
             pw.showAtLocation(view, Gravity.CENTER, 0, 0);
 
             ((TextView) pw.getContentView().findViewById(R.id.txtInviteParticipants)).setText(r.getString(R.string.invite_participants));
