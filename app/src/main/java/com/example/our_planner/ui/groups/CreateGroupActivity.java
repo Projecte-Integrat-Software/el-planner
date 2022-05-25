@@ -120,7 +120,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     private void changeLanguage() {
         Resources r = LocaleLanguage.getLocale(this).getResources();
 
-        setTitle(r.getString(R.string.create_group));
+        setTitle(r.getString(R.string.title_activity_create_event));
         txtUser.setText(viewModel.getUserName() + " (" + r.getString(R.string.you) + ")");
         txtTitle.setHint(r.getString(R.string.group_title));
         txtDetails.setHint(r.getString(R.string.group_details));

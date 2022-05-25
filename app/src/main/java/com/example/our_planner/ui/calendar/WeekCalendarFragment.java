@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
 import com.example.our_planner.ThemeSwitcher;
 import com.example.our_planner.model.Event;
@@ -119,6 +120,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         previousWeekBtn = view.findViewById(R.id.previousWeekBtn);
         nextWeekBtn = view.findViewById(R.id.nextWeekBtn);
         newEventBtn = view.findViewById(R.id.newEventBtn);
+        newEventBtn.setText(LocaleLanguage.getLocale(getContext()).getResources().getString(R.string.newEvent));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

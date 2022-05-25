@@ -19,13 +19,19 @@
     <string name="help_edit_group_admin">Puedes cambiar la información del grupo, el color de los eventos en tu calendario, invitar nuevos usuarios (deben darte su correo electrónico), expulsarlos o cambiar sus permisos.</string>
     <string name="help_edit_group">No eres un administrador del grupo. Solamente puedes cambiar el color del grupo (para los eventos en tu calendario).</string>
     <string name="help_create_event">TO BE DONE WHEN CREATE EVENT IS COMPLETE</string>
+    <string name="help_view_event">TO BE DONE WHEN VIEW EVENT IS COMPLETE</string>
+    <string name="help_edit_event">TO BE DONE WHEN EDIT EVENT IS COMPLETE</string>
     <string name="help_invitations">En esta pantalla puedes ver tus invitaciones a grupos. Puedes aceptarlas (te unirás al grupo) o rechazarlas.</string>
     <string name="help_settings">Puedes cambiar tu foto de perfil. Puede hacerse directamente desde la cámara del dispositivo o, si no, seleccionando una de la galería.</string>
 
+    <string name="comments">Comentarios</string>
     <string name="show_calendar">Show Calendar</string>
     <string name="show_groups">Show Groups</string>
     <string name="show_invitations">Show Invitations</string>
     <string name="show_comments">Show Comments</string>
+    <string name="add_files">Añadir archivos</string>
+    <string name="select_file">"Selecciona un fichero a subir"</string>
+    <string name="install_file_manager">Por favor instale un explorador de ficheros</string>
 
     <string name="title_activity_register">Registrarse</string>
     <string name="title_activity_forgot_password">Recuperar contraseña</string>

@@ -114,11 +114,12 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     private void initAlarmDialog() {
+        Resources r = LocaleLanguage.getLocale(this).getResources();
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setMessage(R.string.help_create_event);
-        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+        builder.setMessage(r.getString(R.string.help_create_event));
+        builder.setNeutralButton(r.getString(R.string.close), (dialogInterface, i) -> dialogInterface.cancel());
         alert = builder.create();
-        alert.setTitle(R.string.help);
+        alert.setTitle(r.getString(R.string.help));
     }
 
     @SuppressLint("SetTextI18n")
@@ -137,8 +138,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
 
         //      adapter.setDropDownViewResource(
-        //              androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-
+        //              androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
 
         selectDateBtn = findViewById(R.id.selectDateBtn);
         selectStartTimeBtn = findViewById(R.id.selectStartTimeBtn);
@@ -253,5 +253,25 @@ public class CreateEventActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeLanguage();
+    }
+
+    private void changeLanguage() {
+        Resources r = LocaleLanguage.getLocale(this).getResources();
+
+        setTitle(r.getString(R.string.title_activity_create_event));
+        ((TextView) findViewById(R.id.labelEventTitle)).setText(r.getString(R.string.title));
+        eventNameET.setHint(r.getString(R.string.event_name));
+        ((TextView) findViewById(R.id.labelEventLocation)).setText(r.getString(R.string.location));
+        eventLocationET.setHint(r.getString(R.string.location));
+        selectDateBtn.setText(r.getString(R.string.select_date));
+        selectStartTimeBtn.setText(r.getString(R.string.select_start_time));
+        selectEndTimeBtn.setText(r.getString(R.string.select_end_time));
+        createBtn.setText(r.getString(R.string.create));
     }
 }

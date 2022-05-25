@@ -106,9 +106,8 @@ public class EditEventActivity extends AppCompatActivity {
 
             groups = i;
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, groups2);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups2);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
             selectGroup.setAdapter(adapter);
         };
         viewModel.getGroups().observe(this, observerGroups);
@@ -142,11 +141,12 @@ public class EditEventActivity extends AppCompatActivity {
     }
 
     private void initAlarmDialog() {
+        Resources r = LocaleLanguage.getLocale(this).getResources();
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setMessage("");
-        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+        builder.setMessage(r.getString(R.string.help_create_event));
+        builder.setNeutralButton(r.getString(R.string.close), (dialogInterface, i) -> dialogInterface.cancel());
         alert = builder.create();
-        alert.setTitle(R.string.help);
+        alert.setTitle(r.getString(R.string.help));
     }
 
     private void initFilesList() {
@@ -241,10 +241,11 @@ public class EditEventActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
+        Resources r = LocaleLanguage.getLocale(this).getResources();
         try {
-            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
+            startActivityForResult(Intent.createChooser(intent, r.getString(R.string.select_file)), FILE_SELECT_CODE);
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "Please install a File Manager", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, r.getString(R.string.install_file_manager), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -304,12 +305,12 @@ public class EditEventActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
+        Resources r = LocaleLanguage.getLocale(this).getResources();
         int id = item.getItemId();
         if (id == R.id.help) {
+            alert.setMessage(r.getString(getTitle().equals(r.getString(R.string.title_activity_view_event)) ? R.string.help_view_event : R.string.help_edit_event));
             alert.show();
         } else if (id == R.id.edit) {
-            Resources r = LocaleLanguage.getLocale(this).getResources();
             setTitle(r.getString(R.string.edit_event));
 
             menu.clear();
@@ -323,7 +324,6 @@ public class EditEventActivity extends AppCompatActivity {
             selectEndTimeBtn.setVisibility(View.VISIBLE);
             addFilesBtn.setVisibility(View.VISIBLE);
         } else if (id == R.id.save_changes) {
-            Resources r = LocaleLanguage.getLocale(this).getResources();
             setTitle(r.getString(R.string.title_activity_view_event));
 
             menu.clear();
@@ -354,5 +354,25 @@ public class EditEventActivity extends AppCompatActivity {
         selectStartTimeBtn.setVisibility(View.INVISIBLE);
         selectEndTimeBtn.setVisibility(View.INVISIBLE);
         addFilesBtn.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeLanguage();
+    }
+
+    private void changeLanguage() {
+        Resources r = LocaleLanguage.getLocale(this).getResources();
+
+        ((TextView) findViewById(R.id.labelEventTitle)).setText(r.getString(R.string.title));
+        eventNameET.setHint(r.getString(R.string.event_name));
+        ((TextView) findViewById(R.id.labelEventLocation)).setText(r.getString(R.string.location));
+        eventLocationET.setHint(r.getString(R.string.location));
+        selectDateBtn.setText(r.getString(R.string.select_date));
+        selectStartTimeBtn.setText(r.getString(R.string.select_start_time));
+        selectEndTimeBtn.setText(r.getString(R.string.select_end_time));
+        commentEventBtn.setText(r.getString(R.string.comment_event));
+        addFilesBtn.setText(r.getString(R.string.add_files));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.our_planner.ui.calendar.comments;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Comment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,12 +34,6 @@ public class CommentsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-
-        AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setMessage(R.string.help_comments);
-        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
-        alert = builder.create();
-        alert.setTitle(R.string.help);
 
         recyclerViewComments = findViewById(R.id.recyclerViewComments);
         recyclerViewComments.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -75,5 +71,23 @@ public class CommentsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeLanguage();
+    }
+
+    private void changeLanguage() {
+        Resources r = LocaleLanguage.getLocale(this).getResources();
+
+        setTitle(r.getString(R.string.comments));
+        message.setHint(r.getString(R.string.message));
+        AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setMessage(r.getString(R.string.help_comments));
+        builder.setNeutralButton(r.getString(R.string.close), (dialogInterface, i) -> dialogInterface.cancel());
+        alert = builder.create();
+        alert.setTitle(r.getString(R.string.help));
     }
 }
