@@ -31,20 +31,10 @@ public class CreateEventActivityViewModel extends AndroidViewModel implements Da
         DataBaseAdapter.createEvent(name, location, allDay, date, startTime, endTime, groupId);
     }
 
-    public void editEvent() {
 
-    }
-
-    public ArrayList<String> getGroupsNames() {
-        return DataBaseAdapter.getGroupsNames();
-    }
-
-    public Group getGroup(String groupName) {
-        return DataBaseAdapter.getGroup(groupName);
-    }
 
     @Override
-    public void update(ArrayList<Group> groups) {
+    public void updateGroups(ArrayList<Group> groups) {
         this.mGroups.setValue(groups);
     }
 

@@ -72,6 +72,26 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         calendarViewModel.getSelections().observe(getActivity(), observerSelections);
 
 
+        Observer<ArrayList<Event>> observerEvents = i -> {
+            Event.updateEventsList(i);
+
+            ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
+
+            ArrayList<Event> events = new ArrayList<>();
+
+            for (Event e : dailyEvents) {
+                if (selections.containsKey(e.getGroupId())) {
+                    if (selections.get(e.getGroupId()))
+                        events.add(e);
+                }
+            }
+
+            EventAdapter adapter2 = new EventAdapter(getContext(), events, this, calendarViewModel.getGroups());
+            recyclerViewEvents.setAdapter(adapter2);
+        };
+        calendarViewModel.getEvents().observe(getActivity(), observerEvents);
+
+
 
      /*   Observer<ArrayList<Group>> observerGroups = i -> {
 
@@ -150,7 +170,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     @Override
     public void onResume() {
         super.onResume();
-        setWeekView();
+        setEventAdapter();
     }
 
     private void setEventAdapter() {

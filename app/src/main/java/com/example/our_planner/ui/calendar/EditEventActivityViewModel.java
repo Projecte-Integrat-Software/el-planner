@@ -108,7 +108,7 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
     }
 
     @Override
-    public void update(ArrayList<Group> groups) {
+    public void updateGroups(ArrayList<Group> groups) {
         this.mGroups.setValue(groups);
     }
 

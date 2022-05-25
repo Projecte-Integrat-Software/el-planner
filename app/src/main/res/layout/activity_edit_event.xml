@@ -219,16 +219,6 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/saveChangesBtn"
-        android:layout_width="194dp"
-        android:layout_height="48dp"
-        android:text="@string/save_changes"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commentEventBtn" />
-
-    <Button
         android:id="@+id/commentEventBtn"
         android:layout_width="194dp"
         android:layout_height="48dp"

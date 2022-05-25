@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
 
@@ -32,14 +31,12 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
     private Spinner spinner;
     private ImageButton calendarGroups;
     private ArrayList<Group> groups;
-    private EventsViewModel eventsViewModel;
     private CalendarViewModel calendarViewModel;
     private RecyclerView recyclerCalendarGroups;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-        eventsViewModel = new ViewModelProvider(this).get(EventsViewModel.class);
         calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
 
         spinner = view.findViewById(R.id.calendarSpinner);
@@ -141,5 +138,6 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
     @Override
     public void onGroupSelect(Map<String, Boolean> selections) {
         calendarViewModel.setSelections(selections);
+
     }
 }
