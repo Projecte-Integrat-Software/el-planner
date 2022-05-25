@@ -71,7 +71,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView username = headerView.findViewById(R.id.username);
         username.setText(DataBaseAdapter.getUserName());
@@ -172,7 +172,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Context c = LocaleLanguage.getLocale(this);
@@ -262,7 +262,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 break;
             }
             case "Invitations": {
-                title = r.getString(R.string.groups);
+                title = r.getString(R.string.invitations);
                 break;
             }
             case "Settings": {

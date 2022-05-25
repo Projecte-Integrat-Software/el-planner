@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.DataBaseAdapter;
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Event;
 import com.example.our_planner.model.Group;
@@ -124,6 +126,8 @@ public class EditEventActivity extends AppCompatActivity {
         //Esbrinem si som admin del grup i configurem l'activitat adientment
         admin = viewModel.getGroup().getAdmins().get(DataBaseAdapter.getEmail());
         configureVisibility();
+
+        setTitle(LocaleLanguage.getLocale(this).getResources().getString(R.string.title_activity_view_event));
     }
 
     private void fillData() {
@@ -147,12 +151,9 @@ public class EditEventActivity extends AppCompatActivity {
         viewModel.subscribeUriObserver();
         fileList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         uris = new ArrayList<>();
-        viewModel.getUris().observe(this, new Observer<ArrayList<Uri>>() {
-            @Override
-            public void onChanged(ArrayList<Uri> urisNew) {
-                uris = new ArrayList<>(urisNew);
-                fileList.swapAdapter(new AdapterCalendarFiles(uris, fileList), true);
-            }
+        viewModel.getUris().observe(this, urisNew -> {
+            uris = new ArrayList<>(urisNew);
+            fileList.swapAdapter(new AdapterCalendarFiles(uris, fileList), true);
         });
         AdapterCalendarFiles adapter = new AdapterCalendarFiles(uris, fileList);
         fileList.setAdapter(adapter);
@@ -298,11 +299,13 @@ public class EditEventActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         int id = item.getItemId();
         if (id == R.id.help) {
             alert.show();
         } else if (id == R.id.edit) {
             if (admin) {
+                Resources r = LocaleLanguage.getLocale(this).getResources();
                 if (!editing) {
                     eventNameET.setEnabled(true);
                     eventLocationET.setEnabled(true);
@@ -310,7 +313,10 @@ public class EditEventActivity extends AppCompatActivity {
                     selectDateBtn.setVisibility(View.VISIBLE);
                     selectStartTimeBtn.setVisibility(View.VISIBLE);
                     selectEndTimeBtn.setVisibility(View.VISIBLE);
+                    addFilesBtn.setVisibility(View.VISIBLE);
                     saveChangesBtn.setVisibility(View.VISIBLE);
+
+                    setTitle(r.getString(R.string.edit_event));
                 } else {
                     eventNameET.setEnabled(false);
                     eventLocationET.setEnabled(false);
@@ -318,7 +324,10 @@ public class EditEventActivity extends AppCompatActivity {
                     selectDateBtn.setVisibility(View.INVISIBLE);
                     selectStartTimeBtn.setVisibility(View.INVISIBLE);
                     selectEndTimeBtn.setVisibility(View.INVISIBLE);
+                    addFilesBtn.setVisibility(View.INVISIBLE);
                     saveChangesBtn.setVisibility(View.INVISIBLE);
+
+                    setTitle(r.getString(R.string.title_activity_view_event));
                 }
                 editing = !editing;
             }
@@ -334,6 +343,7 @@ public class EditEventActivity extends AppCompatActivity {
         selectDateBtn.setVisibility(View.INVISIBLE);
         selectStartTimeBtn.setVisibility(View.INVISIBLE);
         selectEndTimeBtn.setVisibility(View.INVISIBLE);
+        addFilesBtn.setVisibility(View.INVISIBLE);
         saveChangesBtn.setVisibility(View.INVISIBLE);
 
         if (!admin) {
