@@ -51,7 +51,7 @@ public class EditEventActivity extends AppCompatActivity {
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
     private Spinner selectGroup;
-    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, saveChangesBtn, commentEventBtn, addFilesBtn;
+    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, commentEventBtn, addFilesBtn;
 
     private Group group;
     private ArrayList<Group> groups;
@@ -62,6 +62,8 @@ public class EditEventActivity extends AppCompatActivity {
     private ArrayList<Uri> uris;
 
     private boolean editing = false;
+
+    private Menu menu;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -217,7 +219,6 @@ public class EditEventActivity extends AppCompatActivity {
         selectDateBtn = findViewById(R.id.selectDateBtn);
         selectStartTimeBtn = findViewById(R.id.selectStartTimeBtn);
         selectEndTimeBtn = findViewById(R.id.selectEndTimeBtn);
-        saveChangesBtn = findViewById(R.id.saveChangesBtn);
         commentEventBtn = findViewById(R.id.commentEventBtn);
         addFilesBtn = findViewById(R.id.addFilesBtn);
 
@@ -228,7 +229,6 @@ public class EditEventActivity extends AppCompatActivity {
         selectDateBtn.setOnClickListener(this::openDatePicker);
         selectStartTimeBtn.setOnClickListener(this::openStartTimePicker);
         selectEndTimeBtn.setOnClickListener(this::openEndTimePicker);
-        saveChangesBtn.setOnClickListener(this::saveChangesAction);
         commentEventBtn.setOnClickListener(this::commentEventAction);
         addFilesBtn.setOnClickListener(this::addFilesAction);
     }
@@ -275,7 +275,7 @@ public class EditEventActivity extends AppCompatActivity {
         endTimePickerDialog.show();
     }
 
-    private void saveChangesAction(View view) {
+    private void saveChangesAction() {
         String eventName = eventNameET.getText().toString();
         String location = eventLocationET.getText().toString();
         // TODO Implement IDs in events
@@ -292,8 +292,13 @@ public class EditEventActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.edit_event_toolbar, menu);
+        if (admin) {
+            getMenuInflater().inflate(R.menu.edit_event_toolbar, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.toolbar, menu);
+        }
         return true;
     }
 
@@ -304,33 +309,38 @@ public class EditEventActivity extends AppCompatActivity {
         if (id == R.id.help) {
             alert.show();
         } else if (id == R.id.edit) {
-            if (admin) {
-                Resources r = LocaleLanguage.getLocale(this).getResources();
-                if (!editing) {
-                    eventNameET.setEnabled(true);
-                    eventLocationET.setEnabled(true);
-                    selectGroup.setEnabled(true);
-                    selectDateBtn.setVisibility(View.VISIBLE);
-                    selectStartTimeBtn.setVisibility(View.VISIBLE);
-                    selectEndTimeBtn.setVisibility(View.VISIBLE);
-                    addFilesBtn.setVisibility(View.VISIBLE);
-                    saveChangesBtn.setVisibility(View.VISIBLE);
+            Resources r = LocaleLanguage.getLocale(this).getResources();
+            setTitle(r.getString(R.string.edit_event));
 
-                    setTitle(r.getString(R.string.edit_event));
-                } else {
-                    eventNameET.setEnabled(false);
-                    eventLocationET.setEnabled(false);
-                    selectGroup.setEnabled(false);
-                    selectDateBtn.setVisibility(View.INVISIBLE);
-                    selectStartTimeBtn.setVisibility(View.INVISIBLE);
-                    selectEndTimeBtn.setVisibility(View.INVISIBLE);
-                    addFilesBtn.setVisibility(View.INVISIBLE);
-                    saveChangesBtn.setVisibility(View.INVISIBLE);
+            menu.clear();
+            getMenuInflater().inflate(R.menu.save_edit_event_toolbar, menu);
 
-                    setTitle(r.getString(R.string.title_activity_view_event));
-                }
-                editing = !editing;
-            }
+            eventNameET.setEnabled(true);
+            eventLocationET.setEnabled(true);
+            selectGroup.setEnabled(true);
+            selectDateBtn.setVisibility(View.VISIBLE);
+            selectStartTimeBtn.setVisibility(View.VISIBLE);
+            selectEndTimeBtn.setVisibility(View.VISIBLE);
+            addFilesBtn.setVisibility(View.VISIBLE);
+        } else if (id == R.id.save_changes) {
+            Resources r = LocaleLanguage.getLocale(this).getResources();
+            setTitle(r.getString(R.string.title_activity_view_event));
+
+            menu.clear();
+            getMenuInflater().inflate(R.menu.edit_event_toolbar, menu);
+
+            eventNameET.setEnabled(false);
+            eventLocationET.setEnabled(false);
+            selectGroup.setEnabled(false);
+            selectDateBtn.setVisibility(View.INVISIBLE);
+            selectStartTimeBtn.setVisibility(View.INVISIBLE);
+            selectEndTimeBtn.setVisibility(View.INVISIBLE);
+            addFilesBtn.setVisibility(View.INVISIBLE);
+
+            editing = !editing;
+
+            //Guardem els canvis
+            saveChangesAction();
         }
 
         return super.onOptionsItemSelected(item);
@@ -344,10 +354,5 @@ public class EditEventActivity extends AppCompatActivity {
         selectStartTimeBtn.setVisibility(View.INVISIBLE);
         selectEndTimeBtn.setVisibility(View.INVISIBLE);
         addFilesBtn.setVisibility(View.INVISIBLE);
-        saveChangesBtn.setVisibility(View.INVISIBLE);
-
-        if (!admin) {
-            //Disable edit button
-        }
     }
 }
