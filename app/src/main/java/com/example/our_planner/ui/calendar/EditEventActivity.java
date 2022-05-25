@@ -288,7 +288,6 @@ public class EditEventActivity extends AppCompatActivity {
 
         viewModel.editEvent(viewModel.getId(), eventName, location, false,
                 date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
-        finish();
     }
 
     @Override
