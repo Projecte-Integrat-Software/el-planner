@@ -295,6 +295,7 @@ public abstract class DataBaseAdapter {
             db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> {
                 loadGroups();
                 deleteGroupInvitations(g.getId());
+                deleteEvents(g.getId());
             });
         } else {
             p.remove(email);
