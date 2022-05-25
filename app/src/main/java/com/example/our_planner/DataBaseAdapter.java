@@ -629,6 +629,27 @@ public abstract class DataBaseAdapter {
         return groups;
     }
 
+    public static void deleteEvents(String groupId) {
+        DocumentReference doc1;
+        db.collection("eventProv").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    if (((String) g.get("group")).equals(groupId)) {
+                        String eventId = document.getId();
+                        deleteEvent(eventId);
+
+                    }
+
+                }
+
+
+            }
+        });
+
+
+    }
+
  /*   public static Group getGroup(String groupName) {
         AtomicReference<Group> group = new AtomicReference<>(null);
         db.collection("groups").get().addOnCompleteListener(task -> {
