@@ -166,4 +166,6 @@
     <string name="event_name">Nombre del Evento</string>
     <string name="language">Idioma:</string>
     <string name="select_group">Grupo</string>
+    <string name="no_groups">Para crear un evento tienes que estar en al menos un grupo.</string>
+
 </resources>
