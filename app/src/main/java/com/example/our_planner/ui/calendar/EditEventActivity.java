@@ -172,7 +172,7 @@ public class EditEventActivity extends AppCompatActivity {
     //TODO the picker begins one month ahead
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
-            month = month + 1;
+            month++;
             viewModel.setDate(LocalDate.of(year, month, day));
             dateTV.setText(CalendarUtils.formattedDate(viewModel.getDate()));
         };
@@ -183,7 +183,7 @@ public class EditEventActivity extends AppCompatActivity {
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
-        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month - 1, day);
     }
 
     private void initStartTimePicker() {

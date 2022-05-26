@@ -44,7 +44,7 @@ public class EditGroupActivity extends AppCompatActivity {
     private AlertDialog alert;
     private boolean admin;
     private TextView txtUser, groupTitle, groupDetails, groupColour, groupParticipants;
-    private Button btnEdit;
+    private Button saveChangesBtn;
     private FloatingActionButton btnParticipant;
     private Group group;
 
@@ -78,7 +78,7 @@ public class EditGroupActivity extends AppCompatActivity {
         recyclerViewParticipants.setAdapter(new AdapterParticipants(this, group.getParticipants(), group.getAdmins()));
 
         btnParticipant = findViewById(R.id.btnParticipant);
-        btnEdit = findViewById(R.id.btnEdit);
+        saveChangesBtn = findViewById(R.id.saveChangesBtn);
 
         final Observer<String> observerToast = t -> Toast.makeText(EditGroupActivity.this, t, Toast.LENGTH_SHORT).show();
         viewModel.getToast().observe(this, observerToast);
@@ -216,8 +216,8 @@ public class EditGroupActivity extends AppCompatActivity {
             btnParticipant.setVisibility(View.INVISIBLE);
         }
 
-        btnEdit.setText(r.getString(R.string.edit));
-        btnEdit.setOnClickListener(view -> {
+        saveChangesBtn.setText(r.getString(R.string.save_changes));
+        saveChangesBtn.setOnClickListener(view -> {
             String title = txtTitle.getText().toString();
             String details = txtDetails.getText().toString();
             if (title.isEmpty()) {
