@@ -631,7 +631,7 @@ public abstract class DataBaseAdapter {
 
     public static void deleteEvents(String groupId) {
         DocumentReference doc1;
-        db.collection("eventProv").get().addOnCompleteListener(task -> {
+        db.collection("Events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> g = document.getData();
