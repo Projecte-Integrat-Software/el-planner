@@ -66,10 +66,11 @@ public class CommentsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Resources r = LocaleLanguage.getLocale(this).getResources();
         if (item.getItemId() == R.id.help) {
+            alert.setMessage(r.getString(R.string.help_comments));
             alert.show();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

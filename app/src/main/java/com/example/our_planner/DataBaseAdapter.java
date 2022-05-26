@@ -50,7 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class DataBaseAdapter {
 
@@ -398,8 +397,7 @@ public abstract class DataBaseAdapter {
     public static void loadFiles(String eventId) {
         uris = new ArrayList<>();
         StorageReference storageRef = storage.getReference().child("Files").child(eventId);
-        Task task = storageRef.listAll();
-        task.addOnSuccessListener(new OnSuccessListener<ListResult>() {
+        storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
                 for (StorageReference fileRef : listResult.getItems()) {
@@ -505,54 +503,12 @@ public abstract class DataBaseAdapter {
         void update(ArrayList<Invitation> invitations);
     }
 
-    public static Group getGroup(String groupName) {
-        AtomicReference<Group> group = new AtomicReference<>(null);
-        db.collection("groups").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Map<String, Object> g = document.getData();
-                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
-                    if (participants.containsKey(getEmail())) {
-                        if (g.get("title").equals(groupName)) {
-                            Map<String, String> colours = (HashMap<String, String>) g.get("colours");
-                            Map<String, Integer> coloursGroup = new HashMap<>();
-                            Map<String, User> participantsGroup = new HashMap<>();
-                            for (String k : colours.keySet()) {
-                                coloursGroup.put(k, Integer.parseInt(colours.get(k)));
-                                participantsGroup.put(k, new User(participants.get(k)));
-
-                            }
-                            group.set(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, (Map<String, Boolean>) g.get("admins")));
-                            break;
-
-                        }
-                    }
-
-
-                }
-            }
-        });
-
-        return group.get();
-    }
-
     public interface CommentInterface {
         void addComment(Comment comment);
     }
 
     public interface UriInterface {
         void updateUris(ArrayList<Uri> uris);
-    }
-
-    private static Map<String, Object> mapEventDocument(String name, String location, String date, String startTime, String endTime, String groupId) {
-        Map<String, Object> g = new HashMap<>();
-        g.put("name", name);
-        g.put("location", location);
-        g.put("date", date);
-        g.put("start time", startTime);
-        g.put("end time", endTime);
-        g.put("group", groupId);
-        return g;
     }
 
     public static void createEvent(String name, String location, String date, String startTime, String endTime, String groupId) {
@@ -576,6 +532,23 @@ public abstract class DataBaseAdapter {
         deleteEvent(eventId);
         createEvent(name, location, date, startTime, endTime, groupId);
         loadEvents();
+
+        db.collection("events").document(eventId).set(mapEventDocument(name, location, date, startTime, endTime, groupId))
+                .addOnSuccessListener(documentReference -> {
+                    loadGroups();
+
+                });
+    }
+
+    private static Map<String, Object> mapEventDocument(String name, String location, String date, String startTime, String endTime, String groupId) {
+        Map<String, Object> g = new HashMap<>();
+        g.put("name", name);
+        g.put("date", date);
+        g.put("location", location);
+        g.put("start time", startTime);
+        g.put("end time", endTime);
+        g.put("group", groupId);
+        return g;
     }
 
     public static void deleteEvent(String eventId) {
@@ -611,26 +584,7 @@ public abstract class DataBaseAdapter {
         return groups;
     }
 
-    public static ArrayList<String> getGroupsNames() {
-        ArrayList<String> groups = new ArrayList<>();
-        db.collection("groups").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Map<String, Object> g = document.getData();
-                    //  if (participants.containsKey(getEmail())) {
-                    groups.add((String) g.get("title"));
-                    //  }
-                }
-
-
-            }
-        });
-
-        return groups;
-    }
-
     public static void deleteEvents(String groupId) {
-        DocumentReference doc1;
         db.collection("events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -638,12 +592,8 @@ public abstract class DataBaseAdapter {
                     if (((String) g.get("group")).equals(groupId)) {
                         String eventId = document.getId();
                         deleteEvent(eventId);
-
                     }
-
                 }
-
-
             }
         });
 
