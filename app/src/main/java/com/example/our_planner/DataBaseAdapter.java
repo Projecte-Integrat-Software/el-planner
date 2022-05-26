@@ -420,6 +420,13 @@ public abstract class DataBaseAdapter {
         uriInterface.updateUris(uris);
     }
 
+    public static void removeFile(Uri uri, Context context, String eventId) {
+        StorageReference storageRef = storage.getReference().child("Files").child(eventId).child(getFileName(uri, context));
+        storageRef.delete();
+        uris.add(uri);
+        uriInterface.updateUris(uris);
+    }
+
     @SuppressLint("Range")
     public static String getFileName(Uri uri, Context context) {
         String result = null;

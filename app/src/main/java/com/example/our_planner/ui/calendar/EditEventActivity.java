@@ -62,9 +62,15 @@ public class EditEventActivity extends AppCompatActivity {
     private androidx.appcompat.app.AlertDialog alert;
     private ArrayList<Uri> uris;
 
+    AdapterCalendarFiles filesAdapter;
+
     private boolean editing = false;
 
     private Menu menu;
+
+    public boolean isEditing() {
+        return editing;
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -89,7 +95,6 @@ public class EditEventActivity extends AppCompatActivity {
         fillData();
         initFilesList();
         initListeners();
-        System.out.println("ID: " + viewModel.getEvent().getId());
 
         selectGroup = findViewById(R.id.selectGroupSpinner);
 
@@ -157,10 +162,11 @@ public class EditEventActivity extends AppCompatActivity {
         uris = new ArrayList<>();
         viewModel.getUris().observe(this, urisNew -> {
             uris = new ArrayList<>(urisNew);
-            fileList.swapAdapter(new AdapterCalendarFiles(uris, fileList), true);
+            filesAdapter = new AdapterCalendarFiles(uris, fileList, this);
+            fileList.swapAdapter(filesAdapter, true);
         });
-        AdapterCalendarFiles adapter = new AdapterCalendarFiles(uris, fileList);
-        fileList.setAdapter(adapter);
+        filesAdapter = new AdapterCalendarFiles(uris, fileList, this);
+        fileList.setAdapter(filesAdapter);
     }
 
     //TODO the picker begins one month ahead
@@ -259,8 +265,19 @@ public class EditEventActivity extends AppCompatActivity {
         if (requestCode == FILE_SELECT_CODE && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             viewModel.addNewUri(uri);
-            fileList.swapAdapter(new AdapterCalendarFiles(viewModel.getNewUris(), fileList), true);
+            filesAdapter = new AdapterCalendarFiles(viewModel.getNewUris(), fileList, this);
+            fileList.swapAdapter(filesAdapter, true);
+            filesAdapter.setVisibilityRemoveButton(View.VISIBLE);
         }
+    }
+
+    public EditEventActivityViewModel getViewModel() {
+        return viewModel;
+    }
+
+    public void swapAdapter() {
+        filesAdapter = new AdapterCalendarFiles(viewModel.getNewUris(), fileList, this);
+        fileList.swapAdapter(filesAdapter, true);
     }
 
     private void commentEventAction(View view) {
@@ -331,14 +348,34 @@ public class EditEventActivity extends AppCompatActivity {
             selectStartTimeBtn.setVisibility(View.VISIBLE);
             selectEndTimeBtn.setVisibility(View.VISIBLE);
             addFilesBtn.setVisibility(View.VISIBLE);
+            filesAdapter.setVisibilityRemoveButton(View.VISIBLE);
+
+            editing = true;
+            filesAdapter.updateParent(this);
+
+            viewModel.setNewUris(viewModel.getUris().getValue());
         } else if (id == R.id.save_changes) {
 
+            System.out.println("New:" + viewModel.getNewUris());
+            System.out.println("Old:" + viewModel.getUris().getValue());
             // Load files
             for (Uri uri : viewModel.getNewUris()) {
                 if (!viewModel.getUris().getValue().contains(uri)) {
                     DataBaseAdapter.uploadFile(uri, getApplicationContext(), viewModel.getEvent().getId());
                 }
             }
+            for (Uri uri : viewModel.getUris().getValue()) {
+                if (!viewModel.getNewUris().contains(uri)) {
+                    DataBaseAdapter.removeFile(uri, getApplicationContext(), viewModel.getEvent().getId());
+                }
+            }
+            System.out.println("New2:" + viewModel.getNewUris());
+            System.out.println("Old2:" + viewModel.getUris().getValue());
+            viewModel.updateUris(viewModel.getNewUris());
+            filesAdapter = new AdapterCalendarFiles(viewModel.getUris().getValue(), fileList, this);
+            fileList.swapAdapter(filesAdapter, true);
+            System.out.println("New3:" + viewModel.getNewUris());
+            System.out.println("Old3:" + viewModel.getUris().getValue());
 
             setTitle(r.getString(R.string.title_activity_view_event));
             menu.clear();
@@ -351,8 +388,11 @@ public class EditEventActivity extends AppCompatActivity {
             selectStartTimeBtn.setVisibility(View.INVISIBLE);
             selectEndTimeBtn.setVisibility(View.INVISIBLE);
             addFilesBtn.setVisibility(View.INVISIBLE);
+            filesAdapter.setVisibilityRemoveButton(View.INVISIBLE);
 
-            editing = !editing;
+
+            editing = false;
+            filesAdapter.updateParent(this);
 
             //Guardem els canvis
             saveChangesAction();

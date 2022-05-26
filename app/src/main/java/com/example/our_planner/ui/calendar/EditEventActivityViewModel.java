@@ -120,8 +120,7 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
 
     @Override
     public void updateUris(ArrayList<Uri> uris) {
-        this.mUris.setValue(uris);
-        this.mNewUris.setValue(uris);
+        this.mUris.setValue(new ArrayList<>(uris));
     }
 
     public MutableLiveData<ArrayList<Uri>> getUris() {
@@ -142,5 +141,10 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
 
     public ArrayList<Uri> getNewUris() {
         return mNewUris.getValue();
+    }
+
+
+    public void setNewUris(ArrayList<Uri> uris) {
+        mNewUris.setValue(new ArrayList<>(uris));
     }
 }
