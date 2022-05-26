@@ -60,6 +60,7 @@ public class CreateEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_event);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        viewModel = new ViewModelProvider(this).get(CreateEventActivityViewModel.class);
         date = CalendarUtils.selectedDate;
         startTime = LocalTime.now();
         startTime = startTime.minusSeconds(startTime.getSecond());
@@ -278,5 +279,7 @@ public class CreateEventActivity extends AppCompatActivity {
         selectStartTimeBtn.setText(r.getString(R.string.select_start_time));
         selectEndTimeBtn.setText(r.getString(R.string.select_end_time));
         createBtn.setText(r.getString(R.string.create));
+        ((TextView) findViewById(R.id.labelSelectGroup)).setText(r.getString(R.string.select_group));
+
     }
 }

@@ -103,8 +103,8 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
         location = event.getLocation();
     }
 
-    public void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
-        DataBaseAdapter.editEvent(eventId, name, location, allDay, date, startTime, endTime, groupId);
+    public void editEvent(String eventId, String name, String location, String date, String startTime, String endTime, String groupId) {
+        DataBaseAdapter.editEvent(eventId, name, location, date, startTime, endTime, groupId);
     }
 
     @Override

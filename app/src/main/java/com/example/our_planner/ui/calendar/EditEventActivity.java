@@ -286,7 +286,7 @@ public class EditEventActivity extends AppCompatActivity {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        viewModel.editEvent(viewModel.getId(), eventName, location, false,
+        viewModel.editEvent(viewModel.getId(), eventName, location,
                 date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
     }
 
@@ -367,11 +367,13 @@ public class EditEventActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.labelEventTitle)).setText(r.getString(R.string.title));
         eventNameET.setHint(r.getString(R.string.event_name));
         ((TextView) findViewById(R.id.labelEventLocation)).setText(r.getString(R.string.location));
+        ((TextView) findViewById(R.id.labelSelectGroup)).setText(r.getString(R.string.select_group));
         eventLocationET.setHint(r.getString(R.string.location));
         selectDateBtn.setText(r.getString(R.string.select_date));
         selectStartTimeBtn.setText(r.getString(R.string.select_start_time));
         selectEndTimeBtn.setText(r.getString(R.string.select_end_time));
         commentEventBtn.setText(r.getString(R.string.comment_event));
         addFilesBtn.setText(r.getString(R.string.add_files));
+
     }
 }

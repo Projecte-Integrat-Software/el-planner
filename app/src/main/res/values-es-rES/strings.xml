@@ -164,4 +164,5 @@
     <string name="save_changes">Guardar cambios</string>
     <string name="event_name">Nombre del Evento</string>
     <string name="language">Idioma:</string>
+    <string name="select_group">Grupo</string>
 </resources>
