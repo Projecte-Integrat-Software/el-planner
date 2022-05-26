@@ -97,9 +97,8 @@ public class CreateEventActivity extends AppCompatActivity {
 
             groups = i;
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, groups2);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups2);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
             selectGroup.setAdapter(adapter);
         };
         viewModel.getGroups().observe(this, observerGroups);
@@ -239,7 +238,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            viewModel.createEvent(eventName, location, false, date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
+            viewModel.createEvent(eventName, location, date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
 
             finish();
         }
