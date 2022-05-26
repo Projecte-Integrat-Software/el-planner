@@ -62,8 +62,15 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
         initWidgets();
 
-
-        CalendarUtils.selectedDate = LocalDate.now();
+        Bundle arguments = getArguments();
+        if (arguments == null) {
+            CalendarUtils.selectedDate = LocalDate.now();
+        } else {
+            int day = arguments.getInt("day");
+            int month = arguments.getInt("month");
+            int year = arguments.getInt("year");
+            CalendarUtils.selectedDate = LocalDate.of(year, month, day);
+        }
         setWeekView();
         setEventAdapter();
 
@@ -94,13 +101,6 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         };
         calendarViewModel.getEvents().observe(getActivity(), observerEvents);
 
-
-
-     /*   Observer<ArrayList<Group>> observerGroups = i -> {
-
-        };
-        calendarViewModel.getGroups().observe(getActivity(), observerGroups);
-        */
         return view;
     }
 
@@ -197,30 +197,6 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
 
         EventAdapter adapter = new EventAdapter(getContext(), events, this, calendarViewModel.getGroups());
         recyclerViewEvents.setAdapter(adapter);
-
-   /*     ArrayList<Event> events = new ArrayList<>();
-        // Now we check the events from the groups selected
-        // First we need to get the groups selected
-        ArrayList<Group> groups = new ArrayList<>();
-        groups.add(new Group("3UJ98vjspiEL4LYugkX8", "", "", null, null, null));
-
-        Iterator<Group> iterGroups;
-        Iterator<Event> iterEvents = dailyEvents.iterator();
-        Event event;
-        while (iterEvents.hasNext()) {
-            event = (Event) iterEvents.next();
-            iterGroups = groups.iterator();
-            while (iterGroups.hasNext()) {
-                if (event.getGroup().equals(((Group) iterGroups.next()).getId())) {
-                    events.add(event);
-                    break;
-                }
-
-            }
-        }
-*/
-        //   EventAdapter adapter = new EventAdapter(getContext(), dailyEvents, this);
-        //   recyclerViewEvents.setAdapter(adapter);
     }
 
     @Override

@@ -42,7 +42,16 @@ public class MonthCalendarFragment extends Fragment implements CalendarAdapter.O
 
         initWidgets();
 
-        CalendarUtils.selectedDate = LocalDate.now();
+        Bundle arguments = getArguments();
+        if (arguments == null) {
+            CalendarUtils.selectedDate = LocalDate.now();
+        } else {
+            int day = arguments.getInt("day");
+            int month = arguments.getInt("month");
+            int year = arguments.getInt("year");
+            CalendarUtils.selectedDate = LocalDate.of(year, month, day);
+        }
+
         setMonthView();
 
         return view;
