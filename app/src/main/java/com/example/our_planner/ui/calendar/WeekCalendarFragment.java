@@ -5,6 +5,7 @@ import static com.example.our_planner.ui.calendar.CalendarUtils.monthYearFromDat
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -159,7 +161,13 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     }
 
     public void newEventAction(View view) {
-        startActivity(new Intent(this.getActivity(), CreateEventActivity.class));
+        if (!calendarViewModel.getGroups().getValue().isEmpty()) {
+            startActivity(new Intent(this.getActivity(), CreateEventActivity.class));
+        } else {
+            Resources r = LocaleLanguage.getLocale(getContext()).getResources();
+            Toast.makeText(getContext(), r.getString(R.string.no_groups), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

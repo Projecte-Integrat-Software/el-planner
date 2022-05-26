@@ -167,4 +167,5 @@
     <string name="language">Language:</string>
     <string name="select_group">Group</string>
     <string name="delete_event">Delete Event</string>
+    <string name="no_groups">To create an event you have to be in one group at least.</string>
 </resources>

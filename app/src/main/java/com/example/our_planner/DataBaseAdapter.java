@@ -481,7 +481,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static void loadEvents() {
-        db.collection("Events").get().addOnCompleteListener(task -> {
+        db.collection("events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<Event> events = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -556,7 +556,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static void createEvent(String name, String location, String date, String startTime, String endTime, String groupId) {
-        db.collection("Events").add(mapEventDocument(name, location, date, startTime, endTime, groupId))
+        db.collection("events").add(mapEventDocument(name, location, date, startTime, endTime, groupId))
                 .addOnSuccessListener(documentReference -> {
                     loadEvents();
                 });
@@ -579,7 +579,7 @@ public abstract class DataBaseAdapter {
     }
 
     public static void deleteEvent(String eventId) {
-        DocumentReference doc = db.collection("Events").document(eventId);
+        DocumentReference doc = db.collection("events").document(eventId);
         doc.delete().addOnSuccessListener(documentReference -> {
             loadEvents();
         });
@@ -631,7 +631,7 @@ public abstract class DataBaseAdapter {
 
     public static void deleteEvents(String groupId) {
         DocumentReference doc1;
-        db.collection("Events").get().addOnCompleteListener(task -> {
+        db.collection("events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Map<String, Object> g = document.getData();
