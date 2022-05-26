@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +23,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
@@ -38,7 +43,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private EditText eventNameET, eventLocationET;
     private TextView dateTV, startTimeTV, endTimeTV;
-    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, createBtn;
+    private static final int FILE_SELECT_CODE = 0;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
@@ -50,6 +55,10 @@ public class CreateEventActivity extends AppCompatActivity {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
+    AdapterCalendarFiles filesAdapter;
+    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, createBtn, addFilesBtn;
+    private RecyclerView fileList;
+    private ArrayList<Uri> uris;
 
     private androidx.appcompat.app.AlertDialog alert;
 
@@ -78,6 +87,7 @@ public class CreateEventActivity extends AppCompatActivity {
         initStartTimePicker();
         initEndTimePicker();
         initListeners();
+        initFilesList();
 
         selectGroup = findViewById(R.id.selectGroupSpinner);
 
@@ -149,13 +159,27 @@ public class CreateEventActivity extends AppCompatActivity {
         selectStartTimeBtn = findViewById(R.id.selectStartTimeBtn);
         selectEndTimeBtn = findViewById(R.id.selectEndTimeBtn);
         createBtn = findViewById(R.id.btnCreate);
-
+        addFilesBtn = findViewById(R.id.addFilesBtn);
+        fileList = findViewById(R.id.fileList);
 
         dateTV.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         startTimeTV.setText(CalendarUtils.formattedTime(startTime));
         endTimeTV.setText(CalendarUtils.formattedTime(endTime));
        /* eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         eventTimeTV.setText("Time: " + CalendarUtils.formattedTime(startTime)); */
+    }
+
+    private void initFilesList() {
+        viewModel.subscribeUriObserver();
+        fileList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        uris = new ArrayList<>();
+        viewModel.getUris().observe(this, urisNew -> {
+            uris = new ArrayList<>(urisNew);
+            filesAdapter = new AdapterCalendarFiles(uris, fileList, new EditEventActivity());
+            fileList.swapAdapter(filesAdapter, true);
+        });
+        filesAdapter = new AdapterCalendarFiles(uris, fileList, new EditEventActivity());
+        fileList.setAdapter(filesAdapter);
     }
 
     private void initDatePicker() {
@@ -207,6 +231,33 @@ public class CreateEventActivity extends AppCompatActivity {
         selectStartTimeBtn.setOnClickListener(this::openStartTimePicker);
         selectEndTimeBtn.setOnClickListener(this::openEndTimePicker);
         createBtn.setOnClickListener(this::saveEventAction);
+        addFilesBtn.setOnClickListener(this::addFilesAction);
+    }
+
+    private void addFilesAction(View view) {
+        showFileChooser();
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        Resources r = LocaleLanguage.getLocale(this).getResources();
+        try {
+            startActivityForResult(Intent.createChooser(intent, r.getString(R.string.select_file)), FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, r.getString(R.string.install_file_manager), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILE_SELECT_CODE && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            viewModel.addUri(uri);
+            fileList.swapAdapter(filesAdapter, true);
+        }
     }
 
     private void openDatePicker(View view) {
@@ -239,6 +290,11 @@ public class CreateEventActivity extends AppCompatActivity {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             viewModel.createEvent(eventName, location, date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
+
+            for (Uri uri : viewModel.getUris().getValue()) {
+                DataBaseAdapter.uploadFile(uri, getApplicationContext(), "hello");
+            }
+
 
             finish();
         }

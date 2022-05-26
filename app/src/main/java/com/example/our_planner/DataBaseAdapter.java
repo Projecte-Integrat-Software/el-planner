@@ -64,11 +64,7 @@ public abstract class DataBaseAdapter {
     private static InvitationInterface invitationInterface;
     private static UriInterface uriInterface;
     private static final boolean registrationCompleted = true;
-    private static ArrayList<Uri> uris;
-
-    public static ArrayList<Uri> getUris() {
-        return uris;
-    }
+    private static ArrayList<Uri> uris = new ArrayList<>();
 
     public static void login(DBInterface i, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -468,9 +464,13 @@ public abstract class DataBaseAdapter {
         return registrationCompleted;
     }
 
-    public static void subscribeUriObserver(UriInterface i, String eventId) {
+    public static void subscribeUriObserverEdit(UriInterface i, String eventId) {
         uriInterface = i;
         loadFiles(eventId);
+    }
+
+    public static void subscribeUriObserverCreate(UriInterface i) {
+        uriInterface = i;
     }
 
     public static Task<byte[]> getImage(String author) {

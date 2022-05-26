@@ -39,7 +39,7 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
     }
 
     public void subscribeUriObserver() {
-        DataBaseAdapter.subscribeUriObserver(this, event.getId());
+        DataBaseAdapter.subscribeUriObserverEdit(this, event.getId());
     }
 
     public MutableLiveData<ArrayList<Group>> getGroups() {

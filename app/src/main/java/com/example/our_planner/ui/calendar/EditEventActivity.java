@@ -355,9 +355,6 @@ public class EditEventActivity extends AppCompatActivity {
 
             viewModel.setNewUris(viewModel.getUris().getValue());
         } else if (id == R.id.save_changes) {
-
-            System.out.println("New:" + viewModel.getNewUris());
-            System.out.println("Old:" + viewModel.getUris().getValue());
             // Load files
             for (Uri uri : viewModel.getNewUris()) {
                 if (!viewModel.getUris().getValue().contains(uri)) {
@@ -369,13 +366,9 @@ public class EditEventActivity extends AppCompatActivity {
                     DataBaseAdapter.removeFile(uri, getApplicationContext(), viewModel.getEvent().getId());
                 }
             }
-            System.out.println("New2:" + viewModel.getNewUris());
-            System.out.println("Old2:" + viewModel.getUris().getValue());
             viewModel.updateUris(viewModel.getNewUris());
             filesAdapter = new AdapterCalendarFiles(viewModel.getUris().getValue(), fileList, this);
             fileList.swapAdapter(filesAdapter, true);
-            System.out.println("New3:" + viewModel.getNewUris());
-            System.out.println("Old3:" + viewModel.getUris().getValue());
 
             setTitle(r.getString(R.string.title_activity_view_event));
             menu.clear();

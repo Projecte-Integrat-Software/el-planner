@@ -1,6 +1,7 @@
 package com.example.our_planner.ui.calendar;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -14,8 +15,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateEventActivityViewModel extends AndroidViewModel implements DataBaseAdapter.GroupInterface {
+public class CreateEventActivityViewModel extends AndroidViewModel implements DataBaseAdapter.GroupInterface, DataBaseAdapter.UriInterface {
     private final MutableLiveData<ArrayList<Group>> mGroups;
+    private final MutableLiveData<ArrayList<Uri>> mUris;
 
     private LocalDate date;
     private LocalTime startTime;
@@ -23,7 +25,8 @@ public class CreateEventActivityViewModel extends AndroidViewModel implements Da
 
     public CreateEventActivityViewModel(@NonNull Application application) {
         super(application);
-        mGroups = new MutableLiveData<>(new ArrayList<Group>());
+        mGroups = new MutableLiveData<>(new ArrayList<>());
+        mUris = new MutableLiveData<>(new ArrayList<>());
         DataBaseAdapter.subscribeGroupObserver(this);
 
     }
@@ -60,8 +63,6 @@ public class CreateEventActivityViewModel extends AndroidViewModel implements Da
         DataBaseAdapter.createEvent(name, location, date, startTime, endTime, groupId);
     }
 
-
-
     @Override
     public void updateGroups(ArrayList<Group> groups) {
         this.mGroups.setValue(groups);
@@ -69,5 +70,24 @@ public class CreateEventActivityViewModel extends AndroidViewModel implements Da
 
     public List<Group> getGroupsList() {
         return mGroups.getValue();
+    }
+
+    @Override
+    public void updateUris(ArrayList<Uri> uris) {
+        this.mUris.setValue(new ArrayList<>(uris));
+    }
+
+    public void subscribeUriObserver() {
+        DataBaseAdapter.subscribeUriObserverCreate(this);
+    }
+
+    public MutableLiveData<ArrayList<Uri>> getUris() {
+        return mUris;
+    }
+
+    public void addUri(Uri uri) {
+        ArrayList<Uri> uris = mUris.getValue();
+        uris.add(uri);
+        mUris.setValue(uris);
     }
 }
