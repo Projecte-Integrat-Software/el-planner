@@ -89,6 +89,7 @@ public class EditEventActivity extends AppCompatActivity {
         fillData();
         initFilesList();
         initListeners();
+        System.out.println("ID: " + viewModel.getEvent().getId());
 
         selectGroup = findViewById(R.id.selectGroupSpinner);
 
@@ -257,7 +258,8 @@ public class EditEventActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FILE_SELECT_CODE && resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            DataBaseAdapter.uploadFile(uri, getApplicationContext(), viewModel.getEvent().getId());
+            viewModel.addNewUri(uri);
+            fileList.swapAdapter(new AdapterCalendarFiles(viewModel.getNewUris(), fileList), true);
         }
     }
 
@@ -330,8 +332,15 @@ public class EditEventActivity extends AppCompatActivity {
             selectEndTimeBtn.setVisibility(View.VISIBLE);
             addFilesBtn.setVisibility(View.VISIBLE);
         } else if (id == R.id.save_changes) {
-            setTitle(r.getString(R.string.title_activity_view_event));
 
+            // Load files
+            for (Uri uri : viewModel.getNewUris()) {
+                if (!viewModel.getUris().getValue().contains(uri)) {
+                    DataBaseAdapter.uploadFile(uri, getApplicationContext(), viewModel.getEvent().getId());
+                }
+            }
+
+            setTitle(r.getString(R.string.title_activity_view_event));
             menu.clear();
             getMenuInflater().inflate(R.menu.edit_event_toolbar, menu);
 

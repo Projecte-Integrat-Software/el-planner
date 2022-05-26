@@ -398,8 +398,7 @@ public abstract class DataBaseAdapter {
     public static void loadFiles(String eventId) {
         uris = new ArrayList<>();
         StorageReference storageRef = storage.getReference().child("Files").child(eventId);
-        Task task = storageRef.listAll();
-        task.addOnSuccessListener(new OnSuccessListener<ListResult>() {
+        storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
                 for (StorageReference fileRef : listResult.getItems()) {
@@ -638,12 +637,8 @@ public abstract class DataBaseAdapter {
                     if (((String) g.get("group")).equals(groupId)) {
                         String eventId = document.getId();
                         deleteEvent(eventId);
-
                     }
-
                 }
-
-
             }
         });
 

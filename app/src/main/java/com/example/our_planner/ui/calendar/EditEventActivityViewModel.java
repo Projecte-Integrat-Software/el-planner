@@ -19,6 +19,7 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
 
     private final MutableLiveData<ArrayList<Group>> mGroups;
     private final MutableLiveData<ArrayList<Uri>> mUris;
+    private final MutableLiveData<ArrayList<Uri>> mNewUris;
 
     private Event event;
     private Group group;
@@ -33,6 +34,7 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
         super(application);
         mGroups = new MutableLiveData<>(new ArrayList<>());
         mUris = new MutableLiveData<>(new ArrayList<>());
+        mNewUris = new MutableLiveData<>(new ArrayList<>());
         DataBaseAdapter.subscribeGroupObserver(this);
     }
 
@@ -119,9 +121,26 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
     @Override
     public void updateUris(ArrayList<Uri> uris) {
         this.mUris.setValue(uris);
+        this.mNewUris.setValue(uris);
     }
 
     public MutableLiveData<ArrayList<Uri>> getUris() {
         return mUris;
+    }
+
+    public void addNewUri(Uri newUri) {
+        ArrayList<Uri> newUris = mNewUris.getValue();
+        newUris.add(newUri);
+        this.mNewUris.setValue(newUris);
+    }
+
+    public void removeNewUri(Uri newUri) {
+        ArrayList<Uri> newUris = mNewUris.getValue();
+        newUris.remove(newUri);
+        this.mNewUris.setValue(newUris);
+    }
+
+    public ArrayList<Uri> getNewUris() {
+        return mNewUris.getValue();
     }
 }
