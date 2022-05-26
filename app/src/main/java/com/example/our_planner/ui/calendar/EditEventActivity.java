@@ -51,7 +51,8 @@ public class EditEventActivity extends AppCompatActivity {
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
     private Spinner selectGroup;
-    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, commentEventBtn, addFilesBtn;
+    private Button selectDateBtn, selectStartTimeBtn, selectEndTimeBtn, commentEventBtn,
+            addFilesBtn, deleteEventBtn;
 
     private Group group;
     private ArrayList<Group> groups;
@@ -221,6 +222,7 @@ public class EditEventActivity extends AppCompatActivity {
         selectEndTimeBtn = findViewById(R.id.selectEndTimeBtn);
         commentEventBtn = findViewById(R.id.commentEventBtn);
         addFilesBtn = findViewById(R.id.addFilesBtn);
+        deleteEventBtn = findViewById(R.id.deleteEventBtn);
 
         fileList = findViewById(R.id.fileList);
     }
@@ -231,6 +233,7 @@ public class EditEventActivity extends AppCompatActivity {
         selectEndTimeBtn.setOnClickListener(this::openEndTimePicker);
         commentEventBtn.setOnClickListener(this::commentEventAction);
         addFilesBtn.setOnClickListener(this::addFilesAction);
+        deleteEventBtn.setOnClickListener(this::deleteEventAction);
     }
 
     private void addFilesAction(View view) {
@@ -279,7 +282,6 @@ public class EditEventActivity extends AppCompatActivity {
     private void saveChangesAction() {
         String eventName = eventNameET.getText().toString();
         String location = eventLocationET.getText().toString();
-        // TODO Implement IDs in events
         LocalTime startTime = viewModel.getStartTime();
         LocalTime endTime = viewModel.getEndTime();
         LocalDate date = viewModel.getDate();
@@ -288,6 +290,11 @@ public class EditEventActivity extends AppCompatActivity {
 
         viewModel.editEvent(viewModel.getId(), eventName, location,
                 date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
+    }
+
+    private void deleteEventAction(View view) {
+        viewModel.deleteEvent();
+        finish();
     }
 
     @Override
@@ -374,6 +381,6 @@ public class EditEventActivity extends AppCompatActivity {
         selectEndTimeBtn.setText(r.getString(R.string.select_end_time));
         commentEventBtn.setText(r.getString(R.string.comment_event));
         addFilesBtn.setText(r.getString(R.string.add_files));
-
+        deleteEventBtn.setText(r.getString(R.string.delete_event));
     }
 }

@@ -166,4 +166,5 @@
     <string name="event_name">Event Name</string>
     <string name="language">Language:</string>
     <string name="select_group">Group</string>
+    <string name="delete_event">Delete Event</string>
 </resources>

@@ -107,6 +107,10 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
         DataBaseAdapter.editEvent(eventId, name, location, date, startTime, endTime, groupId);
     }
 
+    public void deleteEvent() {
+        DataBaseAdapter.deleteEvent(event.getId());
+    }
+
     @Override
     public void updateGroups(ArrayList<Group> groups) {
         this.mGroups.setValue(groups);
