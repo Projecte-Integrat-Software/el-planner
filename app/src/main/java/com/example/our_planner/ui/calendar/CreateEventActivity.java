@@ -60,11 +60,16 @@ public class CreateEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_event);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewModel = new ViewModelProvider(this).get(CreateEventActivityViewModel.class);
         date = CalendarUtils.selectedDate;
         startTime = LocalTime.now();
         startTime = startTime.minusSeconds(startTime.getSecond());
         endTime = startTime.plusHours(1);
+
+        viewModel = new ViewModelProvider(this).get(CreateEventActivityViewModel.class);
+        viewModel.setDate(CalendarUtils.selectedDate);
+        LocalTime startTime = LocalTime.now();
+        viewModel.setStartTime(startTime.minusSeconds(startTime.getSecond()));
+        viewModel.setEndTime(startTime.plusHours(1));
 
         initAlarmDialog();
         initWidgets();
@@ -156,8 +161,8 @@ public class CreateEventActivity extends AppCompatActivity {
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
             month = month + 1;
-            date = LocalDate.of(year, month, day);
-            dateTV.setText(CalendarUtils.formattedDate(date));
+            viewModel.setDate(LocalDate.of(year, month, day));
+            dateTV.setText(CalendarUtils.formattedDate(viewModel.getDate()));
         };
 
         int year = date.getYear();
@@ -171,8 +176,8 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void initStartTimePicker() {
         TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, selectedHour, selectedMinute) -> {
-            startTime = LocalTime.of(selectedHour, selectedMinute);
-            startTimeTV.setText(CalendarUtils.formattedTime(startTime));
+            viewModel.setStartTime(LocalTime.of(selectedHour, selectedMinute));
+            startTimeTV.setText(CalendarUtils.formattedTime(viewModel.getStartTime()));
         };
 
         int hour = startTime.getHour();
@@ -185,8 +190,8 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void initEndTimePicker() {
         TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, selectedHour, selectedMinute) -> {
-            endTime = LocalTime.of(selectedHour, selectedMinute);
-            endTimeTV.setText(CalendarUtils.formattedTime(endTime));
+            viewModel.setEndTime(LocalTime.of(selectedHour, selectedMinute));
+            endTimeTV.setText(CalendarUtils.formattedTime(viewModel.getEndTime()));
         };
 
         int hour = endTime.getHour();
@@ -227,13 +232,13 @@ public class CreateEventActivity extends AppCompatActivity {
             // TODO Fix spinner and get group from there
             // Delete line above and uncomment line below when spinner fixed
             //group = (Group) selectGroup.getSelectedItem();
-            LocalTime time1 = startTime;
-            LocalTime time2 = endTime;
-            LocalDate date = CalendarUtils.selectedDate;
+            LocalTime startTime = viewModel.getStartTime();
+            LocalTime endTime = viewModel.getEndTime();
+            LocalDate date = viewModel.getDate();
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            viewModel.createEvent(eventName, location, false, date.format(formatter), time1.toString(), time2.toString(), group.getId());
+            viewModel.createEvent(eventName, location, false, date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
 
             finish();
         }
