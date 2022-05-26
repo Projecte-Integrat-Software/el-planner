@@ -544,11 +544,10 @@ public abstract class DataBaseAdapter {
         void updateUris(ArrayList<Uri> uris);
     }
 
-    private static Map<String, Object> mapEventDocument(String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
+    private static Map<String, Object> mapEventDocument(String name, String location, String date, String startTime, String endTime, String groupId) {
         Map<String, Object> g = new HashMap<>();
         g.put("name", name);
         g.put("location", location);
-        g.put("all day", allDay);
         g.put("date", date);
         g.put("start time", startTime);
         g.put("end time", endTime);
@@ -556,8 +555,8 @@ public abstract class DataBaseAdapter {
         return g;
     }
 
-    public static void createEvent(String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
-        db.collection("eventProv").add(mapEventDocument(name, location, allDay, date, startTime, endTime, groupId))
+    public static void createEvent(String name, String location, String date, String startTime, String endTime, String groupId) {
+        db.collection("eventProv").add(mapEventDocument(name, location, date, startTime, endTime, groupId))
                 .addOnSuccessListener(documentReference -> {
                     loadEvents();
                 });
@@ -573,9 +572,9 @@ public abstract class DataBaseAdapter {
         void updateEvents(ArrayList<Event> events);
     }
 
-    public static void editEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime, String groupId) {
+    public static void editEvent(String eventId, String name, String location, String date, String startTime, String endTime, String groupId) {
         deleteEvent(eventId);
-        createEvent(name, location, allDay, date, startTime, endTime, groupId);
+        createEvent(name, location, date, startTime, endTime, groupId);
         loadEvents();
     }
 

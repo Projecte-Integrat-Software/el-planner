@@ -155,7 +155,6 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
-            month = month + 1;
             date = LocalDate.of(year, month, day);
             dateTV.setText(CalendarUtils.formattedDate(date));
         };
@@ -224,16 +223,14 @@ public class CreateEventActivity extends AppCompatActivity {
             Toast.makeText(this, r.getString(R.string.title_empty), Toast.LENGTH_SHORT).show();
         } else {
             String location = eventLocationET.getText().toString();
-            // TODO Fix spinner and get group from there
             // Delete line above and uncomment line below when spinner fixed
             //group = (Group) selectGroup.getSelectedItem();
             LocalTime time1 = startTime;
             LocalTime time2 = endTime;
-            LocalDate date = CalendarUtils.selectedDate;
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            viewModel.createEvent(eventName, location, false, date.format(formatter), time1.toString(), time2.toString(), group.getId());
+            viewModel.createEvent(eventName, location, date.format(formatter), time1.toString(), time2.toString(), group.getId());
 
             finish();
         }
@@ -273,5 +270,7 @@ public class CreateEventActivity extends AppCompatActivity {
         selectStartTimeBtn.setText(r.getString(R.string.select_start_time));
         selectEndTimeBtn.setText(r.getString(R.string.select_end_time));
         createBtn.setText(r.getString(R.string.create));
+        ((TextView) findViewById(R.id.labelSelectGroup)).setText(r.getString(R.string.select_group));
+
     }
 }
