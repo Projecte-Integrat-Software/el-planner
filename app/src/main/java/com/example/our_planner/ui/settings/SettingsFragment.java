@@ -169,8 +169,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         changeProfilePictureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pw.showAtLocation(view.findViewById(R.id.changeProfilePictureBtn), Gravity.CENTER, 0, 0);
                 pw.setBackgroundDrawable(getContext().getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.rounded_corners : R.drawable.rounded_corners_dark));
+                pw.showAtLocation(view.findViewById(R.id.changeProfilePictureBtn), Gravity.CENTER, 0, 0);
                 ((TextView) pw.getContentView().findViewById(R.id.txtProfilePicture)).setText(r.getString(R.string.change_profile_picture));
                 ((TextView) pw.getContentView().findViewById(R.id.txtPictureSource)).setText(r.getString(R.string.select_the_picture_source));
 
