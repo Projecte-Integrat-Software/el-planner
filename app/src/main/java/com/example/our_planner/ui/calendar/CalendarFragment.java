@@ -60,21 +60,16 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
         groups.add(new Group("", "PAE", "Labs", m, m, m));
 */
         calendarGroups = view.findViewById(R.id.btnCalendarGroups);
-        calendarGroups.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_calendar_groups, null, false), 600, 800, true);
-                //pw.showAtLocation(button, Gravity.CENTER, 0, 0);
-                pw.showAsDropDown(calendarGroups, 0, 0);
+        calendarGroups.setOnClickListener(view1 -> {
+            LayoutInflater inflater1 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            PopupWindow pw = new PopupWindow(inflater1.inflate(R.layout.popup_calendar_groups, null, false), 600, 800, true);
+            //pw.showAtLocation(button, Gravity.CENTER, 0, 0);
+            pw.showAsDropDown(calendarGroups, 0, 0);
 
-                recyclerCalendarGroups = pw.getContentView().findViewById(R.id.recyclerViewCalendarGroups);
-                recyclerCalendarGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            recyclerCalendarGroups = pw.getContentView().findViewById(R.id.recyclerViewCalendarGroups);
+            recyclerCalendarGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-                recyclerCalendarGroups.setAdapter(adapterGroups.get());
-            }
-
-
+            recyclerCalendarGroups.setAdapter(adapterGroups.get());
         });
 
         Observer<ArrayList<Group>> observerGroups = i -> {
@@ -104,17 +99,17 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String mode = spinner.getSelectedItem().toString();
+                int index = spinner.getSelectedItemPosition();
                 Fragment childFragment;
                 FragmentTransaction transaction;
-                switch (mode) {
-                    case "Week":
+                switch (index) {
+                    case 0:
                         childFragment = new WeekCalendarFragment();
                         transaction = getChildFragmentManager().
                                 beginTransaction();
                         transaction.replace(R.id.child_fragment_container, childFragment).commit();
                         break;
-                    case "Month":
+                    case 1:
                         childFragment = new MonthCalendarFragment();
                         transaction = getChildFragmentManager().
                                 beginTransaction();
