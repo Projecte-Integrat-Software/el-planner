@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.model.Group;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -59,8 +61,8 @@ public class CreateEventActivityViewModel extends AndroidViewModel implements Da
         this.endTime = endTime;
     }
 
-    public void createEvent(String name, String location, String date, String startTime, String endTime, String groupId) {
-        DataBaseAdapter.createEvent(name, location, date, startTime, endTime, groupId);
+    public Task<DocumentReference> createEvent(String name, String location, String date, String startTime, String endTime, String groupId) {
+        return DataBaseAdapter.createEvent(name, location, date, startTime, endTime, groupId);
     }
 
     @Override

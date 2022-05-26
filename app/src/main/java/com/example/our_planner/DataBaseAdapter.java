@@ -518,12 +518,11 @@ public abstract class DataBaseAdapter {
         void updateUris(ArrayList<Uri> uris);
     }
 
-    public static void createEvent(String name, String location, String date, String startTime, String endTime, String groupId) {
-        db.collection("events").add(mapEventDocument(name, location, date, startTime, endTime, groupId))
+    public static Task<DocumentReference> createEvent(String name, String location, String date, String startTime, String endTime, String groupId) {
+        return db.collection("events").add(mapEventDocument(name, location, date, startTime, endTime, groupId))
                 .addOnSuccessListener(documentReference -> {
                     loadEvents();
                 });
-
     }
 
     public static void subscribeEventsObserver(EventInterface i) {

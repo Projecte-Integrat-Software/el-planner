@@ -30,6 +30,9 @@ import com.example.our_planner.DataBaseAdapter;
 import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
 import com.example.our_planner.model.Group;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -289,12 +292,15 @@ public class CreateEventActivity extends AppCompatActivity {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            viewModel.createEvent(eventName, location, date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
-
-            for (Uri uri : viewModel.getUris().getValue()) {
-                DataBaseAdapter.uploadFile(uri, getApplicationContext(), "hello");
-            }
-
+            Task<DocumentReference> task = viewModel.createEvent(eventName, location, date.format(formatter), startTime.toString(), endTime.toString(), group.getId());
+            task.addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    for (Uri uri : viewModel.getUris().getValue()) {
+                        DataBaseAdapter.uploadFile(uri, getApplicationContext(), documentReference.getId());
+                    }
+                }
+            });
 
             finish();
         }
