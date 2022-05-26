@@ -149,9 +149,9 @@ public class EditGroupActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(admin ? r.getString(R.string.help_edit_group_admin) : r.getString(R.string.help_edit_group));
-        builder.setNeutralButton(R.string.close, (dialogInterface, i) -> dialogInterface.cancel());
+        builder.setNeutralButton(r.getString(R.string.close), (dialogInterface, i) -> dialogInterface.cancel());
         alert = builder.create();
-        alert.setTitle(R.string.help);
+        alert.setTitle(r.getString(R.string.help));
 
         if (admin) {
             btnParticipant.setOnClickListener(view -> {
