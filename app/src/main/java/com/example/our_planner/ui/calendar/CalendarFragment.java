@@ -47,18 +47,9 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        //      AdapterCalendarGroups adapterGroups = new AdapterCalendarGroups(new ArrayList<Group>());
-        //      recyclerCalendarGroups.setAdapter(adapterGroups);
-
-
         groups = new ArrayList<>();
         AtomicReference<AdapterCalendarGroups> adapterGroups = new AtomicReference<>(new AdapterCalendarGroups(groups, this, CalendarViewModel.mSelections.getValue()));
 
-/*        HashMap m = new HashMap();
-        groups.add(new Group("", "PIS", "Theory", m, m, m));
-        groups.add(new Group("", "Geometry", "Problems", m, m, m));
-        groups.add(new Group("", "PAE", "Labs", m, m, m));
-*/
         calendarGroups = view.findViewById(R.id.btnCalendarGroups);
         calendarGroups.setOnClickListener(view1 -> {
             LayoutInflater inflater1 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -73,9 +64,6 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
         });
 
         Observer<ArrayList<Group>> observerGroups = i -> {
-            //        AdapterCalendarGroups newAdapter = new AdapterCalendarGroups(i);
-            //        recyclerCalendarGroups.swapAdapter(newAdapter, false);
-            //        newAdapter.notifyDataSetChanged();
             adapterGroups.set(new AdapterCalendarGroups(i, this, CalendarViewModel.mSelections.getValue()));
         };
         calendarViewModel.getGroups().observe(getActivity(), observerGroups);
@@ -101,18 +89,29 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int index = spinner.getSelectedItemPosition();
                 Fragment childFragment;
-                FragmentTransaction transaction;
+                final FragmentTransaction transaction;
+                Bundle arguments = new Bundle();
                 switch (index) {
                     case 0:
+                        arguments.putInt("day", CalendarUtils.selectedDate.getDayOfMonth());
+                        arguments.putInt("month", CalendarUtils.selectedDate.getMonthValue());
+                        arguments.putInt("year", CalendarUtils.selectedDate.getYear());
+
                         childFragment = new WeekCalendarFragment();
-                        transaction = getChildFragmentManager().
-                                beginTransaction();
+                        childFragment.setArguments(arguments);
+
+                        transaction = getChildFragmentManager().beginTransaction();
                         transaction.replace(R.id.child_fragment_container, childFragment).commit();
                         break;
                     case 1:
+                        arguments.putInt("day", CalendarUtils.selectedDate.getDayOfMonth());
+                        arguments.putInt("month", CalendarUtils.selectedDate.getMonthValue());
+                        arguments.putInt("year", CalendarUtils.selectedDate.getYear());
+
                         childFragment = new MonthCalendarFragment();
-                        transaction = getChildFragmentManager().
-                                beginTransaction();
+                        childFragment.setArguments(arguments);
+
+                        transaction = getChildFragmentManager().beginTransaction();
                         transaction.replace(R.id.child_fragment_container, childFragment).commit();
                         break;
                 }
