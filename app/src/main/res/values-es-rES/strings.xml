@@ -24,6 +24,7 @@
     <string name="help_invitations">En esta pantalla puedes ver tus invitaciones a grupos. Puedes aceptarlas (te unirás al grupo) o rechazarlas.</string>
     <string name="help_settings">Puedes cambiar tu foto de perfil. Puede hacerse directamente desde la cámara del dispositivo o, si no, seleccionando una de la galería.</string>
 
+    <string name="message_invitation">te ha invitado a</string>
     <string name="comments">Comentarios</string>
     <string name="show_calendar">Show Calendar</string>
     <string name="show_groups">Show Groups</string>
@@ -128,7 +129,7 @@
     <string name="notifications_alert">Notifications alert:</string>
     <string name="theme">Tema:</string>
     <string name="message">Mensaje</string>
-    <string name="are_you_sure_you_want_to_log_out">Estás seguro/a que quieres cerrar sesión?</string>
+    <string name="are_you_sure_you_want_to_log_out">Seguro/a que quieres cerrar sesión?</string>
     <string name="yes">Sí</string>
 
     <!--String resources for calendar month view-->

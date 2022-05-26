@@ -23,6 +23,7 @@
     <string name="help_invitations">In this screen you can see your invitations to groups. You can accept them (you will join to the group) or refuse them.</string>
     <string name="help_settings">You can change your profile photo. It can be done directly with the camera of the device or, if not, choosing one from your gallery.</string>
 
+    <string name="message_invitation">invited you to</string>
     <string name="comments">Comments</string>
     <string name="show_calendar">Show Calendar</string>
     <string name="show_groups">Show Groups</string>

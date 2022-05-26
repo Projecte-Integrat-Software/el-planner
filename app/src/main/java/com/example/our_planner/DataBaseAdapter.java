@@ -161,7 +161,7 @@ public abstract class DataBaseAdapter {
                     //Send notification if you have just been invited
                     if (!(Boolean)g.get("notified")) {
                         g.replace("notified", true);
-                        Notifier.sendNotification(c, g.get("author") + " invited you to " + g.get("title") + "!");
+                        Notifier.sendNotification(c, g.get("author") + " " + LocaleLanguage.getLocale(c).getResources().getString(R.string.message_invitation) + " " + g.get("title") + "!");
                         document.getReference().set(g);
                     }
                 }
