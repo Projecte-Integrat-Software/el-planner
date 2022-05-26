@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CalendarViewModel extends ViewModel implements DataBaseAdapter.GroupInterface, DataBaseAdapter.EventInterface {
+public class CalendarViewModel extends ViewModel implements DataBaseAdapter.GroupInterface, DataBaseAdapter.EventInterface, DataBaseAdapter.AdminGroupInterface {
 
     private final MutableLiveData<ArrayList<Group>> mGroups;
+    private final MutableLiveData<ArrayList<Group>> mAdminGroups;
     private final MutableLiveData<ArrayList<Event>> mEvents;
 
     public static final MutableLiveData<Map<String, Boolean>> mSelections = new MutableLiveData<>(new HashMap<>());
@@ -22,13 +23,19 @@ public class CalendarViewModel extends ViewModel implements DataBaseAdapter.Grou
     public CalendarViewModel() {
         super();
         mGroups = new MutableLiveData<>(new ArrayList<>());
+        mAdminGroups = new MutableLiveData<>(new ArrayList<>());
         mEvents = new MutableLiveData<>(new ArrayList<>());
         DataBaseAdapter.subscribeEventsObserver(this);
         DataBaseAdapter.subscribeGroupObserver(this);
+        DataBaseAdapter.subscribeAdminGroupObserver(this);
     }
 
     public MutableLiveData<ArrayList<Group>> getGroups() {
         return mGroups;
+    }
+
+    public MutableLiveData<ArrayList<Group>> getAdminGroups() {
+        return mAdminGroups;
     }
 
     public MutableLiveData<Map<String, Boolean>> getSelections() {
@@ -66,5 +73,10 @@ public class CalendarViewModel extends ViewModel implements DataBaseAdapter.Grou
 
     public void loadEvents() {
         DataBaseAdapter.loadEvents();
+    }
+
+    @Override
+    public void updateAdminGroups(ArrayList<Group> groups) {
+        this.mAdminGroups.setValue(groups);
     }
 }

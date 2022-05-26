@@ -60,6 +60,7 @@ public abstract class DataBaseAdapter {
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private static byte[] byteArray = new byte[]{};
     private static final List<GroupInterface> groupInterfaces = new ArrayList<>();
+    private static final List<AdminGroupInterface> adminGroupInterfaces = new ArrayList<>();
     private static EventInterface eventInterface;
     private static InvitationInterface invitationInterface;
     private static UriInterface uriInterface;
@@ -105,6 +106,12 @@ public abstract class DataBaseAdapter {
         loadGroups();
     }
 
+
+    public static void subscribeAdminGroupObserver(AdminGroupInterface i) {
+        adminGroupInterfaces.add(i);
+        loadAdminGroups();
+    }
+
     public static void loadGroups() {
         db.collection("groups").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -125,6 +132,34 @@ public abstract class DataBaseAdapter {
                 }
                 for (GroupInterface i : groupInterfaces) {
                     i.updateGroups(groups);
+                }
+            }
+        });
+    }
+
+    public static void loadAdminGroups() {
+        db.collection("groups").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Group> groups = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
+                    if (participants.containsKey(getEmail())) {
+                        Map<String, String> colours = (HashMap<String, String>) g.get("colours");
+                        Map<String, Integer> coloursGroup = new HashMap<>();
+                        Map<String, User> participantsGroup = new HashMap<>();
+                        Map<String, Boolean> admins = (Map<String, Boolean>) g.get("admins");
+                        if (admins.get(getEmail())) {
+                            for (String k : colours.keySet()) {
+                                coloursGroup.put(k, Integer.parseInt(colours.get(k)));
+                                participantsGroup.put(k, new User(participants.get(k)));
+                            }
+                            groups.add(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, admins));
+                        }
+                    }
+                }
+                for (AdminGroupInterface i : adminGroupInterfaces) {
+                    i.updateAdminGroups(groups);
                 }
             }
         });
@@ -225,6 +260,7 @@ public abstract class DataBaseAdapter {
         db.collection("groups").add(mapGroupDocument(title, details, colours, participants, admins, events))
                 .addOnSuccessListener(documentReference -> {
                     loadGroups();
+                    loadAdminGroups();
                     sendInvitations(invitationEmails, documentReference.getId(), title);
                 }).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
@@ -267,6 +303,7 @@ public abstract class DataBaseAdapter {
         db.collection("groups").document(id).set(mapGroupDocument(title, details, colours, participants, admins, events))
                 .addOnSuccessListener(documentReference -> {
                     loadGroups();
+                    loadAdminGroups();
                     sendInvitations(invitationEmails, id, title);
                     modifyInvitations(id, title);
                 }).addOnFailureListener(e -> i.setToast(e.getMessage()));
@@ -289,6 +326,7 @@ public abstract class DataBaseAdapter {
         if (p.size() == 1) {
             db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> {
                 loadGroups();
+                loadAdminGroups();
                 deleteGroupInvitations(g.getId());
                 deleteEvents(g.getId());
             });
@@ -301,6 +339,7 @@ public abstract class DataBaseAdapter {
             ArrayList<Event> e = g.getEvents();
             Map<String, Object> group = mapGroupDocument(g.getTitle(), g.getDetails(), c, p, a, e);
             db.collection("groups").document(g.getId()).set(group).addOnSuccessListener(documentReference -> loadGroups());
+            loadAdminGroups();
         }
     }
 
@@ -477,6 +516,7 @@ public abstract class DataBaseAdapter {
         return storage.getReference().child(author).getBytes(1024 * 1024);
     }
 
+
     public interface DBInterface {
         void setToast(String s);
     }
@@ -533,6 +573,11 @@ public abstract class DataBaseAdapter {
     public interface EventInterface {
         void updateEvents(ArrayList<Event> events);
     }
+
+    public interface AdminGroupInterface {
+        void updateAdminGroups(ArrayList<Group> groups);
+    }
+
 
     public static void editEvent(String eventId, String name, String location, String date, String startTime, String endTime, String groupId) {
 
@@ -603,6 +648,7 @@ public abstract class DataBaseAdapter {
 
 
     }
+
 
  /*   public static Group getGroup(String groupName) {
         AtomicReference<Group> group = new AtomicReference<>(null);

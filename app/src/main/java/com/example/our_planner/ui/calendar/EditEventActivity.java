@@ -117,7 +117,7 @@ public class EditEventActivity extends AppCompatActivity {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             selectGroup.setAdapter(adapter);
         };
-        viewModel.getGroups().observe(this, observerGroups);
+        viewModel.getAdminGroups().observe(this, observerGroups);
 
         selectGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

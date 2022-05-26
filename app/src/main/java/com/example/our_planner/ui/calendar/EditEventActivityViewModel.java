@@ -15,9 +15,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class EditEventActivityViewModel extends AndroidViewModel implements DataBaseAdapter.GroupInterface, DataBaseAdapter.UriInterface {
+public class EditEventActivityViewModel extends AndroidViewModel implements DataBaseAdapter.AdminGroupInterface, DataBaseAdapter.UriInterface {
 
-    private final MutableLiveData<ArrayList<Group>> mGroups;
+    private final MutableLiveData<ArrayList<Group>> mAdminGroups;
     private final MutableLiveData<ArrayList<Uri>> mUris;
     private final MutableLiveData<ArrayList<Uri>> mNewUris;
 
@@ -32,18 +32,18 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
 
     public EditEventActivityViewModel(@NonNull Application application) {
         super(application);
-        mGroups = new MutableLiveData<>(new ArrayList<>());
+        mAdminGroups = new MutableLiveData<>(new ArrayList<>());
         mUris = new MutableLiveData<>(new ArrayList<>());
         mNewUris = new MutableLiveData<>(new ArrayList<>());
-        DataBaseAdapter.subscribeGroupObserver(this);
+        DataBaseAdapter.subscribeAdminGroupObserver(this);
     }
 
     public void subscribeUriObserver() {
         DataBaseAdapter.subscribeUriObserverEdit(this, event.getId());
     }
 
-    public MutableLiveData<ArrayList<Group>> getGroups() {
-        return mGroups;
+    public MutableLiveData<ArrayList<Group>> getAdminGroups() {
+        return mAdminGroups;
     }
 
     public LocalDate getDate() {
@@ -114,11 +114,6 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
     }
 
     @Override
-    public void updateGroups(ArrayList<Group> groups) {
-        this.mGroups.setValue(groups);
-    }
-
-    @Override
     public void updateUris(ArrayList<Uri> uris) {
         this.mUris.setValue(new ArrayList<>(uris));
     }
@@ -146,5 +141,10 @@ public class EditEventActivityViewModel extends AndroidViewModel implements Data
 
     public void setNewUris(ArrayList<Uri> uris) {
         mNewUris.setValue(new ArrayList<>(uris));
+    }
+
+    @Override
+    public void updateAdminGroups(ArrayList<Group> groups) {
+        this.mAdminGroups.setValue(groups);
     }
 }

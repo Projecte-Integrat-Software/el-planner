@@ -17,9 +17,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateEventActivityViewModel extends AndroidViewModel implements DataBaseAdapter.GroupInterface, DataBaseAdapter.UriInterface {
-    private final MutableLiveData<ArrayList<Group>> mGroups;
+public class CreateEventActivityViewModel extends AndroidViewModel implements DataBaseAdapter.AdminGroupInterface, DataBaseAdapter.UriInterface {
     private final MutableLiveData<ArrayList<Uri>> mUris;
+    private final MutableLiveData<ArrayList<Group>> mAdminGroups;
 
     private LocalDate date;
     private LocalTime startTime;
@@ -27,14 +27,14 @@ public class CreateEventActivityViewModel extends AndroidViewModel implements Da
 
     public CreateEventActivityViewModel(@NonNull Application application) {
         super(application);
-        mGroups = new MutableLiveData<>(new ArrayList<>());
         mUris = new MutableLiveData<>(new ArrayList<>());
-        DataBaseAdapter.subscribeGroupObserver(this);
+        mAdminGroups = new MutableLiveData<>(new ArrayList<Group>());
+        DataBaseAdapter.subscribeAdminGroupObserver(this);
 
     }
 
     public MutableLiveData<ArrayList<Group>> getGroups() {
-        return mGroups;
+        return mAdminGroups;
     }
 
     public LocalDate getDate() {
@@ -65,13 +65,14 @@ public class CreateEventActivityViewModel extends AndroidViewModel implements Da
         return DataBaseAdapter.createEvent(name, location, date, startTime, endTime, groupId);
     }
 
+
     @Override
-    public void updateGroups(ArrayList<Group> groups) {
-        this.mGroups.setValue(groups);
+    public void updateAdminGroups(ArrayList<Group> groups) {
+        this.mAdminGroups.setValue(groups);
     }
 
     public List<Group> getGroupsList() {
-        return mGroups.getValue();
+        return mAdminGroups.getValue();
     }
 
     @Override

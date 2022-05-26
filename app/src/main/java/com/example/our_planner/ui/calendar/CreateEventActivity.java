@@ -104,8 +104,8 @@ public class CreateEventActivity extends AppCompatActivity {
 
 
             while (it.hasNext()) {
-                String temp = it.next().getTitle();
-                groups2.add(temp);
+                Group temp = (Group) it.next();
+                groups2.add(temp.getTitle());
             }
 
             groups = i;

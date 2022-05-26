@@ -161,7 +161,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     }
 
     public void newEventAction(View view) {
-        if (!calendarViewModel.getGroups().getValue().isEmpty()) {
+        if (!calendarViewModel.getAdminGroups().getValue().isEmpty()) {
             startActivity(new Intent(this.getActivity(), CreateEventActivity.class));
         } else {
             Resources r = LocaleLanguage.getLocale(getContext()).getResources();
