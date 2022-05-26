@@ -529,13 +529,11 @@ public abstract class DataBaseAdapter {
     }
 
     public static void editEvent(String eventId, String name, String location, String date, String startTime, String endTime, String groupId) {
-        deleteEvent(eventId);
-        createEvent(name, location, date, startTime, endTime, groupId);
-        loadEvents();
+
 
         db.collection("events").document(eventId).set(mapEventDocument(name, location, date, startTime, endTime, groupId))
                 .addOnSuccessListener(documentReference -> {
-                    loadGroups();
+                    loadEvents();
 
                 });
     }
