@@ -21,8 +21,8 @@
 
     <TextView
         android:id="@+id/textConfirmationExpelling"
-        android:layout_width="297dp"
-        android:layout_height="65dp"
+        android:layout_width="295dp"
+        android:layout_height="98dp"
         android:layout_marginTop="10dp"
         android:lines="5"
         android:text="@string/confirmation_expelling"

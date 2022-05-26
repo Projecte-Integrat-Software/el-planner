@@ -58,7 +58,7 @@ public class AdapterParticipants extends RecyclerView.Adapter<AdapterParticipant
             holder.adminCheckBox.setOnClickListener(view -> admins.replace(e, holder.adminCheckBox.isChecked()));
             holder.expelParticipantBtn.setOnClickListener(view -> {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_expel_user, null, false), 900, 500, true);
+                PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_expel_user, null, false), 900, 600, true);
                 pw.setBackgroundDrawable(context.getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.rounded_corners : R.drawable.rounded_corners_dark));
                 pw.showAtLocation(view, Gravity.CENTER, 0, 0);
 
