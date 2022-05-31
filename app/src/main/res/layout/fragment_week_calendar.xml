@@ -24,6 +24,7 @@
             android:text="@string/back"
             android:textColor="@color/white"
             android:textSize="20sp"
+            style="?attr/materialButtonOutlinedStyle"
             android:textStyle="bold" />
 
         <TextView
@@ -45,6 +46,7 @@
             android:text="@string/forward"
             android:textColor="@color/white"
             android:textSize="20sp"
+            style="?attr/materialButtonOutlinedStyle"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -143,6 +145,7 @@
         android:textColor="@color/white"
         android:layout_gravity="center"
         android:textSize="20sp"
+        style="?attr/materialButtonOutlinedStyle"
         android:textStyle="bold" />
 
 </LinearLayout>

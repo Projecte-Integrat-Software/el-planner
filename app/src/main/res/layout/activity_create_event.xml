@@ -71,6 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/select_date" />
         </LinearLayout>
 
@@ -95,6 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/select_start_time" />
         </LinearLayout>
 
@@ -119,6 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/select_end_time" />
         </LinearLayout>
 
@@ -199,7 +202,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/add_files" />
+
 
         </LinearLayout>
 
@@ -217,6 +222,8 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        style="?attr/materialButtonOutlinedStyle"
+
         app:layout_constraintVertical_bias="1.0" />
 
 
