@@ -107,16 +107,14 @@ public class EditEventActivity extends AppCompatActivity {
             Iterator<Group> it = i.iterator();
             List<String> groups2 = new ArrayList<>();
 
-
             while (it.hasNext()) {
                 String temp = it.next().getTitle();
                 groups2.add(temp);
             }
 
-
             groups = i;
 
-            position = groups.indexOf(group);
+            position = groups.indexOf(viewModel.getGroup());
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups2);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
