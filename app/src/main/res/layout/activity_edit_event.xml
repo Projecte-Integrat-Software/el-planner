@@ -69,10 +69,10 @@
 
             <Button
                 android:id="@+id/selectDateBtn"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/select_date" />
         </LinearLayout>
 
@@ -94,10 +94,10 @@
 
             <Button
                 android:id="@+id/selectStartTimeBtn"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/select_start_time" />
         </LinearLayout>
 
@@ -119,10 +119,10 @@
 
             <Button
                 android:id="@+id/selectEndTimeBtn"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/select_end_time" />
         </LinearLayout>
 
@@ -192,50 +192,56 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fileList"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="110dp"
                 android:layout_weight="5">
 
             </androidx.recyclerview.widget.RecyclerView>
 
             <Button
                 android:id="@+id/addFilesBtn"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/add_files" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/commentEventBtn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="@string/comment_event" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/deleteEventBtn"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_event"
+                tools:layout_editor_absoluteX="126dp"
+                tools:layout_editor_absoluteY="589dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/commentEventBtn"
-        android:layout_width="194dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="64dp"
-        android:text="@string/comment_event"
-        app:layout_constraintBottom_toBottomOf="@+id/deleteEventBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        style="?attr/materialButtonOutlinedStyle"
-        app:layout_constraintVertical_bias="1"
-
-        />
-
-    <Button
-        android:id="@+id/deleteEventBtn"
-        android:layout_width="194dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="64dp"
-        android:text="@string/delete_event"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commentEventBtn"
-        app:layout_constraintVertical_bias="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
