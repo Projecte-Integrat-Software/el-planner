@@ -101,7 +101,7 @@
         android:id="@+id/btnPassword"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="194dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/forgot_password"
         app:layout_constraintBottom_toBottomOf="parent"
