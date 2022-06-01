@@ -59,6 +59,8 @@ public class EditEventActivity extends AppCompatActivity {
     private boolean admin;
     private RecyclerView fileList;
 
+    private int position;
+
     private androidx.appcompat.app.AlertDialog alert;
     private ArrayList<Uri> uris;
 
@@ -111,11 +113,15 @@ public class EditEventActivity extends AppCompatActivity {
                 groups2.add(temp);
             }
 
+
             groups = i;
+
+            position = groups.indexOf(group);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups2);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             selectGroup.setAdapter(adapter);
+            selectGroup.setSelection(position);
         };
         viewModel.getAdminGroups().observe(this, observerGroups);
 
