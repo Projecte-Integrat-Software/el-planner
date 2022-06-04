@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Event implements Serializable {
+public class Event implements Serializable, Comparable {
 
     public static ArrayList<Event> eventsList = new ArrayList<>();
 
@@ -89,5 +89,15 @@ public class Event implements Serializable {
 
     public String getGroupId() {
         return groupId;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Event prov = (Event) o;
+        if (this.getStartTime().isBefore(((Event) o).getStartTime())) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

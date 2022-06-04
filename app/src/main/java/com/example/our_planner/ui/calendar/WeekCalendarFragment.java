@@ -29,6 +29,7 @@ import com.example.our_planner.model.Group;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,6 +92,13 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
                         events.add(e);
                 }
             }
+
+            events.sort(new Comparator<Event>() {
+                @Override
+                public int compare(Event o1, Event o2) {
+                    return o1.compareTo(o2);
+                }
+            });
 
             EventAdapter adapter2 = new EventAdapter(getContext(), events, this, calendarViewModel.getGroups());
             recyclerViewEvents.setAdapter(adapter2);
@@ -179,6 +187,14 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
                     events.add(e);
             }
         }
+
+        events.sort(new Comparator<Event>() {
+            @Override
+            public int compare(Event o1, Event o2) {
+                return o1.compareTo(o2);
+            }
+        });
+
 
         EventAdapter adapter = new EventAdapter(getContext(), events, this, calendarViewModel.getGroups());
         recyclerViewEvents.setAdapter(adapter);
