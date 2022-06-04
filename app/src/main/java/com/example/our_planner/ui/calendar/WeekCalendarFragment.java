@@ -199,7 +199,8 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         EventAdapter adapter = new EventAdapter(getContext(), events, this, calendarViewModel.getGroups());
         recyclerViewEvents.setAdapter(adapter);
 
-        calendarViewModel.loadEvents();
+        // TODO diria no se necessari aquest loadEvents
+        // calendarViewModel.loadEvents();
     }
 
     @Override
