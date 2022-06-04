@@ -5,7 +5,6 @@ import static com.example.our_planner.ui.calendar.CalendarUtils.monthYearFromDat
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -24,7 +22,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
 import com.example.our_planner.ThemeSwitcher;
 import com.example.our_planner.model.Event;
@@ -45,7 +42,6 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
 
     private Button previousWeekBtn;
     private Button nextWeekBtn;
-    private Button newEventBtn;
 
     private CalendarViewModel calendarViewModel;
 
@@ -121,15 +117,12 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
 
         previousWeekBtn = view.findViewById(R.id.previousWeekBtn);
         nextWeekBtn = view.findViewById(R.id.nextWeekBtn);
-        newEventBtn = view.findViewById(R.id.newEventBtn);
-        newEventBtn.setText(LocaleLanguage.getLocale(getContext()).getResources().getString(R.string.newEvent));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initListeners() {
         previousWeekBtn.setOnClickListener(this::previousWeekAction);
         nextWeekBtn.setOnClickListener(this::nextWeekAction);
-        newEventBtn.setOnClickListener(this::newEventAction);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -160,15 +153,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         setWeekView();
     }
 
-    public void newEventAction(View view) {
-        if (!calendarViewModel.getAdminGroups().getValue().isEmpty()) {
-            startActivity(new Intent(this.getActivity(), CreateEventActivity.class));
-        } else {
-            Resources r = LocaleLanguage.getLocale(getContext()).getResources();
-            Toast.makeText(getContext(), r.getString(R.string.no_groups), Toast.LENGTH_SHORT).show();
-        }
 
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override

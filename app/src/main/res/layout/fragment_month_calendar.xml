@@ -23,6 +23,8 @@
             android:background="@null"
             android:text="@string/back"
             android:textColor="@color/white"
+            style="?attr/materialButtonOutlinedStyle"
+
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -44,6 +46,7 @@
             android:background="@null"
             android:text="@string/forward"
             android:textColor="@color/white"
+            style="?attr/materialButtonOutlinedStyle"
             android:textSize="20sp"
             android:textStyle="bold" />
 

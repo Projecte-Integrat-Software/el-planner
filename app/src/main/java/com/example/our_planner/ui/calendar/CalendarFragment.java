@@ -1,6 +1,7 @@
 package com.example.our_planner.ui.calendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -35,6 +38,7 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
     private ArrayList<Group> groups;
     private CalendarViewModel calendarViewModel;
     private RecyclerView recyclerCalendarGroups;
+    private Button newEventBtn;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
@@ -46,6 +50,8 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
         adapter.setDropDownViewResource(
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        newEventBtn = view.findViewById(R.id.newEventBtn);
 
         groups = new ArrayList<>();
         AtomicReference<AdapterCalendarGroups> adapterGroups = new AtomicReference<>(new AdapterCalendarGroups(groups, this, CalendarViewModel.mSelections.getValue()));
@@ -83,7 +89,19 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
         transaction.replace(R.id.child_fragment_container, childFragment).commit();
     }
 
+    public void newEventAction(View view) {
+        if (!calendarViewModel.getAdminGroups().getValue().isEmpty()) {
+            startActivity(new Intent(this.getActivity(), CreateEventActivity.class));
+        } else {
+            Resources r = LocaleLanguage.getLocale(getContext()).getResources();
+            Toast.makeText(getContext(), r.getString(R.string.no_groups), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     private void initListeners() {
+        newEventBtn.setOnClickListener(this::newEventAction);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

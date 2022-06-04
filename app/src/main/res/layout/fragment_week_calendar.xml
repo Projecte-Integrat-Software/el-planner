@@ -136,16 +136,5 @@
         android:layout_weight="1"
         android:layout_gravity="top"/>
 
-    <Button
-        android:id="@+id/newEventBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:text="@string/newEvent"
-        android:textColor="@color/white"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        style="?attr/materialButtonOutlinedStyle"
-        android:textStyle="bold" />
 
 </LinearLayout>
