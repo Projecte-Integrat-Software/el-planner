@@ -138,6 +138,9 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     {
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
         monthYearText.setTextColor(getResources().getColor(ThemeSwitcher.lightThemeSelected() ? R.color.black : R.color.white));
+        previousWeekBtn.setTextColor(getResources().getColor(ThemeSwitcher.lightThemeSelected() ? R.color.black : R.color.white));
+        nextWeekBtn.setTextColor(getResources().getColor(ThemeSwitcher.lightThemeSelected() ? R.color.black : R.color.white));
+
         ArrayList<LocalDate> days = daysInWeekArray(CalendarUtils.selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(days, this);

@@ -52,6 +52,7 @@ public class CalendarFragment extends Fragment implements AdapterCalendarGroups.
         spinner.setAdapter(adapter);
 
         newEventBtn = view.findViewById(R.id.newEventBtn);
+        newEventBtn.setText(r.getString(R.string.newEvent));
 
         groups = new ArrayList<>();
         AtomicReference<AdapterCalendarGroups> adapterGroups = new AtomicReference<>(new AdapterCalendarGroups(groups, this, CalendarViewModel.mSelections.getValue()));

@@ -83,6 +83,10 @@ public class MonthCalendarFragment extends Fragment implements CalendarAdapter.O
     {
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
         monthYearText.setTextColor(getResources().getColor(ThemeSwitcher.lightThemeSelected() ? R.color.black : R.color.white));
+        previousMonthBtn.setTextColor(getResources().getColor(ThemeSwitcher.lightThemeSelected() ? R.color.black : R.color.white));
+        nextMonthBtn.setTextColor(getResources().getColor(ThemeSwitcher.lightThemeSelected() ? R.color.black : R.color.white));
+
+
         ArrayList<LocalDate> daysInMonth = daysInMonthArray(CalendarUtils.selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);

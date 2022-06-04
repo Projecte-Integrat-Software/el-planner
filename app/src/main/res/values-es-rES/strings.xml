@@ -156,8 +156,8 @@
     <string name="camera">Cámara</string>
     <string name="gallery">Galería</string>
     <string name="select_date">Seleccionar Fecha</string>
-    <string name="select_start_time">Seleccionar Tiempo Inicial</string>
-    <string name="select_end_time">Seleccionar Tiempo Final</string>
+    <string name="select_start_time">Tiempo Inicial</string>
+    <string name="select_end_time">Tiempo Final</string>
     <string name="edit_event">Editar Evento</string>
     <string name="details_eventcell">Detalles</string>
     <string name="starting_time">Tiempo Inicial</string>

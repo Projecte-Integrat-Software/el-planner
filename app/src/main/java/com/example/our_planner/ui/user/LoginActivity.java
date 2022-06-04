@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private LoginActivityViewModel viewModel;
     private AlertDialog alert;
     private TextView txtWelcome, txtSignInRegister;
+    private ImageView imgLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +52,13 @@ public class LoginActivity extends AppCompatActivity {
         btnSign = findViewById(R.id.btnSign);
         btnPassword = findViewById(R.id.btnPassword);
         btnRegister = findViewById(R.id.btnRegister);
+        imgLogo = findViewById(R.id.imgLogo);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         changeLanguage();
     }
 

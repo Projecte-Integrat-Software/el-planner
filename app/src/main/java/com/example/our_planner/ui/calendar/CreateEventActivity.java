@@ -341,6 +341,7 @@ public class CreateEventActivity extends AppCompatActivity {
         selectEndTimeBtn.setText(r.getString(R.string.select_end_time));
         createBtn.setText(r.getString(R.string.create));
         ((TextView) findViewById(R.id.labelSelectGroup)).setText(r.getString(R.string.select_group));
+        addFilesBtn.setText(R.string.add_files);
 
     }
 }

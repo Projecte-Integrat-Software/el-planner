@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:text="@string/back"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="20sp"
             style="?attr/materialButtonOutlinedStyle"
             android:textStyle="bold" />
@@ -44,7 +44,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:text="@string/forward"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="20sp"
             style="?attr/materialButtonOutlinedStyle"
             android:textStyle="bold" />

@@ -45,10 +45,13 @@
         <entry key="..\:/Users/marti/.gradle/caches/transforms-3/4cbcb2a139875109bde94b7e730430f9/transformed/appcompat-1.4.1/res/layout/support_simple_spinner_dropdown_item.xml" value="0.1" />
         <entry key="..\:/Users/marti/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_event.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_create_group.xml" value="0.10371376811594203" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_edit_event.xml" value="0.22" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_edit_group.xml" value="0.1" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_login.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/activity_view_event.xml" value="0.1" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_calendar.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_calendar_groups.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_invitations.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_month_calendar.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/marti/Documents/AndroidStudioProjects/our-planner/app/src/main/res/layout/fragment_week_calendar.xml" value="0.17552083333333332" />
