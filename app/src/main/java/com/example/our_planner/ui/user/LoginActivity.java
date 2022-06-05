@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        imgLogo.setBackground(getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.logo_ourplanner : R.drawable.logo_ourplanner_white_version));
+        imgLogo.setImageDrawable(getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.logo_ourplanner : R.drawable.logo_ourplanner_white_version));
         changeLanguage();
     }
 
