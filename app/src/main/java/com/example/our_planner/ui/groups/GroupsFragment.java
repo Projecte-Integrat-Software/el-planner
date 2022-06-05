@@ -34,13 +34,7 @@ public class GroupsFragment extends Fragment {
         recyclerViewGroups = view.findViewById(R.id.recyclerViewGroups);
         recyclerViewGroups.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        final Observer<ArrayList<Group>> observerGroups = g -> {
-            AdapterGroups newAdapter = new AdapterGroups(parentContext, g);
-            recyclerViewGroups.swapAdapter(newAdapter, false);
-            newAdapter.notifyDataSetChanged();
-        };
         final Observer<String> observerToast = t -> Toast.makeText(getContext(), t, Toast.LENGTH_SHORT).show();
-        viewModel.getGroups().observe(getActivity(), observerGroups);
         viewModel.getToast().observe(getActivity(), observerToast);
 
         FloatingActionButton addGroupBtn = view.findViewById(R.id.addGroupBtn);
@@ -50,7 +44,22 @@ public class GroupsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        final Observer<ArrayList<Group>> observerGroups = g -> changeAdapter(g);
+        changeAdapter(viewModel.getGroups().getValue());
+        viewModel.getGroups().removeObservers(getActivity());
+        viewModel.getGroups().observe(getActivity(), observerGroups);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    private void changeAdapter(ArrayList<Group> g) {
+        AdapterGroups newAdapter = new AdapterGroups(parentContext, g);
+        recyclerViewGroups.swapAdapter(newAdapter, false);
+        newAdapter.notifyDataSetChanged();
     }
 }

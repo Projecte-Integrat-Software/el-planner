@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">our-planner</string>
+    <string name="app_name">OurPlanner</string>
     <string name="title_activity_navigation_drawer">Navigation Drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -7,14 +7,39 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="help">Help</string>
+    <string name="help_comments">You can comment something about the event and the other members of its group will be able to see it.</string>
+    <string name="help_login">Write the email you signed up with and your password. If you do not remember your password, click the button to send a recovery email.</string>
+    <string name="help_register">Write an email to identify your account, a username (which will be visible by other users) and a password.</string>
+    <string name="help_forgot_password">We will send to the email you signed up with an email to change the password.</string>
+    <string name="help_calendar">You can navigate through the calendar, choose between weekly and monthly mode and create events. Additionally, you can filter the events by group using the lower right button.</string>
+    <string name="help_groups">In this screen you can see the groups you belong to. You can create new ones (you will be the admin), leave them and/or edit them.</string>
+    <string name="help_create_group">Write a title for the group (details are unrequired), choose a color for its events in your calendar and invite the users you want (they must give you their email).</string>
+    <string name="help_edit_group_admin">You can change the information of the group, choose a color for its events in your calendar, invite new users (they must give you their email), expel them or change their permissions.</string>
+    <string name="help_edit_group">You are not an admin of this group. You can only choose the group color (for its events in your calendar).</string>
+    <string name="help_create_event">Give your event a title and fill in its information. You can choose which group this event will belong to and add files to it. When you are done press the Create button to create the event.</string>
+    <string name="help_view_event">You can view the selected event\'s information and enter the event\'s comment section. If you are an admin of this event\'s group, you can delete the event and edit it by pressing the pencil.</string>
+    <string name="help_edit_event">You can edit this event\'s information, change its group, add or remove files from it, access the event\'s comment section and delete the event.</string>
+    <string name="help_invitations">In this screen you can see your invitations to groups. You can accept them (you will join to the group) or refuse them.</string>
+    <string name="help_settings">You can change your profile photo. It can be done directly with the camera of the device or, if not, choosing one from your gallery.</string>
 
+    <string name="message_invitation">invited you to</string>
+    <string name="comments">Comments</string>
     <string name="show_calendar">Show Calendar</string>
     <string name="show_groups">Show Groups</string>
     <string name="show_invitations">Show Invitations</string>
+    <string name="show_comments">Show Comments</string>
+    <string name="add_files">Add files</string>
+    <string name="select_file">"Select a file to upload"</string>
+    <string name="install_file_manager">Please install a file manager</string>
 
     <string name="title_activity_register">Register</string>
     <string name="title_activity_forgot_password">Forgot Password</string>
     <string name="title_activity_sign_in">Sign In</string>
+    <string name="title_activity_create_event">Create Event</string>
+    <string name="title_activity_view_event">View Event</string>
+    <string name="title_activity_edit_event">Edit Event</string>
+
     <string name="welcome">Welcome to OurPlanner!</string>
     <string name="sign_in_register">Sign up or register to continue.</string>
     <string name="username">Username</string>
@@ -26,6 +51,18 @@
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
     <string name="email">Email</string>
+    <string name="logged_as">Logged as</string>
+    <string name="email_empty">Email field is empty!</string>
+    <string name="password_empty">Password field is empty!</string>
+    <string name="username_empty">Username field is empty!</string>
+    <string name="title_empty">Title field is empty!</string>
+    <string name="passwords_different">Passwords are not the same!</string>
+    <string name="registration_successful">Registered successfully</string>
+    <string name="instructions_sent">We have sent you instructions to reset your password!</string>
+    <string name="no_user_registered">There is no user registered with this email</string>
+    <string name="user_invited">User already selected to be invited!</string>
+    <string name="invite_yourself">You cannot invite yourself!</string>
+    <string name="user_already_group">This user is already in the group!</string>
 
     <string name="create_account">Create your Our Planner account:</string>
     <string name="fill_fields">All fields must be filled</string>
@@ -62,6 +99,7 @@
     <string name="leave_group_description">Leave group</string>
     <string name="confirmation_leaving">Are you sure you want to leave?\nThis action is unchangeable.</string>
     <string name="expel_participant_description">Expel user</string>
+    <string name="you">You</string>
     <string name="confirmation_expelling">Are you sure you want to expel this user?\nOnce the group is edited, this action will be unchangeable.</string>
     <string name="admin_description">Change participant permission</string>
     <string name="invite_participants">Invite participants</string>
@@ -69,7 +107,7 @@
     <string name="participants_to_invite">Participants to invite:</string>
     <string name="remove_invitation_description">Delete user from the list of participants to invite.</string>
     <string name="invitations_received">Invitations received</string>
-    <string name="new_invitations">You have been invited to new groups.\nDo you want to see your invitations?</string>
+    <string name="new_invitation">New Invitation</string>
     <string name="see_them">See them</string>
     <string name="close">Close</string>
     <string name="add_group_description">Add new group</string>
@@ -98,13 +136,13 @@
     <string name="back"><![CDATA[<-]]></string>
     <string name="forward"><![CDATA[->]]></string>
     <string name="monthYearExample">February 2022</string>
-    <string name="mondayAbbreviation">DL</string>
-    <string name="tuesdayAbbreviation">DT</string>
-    <string name="wednesdayAbbreviation">DC</string>
-    <string name="thursdayAbbreviation">DJ</string>
-    <string name="fridayAbbreviation">DV</string>
-    <string name="saturdayAbbreviation">DS</string>
-    <string name="sundayAbbreviation">DG</string>
+    <string name="mondayAbbreviation">MON</string>
+    <string name="tuesdayAbbreviation">TUE</string>
+    <string name="wednesdayAbbreviation">WED</string>
+    <string name="thursdayAbbreviation">THU</string>
+    <string name="fridayAbbreviation">FRI</string>
+    <string name="saturdayAbbreviation">SAT</string>
+    <string name="sundayAbbreviation">SUN</string>
     <string name="newEvent">New Event</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name">Name:</string>
@@ -120,4 +158,14 @@
     <string name="select_date">Select Date</string>
     <string name="select_start_time">Select Start Time</string>
     <string name="select_end_time">Select End Time</string>
+    <string name="edit_event">Edit Event</string>
+    <string name="details_eventcell">Details</string>
+    <string name="starting_time">Starting Time</string>
+    <string name="comment_event">Comment Event</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="event_name">Event Name</string>
+    <string name="language">Language:</string>
+    <string name="select_group">Group</string>
+    <string name="delete_event">Delete Event</string>
+    <string name="no_groups">To create an event you have to be in at least one group.</string>
 </resources>

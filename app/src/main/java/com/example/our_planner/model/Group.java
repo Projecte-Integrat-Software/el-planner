@@ -58,4 +58,17 @@ public class Group implements Serializable {
     public void removeEvent(Event e) {
         events.remove(e);
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        Group provGroup = (Group) obj;
+        if (id.equals(provGroup.getId())) return true;
+        else return false;
+    }
 }

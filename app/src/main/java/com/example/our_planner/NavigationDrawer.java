@@ -3,6 +3,7 @@ package com.example.our_planner;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,12 +17,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -45,6 +47,8 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     private Toolbar toolbar;
     private NavController navController;
     private ImageView profilePictureND;
+    private String choice;
+    private FragmentManager fragmentManager;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -55,6 +59,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+        fragmentManager = getSupportFragmentManager();
 
         setSupportActionBar(toolbar);
         appBarConfiguration = new AppBarConfiguration.Builder(
@@ -66,7 +71,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView username = headerView.findViewById(R.id.username);
         username.setText(DataBaseAdapter.getUserName());
@@ -75,38 +80,35 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         profilePictureND = headerView.findViewById(R.id.profilePictureND);
         updateProfilePicture();
 
-        /*
+        choice = "Calendar";
         //Start specific fragment if wanted
-        String s = getIntent().getStringExtra("fragment");
+        String s = getIntent().getStringExtra("fragmentToLoad");
         if (s != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             switch (s) {
                 case "Calendar": {
                     navigationView.getMenu().getItem(0).setChecked(true);
-                    fragmentTransaction.replace(R.id.fragment_container, new CalendarFragment()).commit();
+                    changeFragment(new CalendarFragment(), true);
                     break;
                 }
                 case "Groups": {
                     navigationView.getMenu().getItem(1).setChecked(true);
-                    fragmentTransaction.replace(R.id.fragment_container, new GroupsFragment()).commit();
+                    changeFragment(new GroupsFragment(), true);
                     break;
                 }
                 case "Invitations": {
                     navigationView.getMenu().getItem(2).setChecked(true);
-                    fragmentTransaction.replace(R.id.fragment_container, new InvitationsFragment()).commit();
+                    changeFragment(new InvitationsFragment(), true);
                     break;
                 }
                 case "Settings": {
                     navigationView.getMenu().getItem(3).setChecked(true);
-                    fragmentTransaction.replace(R.id.fragment_container, new SettingsFragment()).commit();
+                    changeFragment(new SettingsFragment(), true);
                     break;
                 }
             }
-            getSupportActionBar().setTitle(s);
+            choice = s;
             drawerLayout.closeDrawer(GravityCompat.START);
         }
-        */
     }
 
     @Override
@@ -116,50 +118,107 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         return true;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeLanguage();
+        DataBaseAdapter.checkInvitations(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Context c = LocaleLanguage.getLocale(this);
+        Resources r = c.getResources();
+        String helpMessage = "";
+
+        switch(choice) {
+            case "Calendar": {
+                helpMessage = r.getString(R.string.help_calendar);
+                break;
+            }
+            case "Groups": {
+                helpMessage = r.getString(R.string.help_groups);
+                break;
+            }
+            case "Invitations": {
+                helpMessage = r.getString(R.string.help_invitations);
+                break;
+            }
+            case "Settings": {
+                helpMessage = r.getString(R.string.help_settings);
+                break;
+            }
+
+            default:
+                break;
+        }
+
+        if (item.getItemId() == R.id.help) {
+            //Crear Popup amb l'ajuda d'aquesta activity
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(helpMessage);
+            builder.setNeutralButton(r.getString(R.string.close), (dialogInterface, i) -> dialogInterface.cancel());
+            AlertDialog alert = builder.create();
+            alert.setTitle(r.getString(R.string.help));
+            alert.show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @SuppressLint("ResourceType")
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
+        Context c = LocaleLanguage.getLocale(this);
+        Resources r = c.getResources();
         switch (item.getItemId()) {
-            case R.id.navCalendar:{
-                fragmentTransaction.replace(R.id.fragment_container, new CalendarFragment()).commit();
+            case R.id.navCalendar: {
+                changeFragment(new CalendarFragment(), true);
+                choice = "Calendar";
                 break;
             }
-            case R.id.navGroups:{
-                fragmentTransaction.replace(R.id.fragment_container, new GroupsFragment()).commit();
+            case R.id.navGroups: {
+                changeFragment(new GroupsFragment(), true);
+                choice = "Groups";
                 break;
             }
             case R.id.navInvitations: {
-                fragmentTransaction.replace(R.id.fragment_container, new InvitationsFragment()).commit();
+                changeFragment(new InvitationsFragment(), true);
+                choice = "Invitations";
                 break;
             }
             case R.id.navSettings: {
-                fragmentTransaction.replace(R.id.fragment_container, new SettingsFragment()).commit();
+                changeFragment(new SettingsFragment(), true);
+                choice = "Settings";
                 break;
             }
             case R.id.navLogOut: {
                 LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 @SuppressLint("InflateParams") PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_log_out, null, false), 900, 400, true);
+                pw.setBackgroundDrawable(getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.rounded_corners : R.drawable.rounded_corners_dark));
                 pw.showAtLocation(this.findViewById(R.id.fragment_container), Gravity.CENTER, 0, 0);
 
+                ((TextView)pw.getContentView().findViewById(R.id.logOutTitle)).setText(r.getString(R.string.log_out));
+                ((TextView)pw.getContentView().findViewById(R.id.logOutDescription)).setText(r.getString(R.string.are_you_sure_you_want_to_log_out));
                 Button cancelBtn = pw.getContentView().findViewById(R.id.cancelBtn);
+                cancelBtn.setText(r.getString(R.string.cancel));
                 cancelBtn.setOnClickListener(view -> pw.dismiss());
 
                 Button yesBtn = pw.getContentView().findViewById(R.id.yesBtn);
+                yesBtn.setText(r.getString(R.string.yes));
                 yesBtn.setOnClickListener(view -> {
                     DataBaseAdapter.logOut();
                     pw.dismiss();
-                    startActivity(new Intent(NavigationDrawer.this, LoginActivity.class));
+                    Intent i = new Intent(NavigationDrawer.this, LoginActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
                 });
-
                 return true;
             }
         }
@@ -174,5 +233,59 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
             byte[] byteArray = DataBaseAdapter.getByteArray();
             profilePictureND.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
         });
+    }
+
+    public void changeFragment(Fragment fragment, boolean compulsory) {
+        //System.out.println(fragment);
+        //System.out.println(PrevFragment.getPrevFragment());
+        //if (!compulsory) fragment = PrevFragment.getPrevFragment();
+        //PrevFragment.setPrevFragment(fragment);
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void changeLanguage() {
+        Menu menu = navigationView.getMenu();
+        Resources r = LocaleLanguage.getLocale(this).getResources();
+
+        String title;
+        switch(choice) {
+            case "Calendar": {
+                title = r.getString(R.string.calendar);
+                break;
+            }
+            case "Groups": {
+                title = r.getString(R.string.groups);
+                break;
+            }
+            case "Invitations": {
+                title = r.getString(R.string.invitations);
+                break;
+            }
+            case "Settings": {
+                title = r.getString(R.string.settings);
+                break;
+            }
+            default:
+                title = "";
+                break;
+        }
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
+
+        menu.getItem(0).setTitle(r.getString(R.string.calendar));
+        menu.getItem(1).setTitle(r.getString(R.string.groups));
+        menu.getItem(2).setTitle(r.getString(R.string.invitations));
+        menu.getItem(3).setTitle(r.getString(R.string.settings));
+        menu.getItem(4).setTitle(r.getString(R.string.log_out));
+    }
+
+    //Fer que no es faci res quan s'apreta el back button que proporciona Android per defecte,
+    //abans et portava a la pantalla de login sense fer logoff.
+    @Override
+    public void onBackPressed() {
+
     }
 }

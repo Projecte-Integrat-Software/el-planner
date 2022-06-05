@@ -1,265 +1,69 @@
 @startuml
-
-namespace com.example.our_planner {
-    namespace ui.user {
-      class com.example.our_planner.ui.user.ForgotPasswordActivity {
-          - emailET : EditText
-          - goBackB : Button
-          - receiveRecoveryEmailB : Button
-          + setToast()
-          # onCreate()
-      }
-    }
-  }
+hide empty members
 
 
-  namespace com.example.our_planner {
-    namespace ui.user {
-      class com.example.our_planner.ui.user.LoginActivity {
-          - btnPassword : Button
-          - btnRegister : Button
-          - btnSign : Button
-          - txtEmail : EditText
-          - txtPassword : EditText
-          # onCreate()
-      }
-    }
-  }
+title __OUR_PLANNER's Model Domain__\n
+left to right direction
 
+class "Usuari" as Usuari {
+  String : Nom
+  String : Email
+  String : Contrasenya
+  Image : Foto de Perfil
+}
 
-  namespace com.example.our_planner {
-    namespace ui.user {
-      class com.example.our_planner.ui.user.LoginActivityViewModel {
-          - mToast : MutableLiveData<String>
-          + LoginActivityViewModel()
-          + getToast()
-          + isUserLogged()
-          + login()
-          + setToast()
-      }
-    }
-  }
+class "Event" as Event {
+  String : Nom
+  String : Descripció
+  LocalDate : Data
+  LocalTime : Hora d'Inici
+  LocalTime : Hora de Final
+}
 
+class "Color" as Color {
+  int : Transparència
+  int : R
+  int : G
+  int : B
+}
 
-  namespace com.example.our_planner {
-    namespace ui.user {
-      class com.example.our_planner.ui.user.RegisterActivity {
-          - btnCancel : Button
-          - btnRegister : Button
-          - txtEmail : EditText
-          - txtPassword : EditText
-          - txtRepeatPassword : EditText
-          - txtUsername : EditText
-          # onCreate()
-      }
-    }
-  }
+class "Grup" as Grup {
+  String : Identificador
+  String : Nom
+  String : Detalls
+}
 
+class "Admin" as Admin {
+}
 
-  namespace com.example.our_planner {
-    namespace ui.user {
-      class com.example.our_planner.ui.user.RegisterActivityViewModel {
-          - mToast : MutableLiveData<String>
-          + RegisterActivityViewModel()
-          + getToast()
-          + register()
-          + setToast()
-      }
-    }
-  }
+class "Invitació" as Invitació {
+}
 
-  com.example.our_planner.ui.user.LoginActivity --> com.example.our_planner.ui.user.ForgotPasswordActivity
-  com.example.our_planner.ui.user.LoginActivity --> com.example.our_planner.ui.user.RegisterActivity
-  com.example.our_planner.ui.user.LoginActivity --> com.example.our_planner.ui.user.LoginActivityViewModel
-  com.example.our_planner.ui.user.RegisterActivity --> com.example.our_planner.ui.user.RegisterActivityViewModel
+Usuari  "*" -- "*" Color : Escull >
 
-    namespace com.example.our_planner {
-        class com.example.our_planner.NavigationDrawer {
-            - appBarConfiguration : AppBarConfiguration
-            - drawerLayout : DrawerLayout
-            - navController : NavController
-            - navigationView : NavigationView
-            - profilePictureND : ImageView
-            - toolbar : Toolbar
-            + onCreateOptionsMenu()
-            + onNavigationItemSelected()
-            + onSupportNavigateUp()
-            + updateProfilePicture()
-            # onCreate()
-        }
-      }
+note "Cada usuari escull un únic color per grup al que està inscrit" as nota
+nota .- Color
 
+Color "*" -- "*" Grup : Referent a >
 
-  namespace com.example.our_planner {
-    abstract class com.example.our_planner.DataBaseAdapter {
-        {static} - byteArray : byte[]
-        {static} - db : FirebaseFirestore
-        {static} - groupInterfaces : List<GroupInterface>
-        {static} - invitationInterface : InvitationInterface
-        {static} - mAuth : FirebaseAuth
-        {static} - registrationCompleted : boolean
-        {static} - rtdb : FirebaseDatabase
-        {static} - storage : FirebaseStorage
-        {static} - user : FirebaseUser
-        {static} + acceptInvitation()
-        {static} + alreadyLoggedIn()
-        {static} + checkRegistered()
-        {static} + createEvent()
-        {static} + createGroup()
-        {static} + deleteEvent()
-        {static} + deleteInvitation()
-        {static} + editEvent()
-        {static} + editGroup()
-        {static} + forgotPassword()
-        {static} + getByteArray()
-        {static} + getEmail()
-        {static} + getUserName()
-        {static} + isRegistrationCompleted()
-        {static} + leaveGroup()
-        {static} + loadComments()
-        {static} + loadGroups()
-        {static} + loadInvitations()
-        {static} + logOut()
-        {static} + login()
-        {static} + postComment()
-        {static} + register()
-        {static} + setProfilePicture()
-        {static} + subscribeGroupObserver()
-        {static} + subscribeInvitationObserver()
-        {static} + updateProfilePicture()
-        {static} - deleteGroupInvitations()
-        {static} - loadEvents()
-        {static} - mapEventDocument()
-        {static} - mapGroupDocument()
-        {static} - modifyInvitations()
-        {static} - sendInvitation()
-        {static} - sendInvitations()
-    }
-  }
+Usuari "1...*" -- "*" Event : Té >
 
-  com.example.our_planner.ui.user.LoginActivity --> com.example.our_planner.NavigationDrawer
-  com.example.our_planner.ui.user.LoginActivityViewModel --> com.example.our_planner.DataBaseAdapter
-  com.example.our_planner.ui.user.ForgotPasswordActivity --> com.example.our_planner.DataBaseAdapter
-  com.example.our_planner.ui.user.RegisterActivityViewModel --> com.example.our_planner.DataBaseAdapter
+Usuari "1...*" -- "*" Grup : Està Inscrit >
 
-namespace com.example.our_planner {
-    namespace ui.calendar {
-      class com.example.our_planner.ui.calendar.CalendarFragment {
-          - calendarGroups : ImageButton
-          - commentEvent : Button
-          - groups : ArrayList<Group>
-          - spinner : Spinner
-          + onCreateView()
-          + onDestroyView()
-          + onViewCreated()
-          - initListeners()
-          - insertNestedFragment()
-      }
-    }
-  }
+Event "*" -- "1" Grup : Pertany >
 
-  namespace com.example.our_planner {
-      namespace ui.groups {
-        class com.example.our_planner.ui.groups.GroupsFragment {
-            - parentContext : Context
-            - recyclerViewGroups : RecyclerView
-            + onCreateView()
-            + onDestroyView()
-        }
-      }
-    }
+Usuari "1" -- "*" Invitació : Rep >
 
-    namespace com.example.our_planner {
-        namespace ui.invitations {
-          class com.example.our_planner.ui.invitations.InvitationsFragment {
-              - recyclerViewInvitations : RecyclerView
-              + onCreateView()
-              + onDestroyView()
-          }
-        }
-      }
+Admin "1" -- "*" Invitació : Envia >
 
-      namespace com.example.our_planner {
-          namespace ui.settings {
-            class com.example.our_planner.ui.settings.SettingsFragment {
-                - CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE : int
-                - PICK_PHOTO_CODE : int
-                - changeProfilePictureBtn : Button
-                - notificationsAlertSpinner : Spinner
-                - profilePicture : ImageView
-                - themeSpinner : Spinner
-                + onActivityResult()
-                + onCreateView()
-                + onDestroyView()
-                + onItemSelected()
-                + onNothingSelected()
-            }
-          }
-        }
+Admin "1" -- "1..*" Grup : Gestiona >
 
-  com.example.our_planner.NavigationDrawer --> com.example.our_planner.ui.calendar.CalendarFragment
-com.example.our_planner.NavigationDrawer --> com.example.our_planner.ui.groups.GroupsFragment
-com.example.our_planner.NavigationDrawer --> com.example.our_planner.ui.invitations.InvitationsFragment
-com.example.our_planner.NavigationDrawer --> com.example.our_planner.ui.settings.SettingsFragment
+Admin "1" -- "*" Event : Gestiona >
 
+Admin "*" -- "*" Usuari : Gestiona >
 
-namespace com.example.our_planner {
-    namespace ui.groups {
-      class com.example.our_planner.ui.groups.GroupsViewModel {
-          - mGroups : MutableLiveData<ArrayList<Group>>
-          - mToast : MutableLiveData<String>
-          + GroupsViewModel()
-          + getGroups()
-          + getToast()
-          + setToast()
-          + update()
-      }
-    }
-  }
+Grup "1" -- "*" Invitació : Associada A <
 
-  com.example.our_planner.ui.groups.GroupsFragment --> com.example.our_planner.ui.groups.GroupsViewModel
-
-
-namespace com.example.our_planner {
-    namespace ui.invitations {
-      class com.example.our_planner.ui.invitations.InvitationsViewModel {
-          - mInvitations : MutableLiveData<ArrayList<Invitation>>
-          - mToast : MutableLiveData<String>
-          + InvitationsViewModel()
-          + getInvitations()
-          + getToast()
-          + setToast()
-          + update()
-      }
-    }
-  }
-
-    com.example.our_planner.ui.invitations.InvitationsFragment --> com.example.our_planner.ui.invitations.InvitationsViewModel
-
-namespace com.example.our_planner {
-    namespace ui.settings {
-      class com.example.our_planner.ui.settings.SettingsViewModel {
-          - mText : MutableLiveData<String>
-          + SettingsViewModel()
-          + getText()
-      }
-    }
-  }
-
-    com.example.our_planner.ui.settings.SettingsFragment --> com.example.our_planner.ui.settings.SettingsViewModel
-
-namespace com.example.our_planner {
-    namespace ui.calendar {
-      class com.example.our_planner.ui.calendar.CalendarViewModel {
-          - mGroups : MutableLiveData<ArrayList<Group>>
-          + CalendarViewModel()
-          + getGroups()
-          + update()
-      }
-    }
-  }
-
-      com.example.our_planner.ui.calendar.CalendarFragment --> com.example.our_planner.ui.calendar.CalendarViewModel
-
+Usuari <|-- Admin
 
 @enduml

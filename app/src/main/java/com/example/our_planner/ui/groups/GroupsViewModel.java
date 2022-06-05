@@ -36,7 +36,7 @@ public class GroupsViewModel extends AndroidViewModel implements DataBaseAdapter
     }
 
     @Override
-    public void update(ArrayList<Group> groups) {
+    public void updateGroups(ArrayList<Group> groups) {
         mGroups.setValue(groups);
     }
 }

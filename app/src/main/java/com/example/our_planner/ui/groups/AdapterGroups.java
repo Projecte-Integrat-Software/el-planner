@@ -2,6 +2,7 @@ package com.example.our_planner.ui.groups;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.our_planner.DataBaseAdapter;
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
+import com.example.our_planner.ThemeSwitcher;
 import com.example.our_planner.model.Group;
 
 import java.util.ArrayList;
@@ -41,6 +44,8 @@ public class AdapterGroups extends RecyclerView.Adapter<AdapterGroups.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolderGroups holder, int position) {
         Group g = groups.get(position);
         holder.setData(g);
+        Resources r = LocaleLanguage.getLocale(context).getResources();
+        holder.editGroupBtn.setText(r.getString(R.string.edit));
         holder.editGroupBtn.setOnClickListener(view -> {
             Context c = view.getContext();
             Intent i = new Intent(c, EditGroupActivity.class);
@@ -50,12 +55,18 @@ public class AdapterGroups extends RecyclerView.Adapter<AdapterGroups.ViewHolder
         holder.leaveGroupBtn.setOnClickListener(view -> {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.popup_leave_group, null, false), 900, 500, true);
+            pw.setBackgroundDrawable(context.getDrawable(ThemeSwitcher.lightThemeSelected() ? R.drawable.rounded_corners : R.drawable.rounded_corners_dark));
             pw.showAtLocation(view, Gravity.CENTER, 0, 0);
 
+            ((TextView)pw.getContentView().findViewById(R.id.txtLeaveGroup)).setText(r.getString(R.string.leave_group_description));
+            ((TextView)pw.getContentView().findViewById(R.id.txtConfirmationLeaving)).setText(r.getString(R.string.confirmation_leaving));
+
             Button cancelBtn = pw.getContentView().findViewById(R.id.cancelBtn);
+            cancelBtn.setText(r.getString(R.string.cancel));
             cancelBtn.setOnClickListener(view1 -> pw.dismiss());
 
             Button yesBtn = pw.getContentView().findViewById(R.id.yesBtn);
+            yesBtn.setText(r.getString(R.string.yes));
             yesBtn.setOnClickListener(view1 -> {
                 DataBaseAdapter.leaveGroup(g);
                 pw.dismiss();

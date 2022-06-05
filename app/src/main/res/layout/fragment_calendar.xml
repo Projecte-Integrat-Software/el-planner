@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".ui.calendar.CalendarFragment">
 
     <Spinner
@@ -12,7 +13,7 @@
         android:layout_width="137dp"
         android:layout_height="wrap_content"
         android:minHeight="32dp"
-        android:translationX="135dp"
+        android:layout_marginTop="5dp"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <FrameLayout
@@ -36,7 +37,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="BottomAppBar" >
+        tools:ignore="BottomAppBar">
+
+        <Button
+            android:id="@+id/newEventBtn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:text="@string/newEvent"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/btnCalendarGroups"
@@ -47,13 +60,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
             app:layout_constraintTop_toTopOf="@+id/bottomAppBar" />
-
-        <Button
-            android:id="@+id/commentEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="comment Event" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 

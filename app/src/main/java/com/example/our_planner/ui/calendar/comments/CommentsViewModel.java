@@ -12,14 +12,17 @@ import java.util.ArrayList;
 
 public class CommentsViewModel extends AndroidViewModel implements DataBaseAdapter.CommentInterface {
     MutableLiveData<ArrayList<Comment>> comments;
-
-    // COnstruvctor aplication
-
+    MutableLiveData<String> idEvent;
 
     public CommentsViewModel(Application application) {
         super(application);
         comments = new MutableLiveData<>(new ArrayList<>());
-        DataBaseAdapter.loadComments(this);
+        idEvent = new MutableLiveData<>();
+    }
+
+    public void setIdEvent(String idEvent) {
+        this.idEvent.setValue(idEvent);
+        DataBaseAdapter.loadComments(this, idEvent);
     }
 
     public MutableLiveData<ArrayList<Comment>> getComments() {
@@ -30,5 +33,9 @@ public class CommentsViewModel extends AndroidViewModel implements DataBaseAdapt
     public void addComment(Comment comment) {
         comments.getValue().add(comment);
         comments.setValue(comments.getValue());
+    }
+
+    public void postComment(String messageToPost) {
+        DataBaseAdapter.postComment(idEvent.getValue(), messageToPost);
     }
 }

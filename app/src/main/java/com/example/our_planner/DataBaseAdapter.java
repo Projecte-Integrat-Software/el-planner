@@ -1,10 +1,14 @@
 package com.example.our_planner;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.OpenableColumns;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +20,7 @@ import com.example.our_planner.model.Invitation;
 import com.example.our_planner.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -28,9 +33,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -52,16 +59,23 @@ public abstract class DataBaseAdapter {
     private static final FirebaseDatabase rtdb = FirebaseDatabase.getInstance();
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private static byte[] byteArray = new byte[]{};
-    private static List<GroupInterface> groupInterfaces = new ArrayList<>();
+    private static final List<GroupInterface> groupInterfaces = new ArrayList<>();
+    private static final List<AdminGroupInterface> adminGroupInterfaces = new ArrayList<>();
     private static EventInterface eventInterface;
+    private static SelectionsResetInterface selectionsResetInterface;
     private static InvitationInterface invitationInterface;
-    private static boolean registrationCompleted = true;
+    private static UriInterface uriInterface;
+    private static final boolean registrationCompleted = true;
+    private static ArrayList<Uri> uris = new ArrayList<>();
 
     public static void login(DBInterface i, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
-                i.setToast("Logged as " + getUserName());
+                loadEvents();
+                loadAdminGroups();
+                loadGroups();
+                i.setToast(" " + getUserName());
             } else {
                 i.setToast(task.getException().getMessage());
             }
@@ -82,7 +96,7 @@ public abstract class DataBaseAdapter {
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     Task setProfilePictureTask = setProfilePicture(stream.toByteArray());
                     setProfilePictureTask.addOnCompleteListener(task1 -> {
-                        i.setToast("Registered successfully");
+                        i.setToast("-");
                     });
                 });
             } else {
@@ -94,6 +108,12 @@ public abstract class DataBaseAdapter {
     public static void subscribeGroupObserver(GroupInterface i) {
         groupInterfaces.add(i);
         loadGroups();
+    }
+
+
+    public static void subscribeAdminGroupObserver(AdminGroupInterface i) {
+        adminGroupInterfaces.add(i);
+        loadAdminGroups();
     }
 
     public static void loadGroups() {
@@ -115,7 +135,35 @@ public abstract class DataBaseAdapter {
                     }
                 }
                 for (GroupInterface i : groupInterfaces) {
-                    i.update(groups);
+                    i.updateGroups(groups);
+                }
+            }
+        });
+    }
+
+    public static void loadAdminGroups() {
+        db.collection("groups").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Group> groups = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
+                    if (participants.containsKey(getEmail())) {
+                        Map<String, String> colours = (HashMap<String, String>) g.get("colours");
+                        Map<String, Integer> coloursGroup = new HashMap<>();
+                        Map<String, User> participantsGroup = new HashMap<>();
+                        Map<String, Boolean> admins = (Map<String, Boolean>) g.get("admins");
+                        if (admins.get(getEmail())) {
+                            for (String k : colours.keySet()) {
+                                coloursGroup.put(k, Integer.parseInt(colours.get(k)));
+                                participantsGroup.put(k, new User(participants.get(k)));
+                            }
+                            groups.add(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, admins));
+                        }
+                    }
+                }
+                for (AdminGroupInterface i : adminGroupInterfaces) {
+                    i.updateAdminGroups(groups);
                 }
             }
         });
@@ -136,6 +184,23 @@ public abstract class DataBaseAdapter {
         g.put("admins", a);
         g.put("events", e);
         return g;
+    }
+
+    public static void checkInvitations(Context c) {
+        db.collection("invitations").get().addOnSuccessListener(task -> {
+            String email = getEmail();
+            for (DocumentSnapshot document : task.getDocuments()) {
+                Map<String, Object> g = document.getData();
+                if (g.get("user").equals(email)) {
+                    //Send notification if you have just been invited
+                    if (!(Boolean)g.get("notified")) {
+                        g.replace("notified", true);
+                        Notifier.sendNotification(c, g.get("author") + " " + LocaleLanguage.getLocale(c).getResources().getString(R.string.message_invitation) + " " + g.get("title") + "!");
+                        document.getReference().set(g);
+                    }
+                }
+            }
+        });
     }
 
     public static void subscribeInvitationObserver(InvitationInterface i) {
@@ -173,6 +238,7 @@ public abstract class DataBaseAdapter {
                     invitation.put("group", groupId);
                     invitation.put("author", getEmail());
                     invitation.put("title", title);
+                    invitation.put("notified", false);
                     doc.set(invitation);
                 }
             }
@@ -198,6 +264,7 @@ public abstract class DataBaseAdapter {
         db.collection("groups").add(mapGroupDocument(title, details, colours, participants, admins, events))
                 .addOnSuccessListener(documentReference -> {
                     loadGroups();
+                    loadAdminGroups();
                     sendInvitations(invitationEmails, documentReference.getId(), title);
                 }).addOnFailureListener(e -> i.setToast(e.getMessage()));
     }
@@ -240,6 +307,7 @@ public abstract class DataBaseAdapter {
         db.collection("groups").document(id).set(mapGroupDocument(title, details, colours, participants, admins, events))
                 .addOnSuccessListener(documentReference -> {
                     loadGroups();
+                    loadAdminGroups();
                     sendInvitations(invitationEmails, id, title);
                     modifyInvitations(id, title);
                 }).addOnFailureListener(e -> i.setToast(e.getMessage()));
@@ -262,7 +330,9 @@ public abstract class DataBaseAdapter {
         if (p.size() == 1) {
             db.collection("groups").document(g.getId()).delete().addOnSuccessListener(documentReference -> {
                 loadGroups();
+                loadAdminGroups();
                 deleteGroupInvitations(g.getId());
+                deleteEvents(g.getId());
             });
         } else {
             p.remove(email);
@@ -273,6 +343,7 @@ public abstract class DataBaseAdapter {
             ArrayList<Event> e = g.getEvents();
             Map<String, Object> group = mapGroupDocument(g.getTitle(), g.getDetails(), c, p, a, e);
             db.collection("groups").document(g.getId()).set(group).addOnSuccessListener(documentReference -> loadGroups());
+            loadAdminGroups();
         }
     }
 
@@ -304,32 +375,35 @@ public abstract class DataBaseAdapter {
 
     public static void logOut() {
         mAuth.signOut();
+        selectionsResetInterface.resetSelections();
     }
 
-    public static void postComment(String message){
-        rtdb.getReference().child("comments").push().setValue(new Comment(message));
+    public static void postComment(String idEvent, String message) {
+        rtdb.getReference().child("comments").child(idEvent).push().setValue(new Comment(message));
     }
 
-    public static void forgotPassword(DBInterface i, String email){
+    public static void forgotPassword(DBInterface i, String email) {
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    i.setToast("We have sent you instructions to reset your password!");
+                    i.setToast("-");
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                if (e instanceof FirebaseAuthInvalidCredentialsException) i.setToast("Email address is not valid");
-                if (e instanceof FirebaseAuthInvalidUserException) i.setToast("No user corresponding to this email address");
+                if (e instanceof FirebaseAuthInvalidCredentialsException)
+                    i.setToast("Email address is not valid");
+                if (e instanceof FirebaseAuthInvalidUserException)
+                    i.setToast("No user corresponding to this email address");
                 else i.setToast("Failed to send reset email!\n" + e.getClass().getSimpleName());
             }
         });
     }
 
-    public static void loadComments(CommentInterface i){
-        DatabaseReference ref = rtdb.getReference().child("comments");
+    public static void loadComments(CommentInterface i, String idEvent) {
+        DatabaseReference ref = rtdb.getReference().child("comments").child(idEvent);
         ref.addChildEventListener(new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -360,10 +434,66 @@ public abstract class DataBaseAdapter {
         });
     }
 
+    public static void loadFiles(String eventId) {
+        uris = new ArrayList<>();
+        StorageReference storageRef = storage.getReference().child("Files").child(eventId);
+        storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for (StorageReference fileRef : listResult.getItems()) {
+                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            uris.add(uri);
+                            uriInterface.updateUris(uris);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public static void uploadFile(Uri uri, Context context, String eventId) {
+        StorageReference storageRef = storage.getReference().child("Files").child(eventId).child(getFileName(uri, context));
+        storageRef.putFile(uri);
+        uris.add(uri);
+        uriInterface.updateUris(uris);
+    }
+
+    public static void removeFile(Uri uri, Context context, String eventId) {
+        StorageReference storageRef = storage.getReference().child("Files").child(eventId).child(getFileName(uri, context));
+        storageRef.delete();
+        uris.add(uri);
+        uriInterface.updateUris(uris);
+    }
+
+    @SuppressLint("Range")
+    public static String getFileName(Uri uri, Context context) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
     public static Task<byte[]> updateProfilePicture() {
         Task<byte[]> byteArrayTask = storage.getReference().child(Objects.requireNonNull(user.getEmail())).getBytes(1024 * 1024);
         byteArrayTask.addOnSuccessListener(o -> {
-            byteArray = (byte[]) byteArrayTask.getResult();
+            byteArray = byteArrayTask.getResult();
         });
         return byteArrayTask;
     }
@@ -378,6 +508,20 @@ public abstract class DataBaseAdapter {
         return registrationCompleted;
     }
 
+    public static void subscribeUriObserverEdit(UriInterface i, String eventId) {
+        uriInterface = i;
+        loadFiles(eventId);
+    }
+
+    public static void subscribeUriObserverCreate(UriInterface i) {
+        uriInterface = i;
+    }
+
+    public static Task<byte[]> getImage(String author) {
+        return storage.getReference().child(author).getBytes(1024 * 1024);
+    }
+
+
     public interface DBInterface {
         void setToast(String s);
     }
@@ -386,8 +530,34 @@ public abstract class DataBaseAdapter {
         void setChecked(boolean b);
     }
 
+    public static void subscribeSelectionsResetObserver(SelectionsResetInterface i) {
+        selectionsResetInterface = i;
+    }
+
+    public interface SelectionsResetInterface {
+        void resetSelections();
+    }
+
+
+    public static void loadEvents() {
+        db.collection("events").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Event> events = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    events.add(new Event(document.getId(), (String) g.get("name"), (String) g.get("location"), LocalDate.parse(((String) g.get("date")),
+                            formatter), LocalTime.parse((String) g.get("start time")), LocalTime.parse((String) g.get("end time")), (String) g.get("group")));
+                }
+
+                eventInterface.updateEvents(events);
+
+            }
+        });
+    }
+
     public interface GroupInterface {
-        void update(ArrayList<Group> groups);
+        void updateGroups(ArrayList<Group> groups);
     }
 
     public interface InvitationInterface extends DBInterface {
@@ -398,24 +568,15 @@ public abstract class DataBaseAdapter {
         void addComment(Comment comment);
     }
 
-    private static Map<String, Object> mapEventDocument(String name, String location, boolean allDay, String date, String startTime, String endTime) {
-        Map<String, Object> g = new HashMap<>();
-        g.put("name", name);
-        g.put("location", location);
-        g.put("all day", allDay);
-        g.put("date", date);
-        g.put("start time", startTime);
-        g.put("end time", endTime);
-        return g;
+    public interface UriInterface {
+        void updateUris(ArrayList<Uri> uris);
     }
 
-    public static void createEvent(String eventId, String name, String location, boolean allDay, String date, String startTime, String endTime) {
-        DocumentReference doc = db.collection("event").document(eventId);
-        doc.set(mapEventDocument(name, location, allDay, date, startTime, endTime))
+    public static Task<DocumentReference> createEvent(String name, String location, String date, String startTime, String endTime, String groupId) {
+        return db.collection("events").add(mapEventDocument(name, location, date, startTime, endTime, groupId))
                 .addOnSuccessListener(documentReference -> {
                     loadEvents();
                 });
-
     }
 
     public static void subscribeEventsObserver(EventInterface i) {
@@ -423,37 +584,114 @@ public abstract class DataBaseAdapter {
         loadEvents();
     }
 
-    private static void loadEvents() {
-        db.collection("events").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                ArrayList<Event> events = new ArrayList<>();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Map<String, Object> g = document.getData();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
-                    events.add(new Event(document.getId(), (String) g.get("name"), (String) g.get("location"), (boolean) g.get("all day"), LocalDate.parse(((String) g.get("date")), formatter), LocalTime.parse((String) g.get("start time")), LocalTime.parse((String) g.get("end time"))));
-                }
-
-                eventInterface.update(events);
-
-            }
-        });
-    }
-
     public interface EventInterface {
-        void update(ArrayList<Event> events);
+        void updateEvents(ArrayList<Event> events);
     }
 
-    public static void editEvent(String eventId, String name, String location, boolean allDay, LocalDate date, LocalTime time, Group group) {
-        String groupId = group.getId();
-        deleteEvent(eventId);
+    public interface AdminGroupInterface {
+        void updateAdminGroups(ArrayList<Group> groups);
+    }
 
 
+    public static void editEvent(String eventId, String name, String location, String date, String startTime, String endTime, String groupId) {
+
+
+        db.collection("events").document(eventId).set(mapEventDocument(name, location, date, startTime, endTime, groupId))
+                .addOnSuccessListener(documentReference -> {
+                    loadEvents();
+
+                });
+    }
+
+    private static Map<String, Object> mapEventDocument(String name, String location, String date, String startTime, String endTime, String groupId) {
+        Map<String, Object> g = new HashMap<>();
+        g.put("name", name);
+        g.put("date", date);
+        g.put("location", location);
+        g.put("start time", startTime);
+        g.put("end time", endTime);
+        g.put("group", groupId);
+        return g;
     }
 
     public static void deleteEvent(String eventId) {
-        DocumentReference doc = db.collection("event").document(eventId);
+        DocumentReference doc = db.collection("events").document(eventId);
         doc.delete().addOnSuccessListener(documentReference -> {
             loadEvents();
         });
     }
+
+    public static ArrayList<Group> getGroups() {
+        ArrayList<Group> groups = new ArrayList<>();
+        db.collection("groups").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
+                    if (participants.containsKey(getEmail())) {
+                        Map<String, String> colours = (HashMap<String, String>) g.get("colours");
+                        Map<String, Integer> coloursGroup = new HashMap<>();
+                        Map<String, User> participantsGroup = new HashMap<>();
+                        for (String k : colours.keySet()) {
+                            coloursGroup.put(k, Integer.parseInt(colours.get(k)));
+                            participantsGroup.put(k, new User(participants.get(k)));
+                        }
+                        groups.add(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, (Map<String, Boolean>) g.get("admins")));
+                    }
+                }
+
+
+            }
+        });
+
+        return groups;
+    }
+
+    public static void deleteEvents(String groupId) {
+        db.collection("events").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    if (((String) g.get("group")).equals(groupId)) {
+                        String eventId = document.getId();
+                        deleteEvent(eventId);
+                    }
+                }
+            }
+        });
+
+
+    }
+
+
+ /*   public static Group getGroup(String groupName) {
+        AtomicReference<Group> group = new AtomicReference<>(null);
+        db.collection("groups").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> g = document.getData();
+                    Map<String, String> participants = (HashMap<String, String>) g.get("participants");
+                    if (participants.containsKey(getEmail())) {
+                        if (((String) g.get("title")).equals(groupName)) {
+                            Map<String, String> colours = (HashMap<String, String>) g.get("colours");
+                            Map<String, Integer> coloursGroup = new HashMap<>();
+                            Map<String, User> participantsGroup = new HashMap<>();
+                            for (String k : colours.keySet()) {
+                                coloursGroup.put(k, Integer.parseInt(colours.get(k)));
+                                participantsGroup.put(k, new User(participants.get(k)));
+
+                            }
+                            group.set(new Group(document.getId(), (String) g.get("title"), (String) g.get("details"), coloursGroup, participantsGroup, (Map<String, Boolean>) g.get("admins")));
+                            break;
+
+                        }
+                    }
+
+
+                }
+            }
+        });
+
+        return group.get();
+    } */
 }

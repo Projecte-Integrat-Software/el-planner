@@ -42,43 +42,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:background="@null"
-                android:hint="@string/group_title"
+                android:hint="@string/event_name"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:minHeight="48dp"
                 android:selectAllOnFocus="true"
                 android:textColorHint="#757575" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/labelEventAllDay"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/all_day"
-                android:textSize="15sp" />
-
-            <Switch
-                android:id="@+id/switchAllDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:background="@null"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:selectAllOnFocus="true"
-                android:textColorHint="#757575" />
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -102,6 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/select_date" />
         </LinearLayout>
 
@@ -126,6 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/select_start_time" />
         </LinearLayout>
 
@@ -150,20 +121,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="@string/select_end_time" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -182,7 +142,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/txtEventLocation"
+                android:id="@+id/eventLocationET"
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -197,22 +157,75 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/labelSelectGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/select_group"
+                android:textSize="15sp" />
+
+            <Spinner
+                android:id="@+id/selectGroupSpinner"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fileList"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_weight="5">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/addFilesBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                style="?attr/materialButtonOutlinedStyle"
+                android:text="@string/add_files" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnCreate"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="194dp"
+                android:layout_height="wrap_content"
+                android:text="@string/create" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnCreate"
-        android:layout_width="194dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="64dp"
-        android:text="@string/create"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="1.0" />
 
 
 
