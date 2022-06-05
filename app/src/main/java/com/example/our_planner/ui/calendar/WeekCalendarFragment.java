@@ -5,6 +5,7 @@ import static com.example.our_planner.ui.calendar.CalendarUtils.monthYearFromDat
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.our_planner.LocaleLanguage;
 import com.example.our_planner.R;
 import com.example.our_planner.ThemeSwitcher;
 import com.example.our_planner.model.Event;
@@ -43,6 +45,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
 
     private Button previousWeekBtn;
     private Button nextWeekBtn;
+
 
     private CalendarViewModel calendarViewModel;
 
@@ -115,8 +118,20 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         setEventAdapter();
     }
 
-    private void initWidgets()
-    {
+    private void changeLanguage() {
+        Resources r = LocaleLanguage.getLocale(getActivity()).getResources();
+
+        ((TextView) getActivity().findViewById(R.id.mondayTV)).setText(r.getString(R.string.mondayAbbreviation));
+        ((TextView) getActivity().findViewById(R.id.tuesdayTV)).setText(r.getString(R.string.tuesdayAbbreviation));
+        ((TextView) getActivity().findViewById(R.id.wednesdayTV)).setText(r.getString(R.string.wednesdayAbbreviation));
+        ((TextView) getActivity().findViewById(R.id.thursdayTV)).setText(r.getString(R.string.thursdayAbbreviation));
+        ((TextView) getActivity().findViewById(R.id.fridayTV)).setText(r.getString(R.string.fridayAbbreviation));
+        ((TextView) getActivity().findViewById(R.id.saturdayTV)).setText(r.getString(R.string.saturdayAbbreviation));
+        ((TextView) getActivity().findViewById(R.id.sundayTV)).setText(r.getString(R.string.sundayAbbreviation));
+
+    }
+
+    private void initWidgets() {
         monthYearText = view.findViewById(R.id.monthYearTV);
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
 
@@ -177,6 +192,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
     public void onResume() {
         super.onResume();
         setEventAdapter();
+        changeLanguage();
     }
 
     private void setEventAdapter() {
