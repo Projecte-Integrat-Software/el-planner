@@ -86,4 +86,5 @@ public class AdapterCalendarGroups extends RecyclerView.Adapter<AdapterCalendarG
             onGroupListener.onGroupSelect(selections);
         }
     }
+
 }

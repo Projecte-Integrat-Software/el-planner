@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CalendarViewModel extends ViewModel implements DataBaseAdapter.GroupInterface, DataBaseAdapter.EventInterface, DataBaseAdapter.AdminGroupInterface {
+public class CalendarViewModel extends ViewModel implements DataBaseAdapter.GroupInterface, DataBaseAdapter.EventInterface, DataBaseAdapter.AdminGroupInterface, DataBaseAdapter.SelectionsResetInterface {
 
     private final MutableLiveData<ArrayList<Group>> mGroups;
     private final MutableLiveData<ArrayList<Group>> mAdminGroups;
@@ -28,6 +28,7 @@ public class CalendarViewModel extends ViewModel implements DataBaseAdapter.Grou
         DataBaseAdapter.subscribeEventsObserver(this);
         DataBaseAdapter.subscribeGroupObserver(this);
         DataBaseAdapter.subscribeAdminGroupObserver(this);
+        DataBaseAdapter.subscribeSelectionsResetObserver(this);
     }
 
     public MutableLiveData<ArrayList<Group>> getGroups() {
@@ -78,5 +79,10 @@ public class CalendarViewModel extends ViewModel implements DataBaseAdapter.Grou
     @Override
     public void updateAdminGroups(ArrayList<Group> groups) {
         this.mAdminGroups.setValue(groups);
+    }
+
+    @Override
+    public void resetSelections() {
+        mSelections.setValue(new HashMap<>());
     }
 }

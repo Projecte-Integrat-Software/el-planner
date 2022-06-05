@@ -20,6 +20,10 @@ public class Event implements Serializable, Comparable {
         return events;
     }
 
+    public static void resetEvents() {
+        eventsList = new ArrayList<>();
+    }
+
     private final String id;
     private String name;
     private String location;

@@ -62,6 +62,7 @@ public abstract class DataBaseAdapter {
     private static final List<GroupInterface> groupInterfaces = new ArrayList<>();
     private static final List<AdminGroupInterface> adminGroupInterfaces = new ArrayList<>();
     private static EventInterface eventInterface;
+    private static SelectionsResetInterface selectionsResetInterface;
     private static InvitationInterface invitationInterface;
     private static UriInterface uriInterface;
     private static final boolean registrationCompleted = true;
@@ -71,6 +72,9 @@ public abstract class DataBaseAdapter {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 user = mAuth.getCurrentUser();
+                loadEvents();
+                loadAdminGroups();
+                loadGroups();
                 i.setToast(" " + getUserName());
             } else {
                 i.setToast(task.getException().getMessage());
@@ -371,6 +375,7 @@ public abstract class DataBaseAdapter {
 
     public static void logOut() {
         mAuth.signOut();
+        selectionsResetInterface.resetSelections();
     }
 
     public static void postComment(String idEvent, String message) {
@@ -524,6 +529,15 @@ public abstract class DataBaseAdapter {
     public interface EmailCheckerInterface extends DBInterface {
         void setChecked(boolean b);
     }
+
+    public static void subscribeSelectionsResetObserver(SelectionsResetInterface i) {
+        selectionsResetInterface = i;
+    }
+
+    public interface SelectionsResetInterface {
+        void resetSelections();
+    }
+
 
     public static void loadEvents() {
         db.collection("events").get().addOnCompleteListener(task -> {

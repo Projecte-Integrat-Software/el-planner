@@ -204,7 +204,6 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="194dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="64dp"
                 android:text="@string/create" />
 
         </LinearLayout>

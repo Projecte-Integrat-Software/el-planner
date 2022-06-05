@@ -45,8 +45,6 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
 
     private Button previousWeekBtn;
     private Button nextWeekBtn;
-
-
     private CalendarViewModel calendarViewModel;
 
 
@@ -219,7 +217,7 @@ public class WeekCalendarFragment extends Fragment implements CalendarAdapter.On
         recyclerViewEvents.setAdapter(adapter);
 
         // TODO diria no se necessari aquest loadEvents
-        // calendarViewModel.loadEvents();
+        calendarViewModel.loadEvents();
     }
 
     @Override
