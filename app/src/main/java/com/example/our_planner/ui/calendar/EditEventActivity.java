@@ -406,6 +406,10 @@ public class EditEventActivity extends AppCompatActivity {
         selectStartTimeBtn.setVisibility(View.INVISIBLE);
         selectEndTimeBtn.setVisibility(View.INVISIBLE);
         addFilesBtn.setVisibility(View.INVISIBLE);
+
+        if (!admin) {
+            deleteEventBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

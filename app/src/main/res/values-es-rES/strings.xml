@@ -13,14 +13,14 @@
     <string name="help_login">Escribe el correo electrónico con el que te registraste y la contraseña. Si no la recuerdas, pulsa el botón de recuperarla.</string>
     <string name="help_register">Escribe un correo electrónico para identificar tu cuenta, un nombre de usuario (que será visible por otros usuarios) y una contraseña.</string>
     <string name="help_forgot_password">Te enviaremos al correo electrónico con el que te registraste un mensaje para cambiar tu contraseña.</string>
-    <string name="help_calendar">TO BE DONE WHEN CALENDAR IS COMPLETE</string>
+    <string name="help_calendar">Puedes navegar por el calendario, escoger modo semana o modo mes y crear eventos. Con el botón inferior derecho puedes filtrar los eventos por grupo.</string>
     <string name="help_groups">En esta pantalla puedes ver los grupos a los que perteneces. Puedes crear nuevos (serás el administrador), salir de ellos y/o editarlos.</string>
     <string name="help_create_group">Escribe un título para el grupo (no hacen falta detalles), escoge un color para los eventos en tu calendario e invita a los usuarios que quieras (deben darte su correo electrónico).</string>
     <string name="help_edit_group_admin">Puedes cambiar la información del grupo, el color de los eventos en tu calendario, invitar nuevos usuarios (deben darte su correo electrónico), expulsarlos o cambiar sus permisos.</string>
     <string name="help_edit_group">No eres un administrador del grupo. Solamente puedes cambiar el color del grupo (para los eventos en tu calendario).</string>
-    <string name="help_create_event">TO BE DONE WHEN CREATE EVENT IS COMPLETE</string>
-    <string name="help_view_event">TO BE DONE WHEN VIEW EVENT IS COMPLETE</string>
-    <string name="help_edit_event">TO BE DONE WHEN EDIT EVENT IS COMPLETE</string>
+    <string name="help_create_event">Ponle un título a tu evento y rellena su información. Puedes escoger a qué grupo pertenece tu evento y añadirle ficheros. Cuando hayas acabado pulsa el botón Crear para crear el evento.</string>
+    <string name="help_view_event">Puedes visualizar la información del evento seleccionado y entrar en su sección de comentarios. Si eres admin del grupo de este evento, puedes eliminar el evento y editarlo pulsando el lápiz.</string>
+    <string name="help_edit_event">Puedes editar la información de este evento, cambiar su grupo, añadir o eliminar ficheros, acceder a su sección de comentarios y eliminar el evento.</string>
     <string name="help_invitations">En esta pantalla puedes ver tus invitaciones a grupos. Puedes aceptarlas (te unirás al grupo) o rechazarlas.</string>
     <string name="help_settings">Puedes cambiar tu foto de perfil. Puede hacerse directamente desde la cámara del dispositivo o, si no, seleccionando una de la galería.</string>
 
